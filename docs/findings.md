@@ -37,6 +37,15 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 | R-11 | A startup script `/etc/init.d/urandom_seed` was overwritten on some routers as early as September 2025, surviving upgrades through a modified `/lib/upgrade/keep.d/netifd`. | Unconfirmed: one forum post with no evidence attached; a second user says they see the same. On three routers we checked (AXT1800 4.8.3 and 4.8.4 beta, MT3000 4.11.0) both files are identical to the firmware image. | Notice thread, posts [26](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/26) and [58](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/58) |
 | R-12 | A GL-MT3000 on 4.11.0 with GoodCloud connected, not rebooted since 19 November, showed none of the indicators. | Reported | [Router check thread, post 47](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/47) |
 
+## The remote address
+
+| ID | Finding | How it is known | Source |
+|---|---|---|---|
+| A-1 | `170.39.226.219` has reverse DNS `aa27e2db.ewr.customer.misaka.io` and sits in `170.39.226.0/24`, registered to Misaka Network, Inc., with no customer reassignment recorded. | Verified by RemoteToHome: DNS and ARIN registration data, 2026-11-21 | [Details](attacker-infrastructure.md) |
+| A-2 | The range is routed by AS917. | Verified by RemoteToHome: RIPEstat, 2026-11-21 | Same |
+| A-3 | The only earlier public trace is a passive-DNS record of `szlsntvpnxxx04.top` on this address on 2022-01-22. No record in GreyNoise or Shodan InternetDB. | Verified by RemoteToHome: those services' public lookups, 2026-11-21 | Same |
+| A-4 | An abuse report was sent to the provider's abuse contact on 2026-11-21 at 17:24, copied to GL.iNet. No reply yet. | RemoteToHome | Same |
+
 ## KVMs
 
 | ID | Finding | How it is known | Source |
