@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-21 19:28 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-21 19:31 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -191,18 +191,22 @@ Check which build you are installing: GL.iNet has more than one build under the 
 number, and for KVMs what the 1.10.2 build does differs by model. See
 [docs/kvm-firmware.md](docs/kvm-firmware.md).
 
-## Recovery tools (planned)
+## Recovery tools
 
-Two RemoteToHome projects are being prepared for the cases GL.iNet's "factory reset and set up
-again" advice does not cover, mainly devices that are far away:
+Two RemoteToHome projects for the cases GL.iNet's "factory reset and set up again" advice does
+not cover, mainly devices that are far away:
 
-- **[gl-portable-backup](https://github.com/RemoteToHome-io/gl-portable-backup)**: an existing
-  backup and restore plugin, being extended to carry only the settings a person chose, so that a
-  restore does not bring an attacker's changes back.
-- **gl-remote-rescue** (not yet released): wipe and reinstall a remote router and bring remote
-  access back on first boot, carrying across only a short, inspected list of settings.
-
-Neither is ready for incident use yet. This page will say so when they are.
+- **[gl-portable-backup](https://github.com/RemoteToHome-io/gl-portable-backup)**, a backup and
+  restore plugin. [Version 1.1.1](https://github.com/RemoteToHome-io/gl-portable-backup/releases/tag/v1.1.1)
+  (21 November) adds a read-only `gl-portable-backup check` for the indicators on this page, and
+  every backup runs it. Its result is `indicators`, `inconclusive` or `none`. A backup taken from
+  a router with indicators is kept as a record only: its file name carries `-COMPROMISED-` and
+  it cannot be restored. A result of `none` does not show that the router was never compromised.
+  Its README says which modes and firmware versions have been tested; read that before relying
+  on it.
+- **gl-remote-rebuild** (not yet released, in design): wipe and reinstall a remote router and
+  bring remote access back on first boot, carrying across only a short, inspected list of
+  settings.
 
 ## More detail
 
