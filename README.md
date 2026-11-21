@@ -180,5 +180,7 @@ as instructions for attacking a device. Those details belong with GL.iNet's secu
 
 ## Disclaimer and licence
 
-Provided as is, without warranty. Nothing here can prove a device is clean. Text and tools are
-released under the [MIT License](LICENSE).
+Provided as is, without warranty. Nothing here can prove a device is clean.
+
+Copyright (c) 2026 RemoteToHome Consulting. Text and tools are released under the
+[GNU General Public License, version 3](LICENSE).
