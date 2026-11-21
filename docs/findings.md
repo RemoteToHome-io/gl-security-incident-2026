@@ -18,6 +18,7 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 | G-3 | Indicator: a running process containing `crond -i /tmp/.log`. | GL statement | Same |
 | G-4 | Stable firmware with fixes for routers and KVMs is scheduled for 2026-11-22. KVM beta builds are available: 1.10.2 for RM1, RM1V2, RM1PE, RM4PE, RM10, RM10RC; 1.8.6 for RMQ1. | GL statement | Same |
 | G-5 | `netstat` may have been replaced on an infected device, and running it starts the malware. | GL statement (staff) | [Router check thread, post 41](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/41) |
+| G-6 | An anonymous report from an infected device shows `netstat` was replaced. | Reported by a forum user | [Router check thread, post 48](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/48) |
 
 ## Routers
 
@@ -33,7 +34,8 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 | R-8 | The named pipe `/tmp/f` stays after the shell is stopped and until the next reboot. Its timestamp is the last data it carried. | Verified by RemoteToHome on the affected router; timestamp meaning tested on a different Linux system | Same |
 | R-9 | GL.iNet's indicator process (G-3) was not present on the router in R-1. | Verified by RemoteToHome | Same |
 | R-10 | No router firmware containing a fix had been published by 2026-11-21 16:00. | Verified by RemoteToHome: GL.iNet's firmware listing for eight models; see also G-4 | |
-| R-11 | A startup script `/etc/init.d/urandom_seed` was overwritten on some routers as early as September 2025. | Unconfirmed: one forum post, no evidence attached. Two routers we checked have the stock file. | [Notice thread, post 26](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/26) |
+| R-11 | A startup script `/etc/init.d/urandom_seed` was overwritten on some routers as early as September 2025, surviving upgrades through a modified `/lib/upgrade/keep.d/netifd`. | Unconfirmed: one forum post with no evidence attached; a second user says they see the same. On three routers we checked (AXT1800 4.8.3 and 4.8.4 beta, MT3000 4.11.0) both files are identical to the firmware image. | Notice thread, posts [26](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/26) and [58](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/58) |
+| R-12 | A GL-MT3000 on 4.11.0 with GoodCloud connected, not rebooted since 19 November, showed none of the indicators. | Reported | [Router check thread, post 47](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/47) |
 
 ## KVMs
 
@@ -46,6 +48,7 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 | K-5 | On an RM1, upgrading to 1.10.2 with settings kept rebuilds the writable layer from a fixed list. Files outside the list are dropped. The list includes the password file, `/root/.ssh`, the SSH host keys and everything under `/etc/kvmd/user`. | Verified by RemoteToHome on a test RM1, with marker files | Same |
 | K-6 | KVM firmware runs any script named `S??*` in `/etc/kvmd/user/scripts` at boot, and that directory is inside the list in K-5. | Verified by RemoteToHome by reading the firmware. Whether a script there survives an upgrade has not been tested. | Same |
 | K-7 | RM1 1.10.2 leaves SSH switched off after the upgrade. `/etc/init.d/S50dropbear enable` in the web terminal turns it back on. | Verified by RemoteToHome on a test RM1 | Same |
+| K-8 | An RM10 on 1.11.3 beta whose owner says the cloud service was not in use "appears infected". No details given yet. | Reported | [Router check thread, post 45](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/45) |
 
 ## Open questions
 

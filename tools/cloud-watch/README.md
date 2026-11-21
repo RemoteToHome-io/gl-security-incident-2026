@@ -8,7 +8,9 @@ receives and what runs on it. See [docs/monitoring.md](../../docs/monitoring.md)
 ```
 
 - Needs key-based root SSH to the device, `bash`, `ssh`, `timeout`, `awk`, `diff`.
-- `collect.sh` is what runs on the device each pass. It only reads.
+- `collect.sh` is what runs on the device each pass. It only reads. It calls `netstat` only when that
+  resolves to a binary identical to the one in the read-only firmware image, because the implant
+  is reported to replace it.
 - Output in the state directory: `events.log` (everything new), `alerts.log` (things to look at),
   `log-all.txt` (the device's system log as collected).
 - Stop it by creating a file named `STOP` in the state directory.
