@@ -34,8 +34,20 @@ to the address to gather it. Times are UTC.
 We sent an abuse report to the provider's published abuse contact on **21 November 2026 at 17:24
 UTC**, copied to the provider's network operations contact and to GL.iNet. It gives the three known
 connections with their ports and times, and asks the provider to stop the service on that address
-and to preserve the server and its records for 19 to 22 November 2026. We will record any reply
-here.
+and to preserve the server and its records for 19 to 22 November 2026.
+
+**The provider replied on 21 November 2026 at about 20:54 UTC** (Provider statement; we have not
+tested the address ourselves):
+
+- it has suspended the server and notified its customer;
+- the data has been preserved under its standard abuse process;
+- it has no network flow records for that site;
+- it will give further details only on a subpoena or similar legal request.
+
+So the known address should no longer accept these connections, and the evidence on it is held
+for an investigation by GL.iNet or law enforcement. A shell that is still running on a router
+keeps trying to reconnect until it is stopped or the router restarts, and the attacker may use
+another address.
 
 If your device connected to this address, you can report it too. The provider's abuse contact, as
 published in the ARIN registry, is `abuse-arin@misaka.email` (email only). Include your connection's

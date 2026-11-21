@@ -44,7 +44,7 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 | A-1 | `170.39.226.219` has reverse DNS `aa27e2db.ewr.customer.misaka.io` and sits in `170.39.226.0/24`, registered to Misaka Network, Inc., with no customer reassignment recorded. | Verified by RemoteToHome: DNS and ARIN registration data, 2026-11-21 | [Details](attacker-infrastructure.md) |
 | A-2 | The range is routed by AS917. | Verified by RemoteToHome: RIPEstat, 2026-11-21 | Same |
 | A-3 | The only earlier public trace is a passive-DNS record of `szlsntvpnxxx04.top` on this address on 2022-01-22. No record in GreyNoise or Shodan InternetDB. | Verified by RemoteToHome: those services' public lookups, 2026-11-21 | Same |
-| A-4 | An abuse report was sent to the provider's abuse contact on 2026-11-21 at 17:24, copied to GL.iNet. No reply yet. | RemoteToHome | Same |
+| A-4 | An abuse report was sent to the provider's abuse contact on 2026-11-21 at 17:24, copied to GL.iNet. The provider replied at about 20:54 the same day: server suspended, customer notified, data preserved, no flow records for that site, further details only on legal request (Provider statement, not checked by us). | RemoteToHome | Same |
 
 ## KVMs
 

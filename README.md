@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-21 20:01 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-21 21:09 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -58,7 +58,7 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 | The shell came in through the GoodCloud client on the router, which passes a value from a cloud message to the shell without checking it | Verified by us by reading the client's code; not confirmed by GL.iNet |
 | The same unchecked code is in AXT1800 4.8.4 (beta of 11 November) and GL-MT3000 4.11.0 | Verified by us |
 | It runs whether or not AstroWarp / SD-WAN is enabled | Verified by us |
-| The shells connected to `170.39.226.219`, a rented server at a US hosting provider with no named customer in the registry. An abuse report went to the provider on 21 November 2026 | Verified by us from public registries; see [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md) |
+| The shells connected to `170.39.226.219`, a rented server at a US hosting provider with no named customer in the registry. We reported it to the provider on 21 November 2026; the provider replied the same day that it has suspended the server, notified its customer and preserved the data | Verified by us from public registries; see [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md) |
 | That shell leaves no file behind and is gone after a reboot; its named pipe `/tmp/f` remains until then | Verified by us |
 | KVM firmware RM1PE 1.10.2 removes an implant called "gl-helper" at boot; RM1 1.10.2 has no such cleanup | Verified by us from the official images |
 | On the RM1, an upgrade that keeps settings carries the password, SSH keys and `/etc/kvmd/user` across | Verified by us on a test unit |
