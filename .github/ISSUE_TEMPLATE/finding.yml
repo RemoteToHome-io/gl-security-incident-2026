@@ -1,0 +1,50 @@
+name: Finding
+description: Report something seen on a device, a firmware check, or a correction
+labels: ["finding"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Remove private details first: your own IP addresses, hostnames, Wi-Fi names, MAC addresses,
+        device ids, DDNS names, e-mail addresses, and anything from a configuration file. Do not
+        attach evidence archives or backups.
+  - type: input
+    id: device
+    attributes:
+      label: Device model and firmware version
+      placeholder: GL-AXT1800, 4.8.3
+    validations:
+      required: true
+  - type: dropdown
+    id: cloud
+    attributes:
+      label: Was GL.iNet's cloud service (GoodCloud / GLKVM cloud) switched on?
+      options: ["Yes, and bound to an account", "Yes, not bound", "No", "Not sure"]
+    validations:
+      required: true
+  - type: dropdown
+    id: rebooted
+    attributes:
+      label: Has the device been rebooted or upgraded since 20 November 2026?
+      options: ["No", "Yes", "Not sure"]
+    validations:
+      required: true
+  - type: textarea
+    id: ran
+    attributes:
+      label: What you ran and what it printed
+      description: Exact commands and output, with the time in UTC.
+      render: text
+    validations:
+      required: true
+  - type: dropdown
+    id: confidence
+    attributes:
+      label: How do you know?
+      options: ["I saw it on my own device", "Passing on someone else's report (link below)"]
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
