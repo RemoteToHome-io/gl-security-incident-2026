@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-21 19:35 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-21 20:01 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -140,12 +140,19 @@ that access at the other end.
      images). Forum users report a backdoor that survived upgrades with settings kept (Reported;
      we have not seen such a device).
    - **A factory reset alone is the second choice.** It erases the writable layer, where
-     everything in those reports lives, but leaves the installed firmware image as it is. A
-     reinstall writes the image again and, with settings off, starts with an empty writable layer
-     (read in the upgrade scripts of the GL-MT3600BE 4.9.0 image; other models not checked, and
-     on a model with two firmware slots the other slot is not rewritten). We found no
-     step in either that rewrites the boot loader, and we know of no report that the image or
-     the boot loader was changed.
+     everything in those reports lives, but leaves the installed firmware image as it is. On a
+     GL-AXT1800 (4.8.4) the flash partition that holds that image is writable from a root shell
+     and the tools a firmware update uses are on the router, so an attacker with root was not
+     prevented from changing the image (read from the device; we did not attempt a write, and we
+     know of no report that it was done). A reinstall writes the image again and, with settings
+     off, starts with an empty writable layer (read in the upgrade scripts of the GL-MT3600BE
+     4.9.0 image; other models not checked, and on a model with two firmware slots the other
+     slot is not rewritten).
+   - **The boot loader is an open question.** We found no step in a reset or a reinstall that
+     rewrites it. Whether a root shell can write the boot loader partitions is not settled: on
+     two GL-AXT1800 routers the kernel's partition flags say it cannot, but the kernel let us
+     open those partitions for writing (we wrote nothing). If a boot loader had been changed,
+     none of the steps above would undo it. We know of no report of that.
 8. Check the computers behind the device. For a KVM, check the computer it was attached to.
 
 ## Reducing exposure until fixed firmware is installed
