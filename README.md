@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-21 17:55 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-21 18:20 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -25,7 +25,9 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
    everything.** A root remote shell has been found on GL-AXT1800 routers that this check reads as
    healthy. Use the wider checks in [Check a device](#check-a-device).
 3. **Killing a process or reinstalling firmware does not undo a compromise.** If a device was hit,
-   every key and password stored on it should be treated as read by someone else.
+   every key and password stored on it should be treated as read by someone else. That includes
+   its VPN client profiles and SSH keys: access has to be removed on the server side as well. See
+   [If you find something](#if-you-find-something).
 4. **GL.iNet says the attack path is closed on its side** and that fixed stable firmware for routers
    and KVMs is scheduled for 22 November 2026. The weakness on the router side is still present in
    the firmware we have read.
@@ -102,16 +104,35 @@ For KVMs see [docs/kvm-firmware.md](docs/kvm-firmware.md).
 
 ## If you find something
 
+**A compromised router is not the only thing that is compromised. Everything it held a key for is
+too.** The attacker had a root shell, so every key, password and profile stored on the device
+could be copied. Cleaning or reinstalling the router does not take those back. You have to remove
+that access at the other end.
+
 1. Save the output and note the time. In a business network, talk to whoever handles incidents or
    insurance for you before changing anything.
 2. Stop the processes or disconnect the device from the internet.
-3. Treat everything stored on the device as exposed and replace it: VPN keys and profiles (client
-   and server), Wi-Fi passwords, the admin password, DDNS and cloud credentials, and SSH keys the
-   device held. A VPN client profile on a compromised router is a key to the server at the other
-   end.
-4. Reinstall firmware without keeping settings, or factory-reset, then set the device up again
-   from known-good information.
-5. Check the computers behind the device. For a KVM, check the computer it was attached to.
+3. **Revoke every VPN client profile the router held, on the server side.** Deleting the profile
+   from the router is not enough: a copy of it still works from anywhere.
+   - WireGuard and AmneziaWG: remove that peer on the server, or give the server new keys. Then
+     create a new profile with a new key pair for the router.
+   - OpenVPN: revoke the client certificate on the server, or change the username and password
+     if the profile used them.
+   - Commercial VPN services: sign in to the provider and regenerate the keys or change the
+     password. A copied profile is a login to your account.
+   - ZeroTier, Tailscale and similar: remove the router's node from the network in the controller
+     or admin console, then join again as a new node after the router is reinstalled.
+4. **If the router was itself a VPN server,** its private key was readable too. Give it a new key
+   and issue new profiles to every client.
+5. **Revoke SSH keys the router used to log in elsewhere.** If the router held an SSH private key
+   (by default `/root/.ssh/id_dropbear`; also any `id_rsa`, `id_ed25519` or similar under
+   `/root/.ssh`), every machine that trusts it must have the matching public key removed from its
+   `authorized_keys`. Check the router's own `authorized_keys` as well for keys you did not add.
+6. Replace the rest of what it stored: Wi-Fi passwords, the admin password, DDNS and cloud
+   credentials.
+7. Reinstall firmware without keeping settings, or factory-reset, then set the device up again
+   from known-good information and the new keys.
+8. Check the computers behind the device. For a KVM, check the computer it was attached to.
 
 ## Reducing exposure until fixed firmware is installed
 
