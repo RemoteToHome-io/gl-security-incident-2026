@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-21 17:40 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-21 17:55 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -142,6 +142,19 @@ This is temporary hardening. It does not clean a device that was already hit; fo
   reports the switch is under "More Settings"; we have not checked where it is on each model.
 - Do not rely on "I never used AstroWarp" or "remote access was off": the affected code runs
   regardless.
+
+## Firmware downloads
+
+- GL.iNet's own download pages are linked from its
+  [security notice](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056).
+- Our community mirror at <https://gl-fw.remotetohome.io/> keeps stable, beta and older builds for
+  GL.iNet routers and KVMs in one place, including the KVM security builds. File checksums are
+  verified automatically against the files GL.iNet publishes. It is useful when you need a specific
+  build, an older one to compare against, or a copy that stays available.
+
+Check which build you are installing: GL.iNet has more than one build under the same version
+number, and for KVMs what the 1.10.2 build does differs by model. See
+[docs/kvm-firmware.md](docs/kvm-firmware.md).
 
 ## Recovery tools (planned)
 
