@@ -11,7 +11,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 22:29 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 22:30 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -289,8 +289,8 @@ What we have read ourselves is the GL-MT3000 build, compared with the one before
   still have to be replaced.
 
 We compared the two builds file by file, and read the changed handler and the new checker
-instruction by instruction, for this one model only. A comparison of the GL-BE14000 builds by Admon
-(Reported) describes a differently built fix there, covering eight cloud commands.
+instruction by instruction, for this one model only. We have not read the fixed firmware of the
+other models.
 
 Because of the unaddressed weakness we are leaving GoodCloud switched off on the routers we
 look after, also after updating. With GoodCloud off on the router, the cloud client does not run.
