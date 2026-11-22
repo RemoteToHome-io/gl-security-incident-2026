@@ -11,7 +11,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 22:26 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 22:29 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -271,11 +271,12 @@ November, there was none yet for GL-AX1800, GL-MT2500 or GL-MT3600BE.
 What we have read ourselves is the GL-MT3000 build, compared with the one before it:
 
 - **The fix is in the handler we identified.** The cloud client's AstroWarp module is the file
-  that changed in substance. It now carries a validation step, with rejection messages for the
-  command the attack used, `virtual_ip_info`, and for at least two others, and with patterns
-  that accept only the characters of an address. GL.iNet has not said in words that this was
-  the entry point; its fix says so. We have not sent the attack message to a fixed router to
-  watch it being refused.
+  that changed in substance. For the command the attack used, `virtual_ip_info`, the handler
+  now checks its two address fields as IPv4 addresses and its third field as a hardware address
+  before it builds any command, and returns without acting when the check fails or the checker
+  is missing. At least two other commands got the same treatment. GL.iNet has not said in words
+  that this was the entry point; its fix says so. We have not sent the attack message to a
+  fixed router to watch it being refused.
 - **The firmware cleans up only part of what we have found.** A new script runs once at the
   first start after the update. It restores `/etc/init.d/urandom_seed` from the firmware's own
   copy, which is the start-up file the older backdoor changes. It does not remove that
@@ -287,8 +288,8 @@ What we have read ourselves is the GL-MT3000 build, compared with the one before
 - **An update does not take back what was read.** Keys and passwords on a router that was hit
   still have to be replaced.
 
-We compared the two builds file by file and by their readable text, not instruction by
-instruction, and only for this one model. A comparison of the GL-BE14000 builds by Admon
+We compared the two builds file by file, and read the changed handler and the new checker
+instruction by instruction, for this one model only. A comparison of the GL-BE14000 builds by Admon
 (Reported) describes a differently built fix there, covering eight cloud commands.
 
 Because of the unaddressed weakness we are leaving GoodCloud switched off on the routers we
