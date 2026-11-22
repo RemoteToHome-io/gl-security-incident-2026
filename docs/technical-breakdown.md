@@ -364,8 +364,10 @@ show that it was the route.
 
 GL.iNet's listing holds stable router firmware dated 22 and 23 November 2026 for GL-AXT1800
 (4.8.4), GL-MT3000 (4.11.1), GL-MT6000 (4.11.1), GL-MT5000 (4.9.1), GL-BE9300 (4.10.2),
-GL-BE14000 (4.9.3), GL-E5800 (4.10.3), GL-X2000 (4.7.14) and GL-MG1300 (4.11.1). At 21:34 on 22
-November there was none yet for GL-AX1800, GL-MT2500 or GL-MT3600BE (finding R-10).
+GL-BE14000 (4.9.3), GL-BE6500 (4.9.1), GL-BE10000 (4.8.7), GL-E5800 (4.10.3), GL-X2000 (4.7.14)
+and GL-MG1300 (4.11.1). At 23:10 on 22 November there was none yet for GL-AX1800, GL-MT2500 or
+GL-MT3600BE (finding R-10). All of these builds, and the ones they replace, are on our
+[firmware mirror](https://gl-fw.remotetohome.io/).
 
 What we read in GL-MT3000 4.11.1 against 4.11.0. Both official images matched their published
 SHA-256. We compared them file by file and read the changed module and the new checker in a

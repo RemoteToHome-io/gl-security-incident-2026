@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 23:23 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 23:29 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -55,7 +55,7 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
    its VPN client profiles and SSH keys: access has to be removed on the server side as well. See
    [If you find something](#if-you-find-something).
 6. **GL.iNet has released fixed firmware for most router models. Install it, but do not treat it
-   as a clean-up.** Stable builds dated 22 and 23 November are in its listing for nine router
+   as a clean-up.** Stable builds dated 22 and 23 November are in its listing for eleven router
    models; see [Fixed firmware](#fixed-firmware). In the build we read, the handler that the
    attack came through has gained input validation. The firmware's own clean-up is partial, and one
    further weakness in the cloud client is not addressed in that build: we reported it to
@@ -275,9 +275,13 @@ that access at the other end.
 
 ## Fixed firmware
 
-GL.iNet's listing holds stable firmware dated 22 and 23 November 2026 for GL-AXT1800 (4.8.4), GL-MT3000 (4.11.1), GL-MT6000 (4.11.1), GL-MT5000 (4.9.1), GL-BE9300 (4.10.2), GL-BE14000 (4.9.3), GL-E5800 (4.10.3), GL-X2000 (4.7.14) and GL-MG1300 (4.11.1), and for
-all seven KVM models (1.10.3, or 1.8.7 for the RMQ1). When we last looked, at 21:34 UTC on 22
+GL.iNet's listing holds stable firmware dated 22 and 23 November 2026 for GL-AXT1800 (4.8.4), GL-MT3000 (4.11.1), GL-MT6000 (4.11.1), GL-MT5000 (4.9.1), GL-BE9300 (4.10.2), GL-BE14000 (4.9.3), GL-BE6500 (4.9.1), GL-BE10000 (4.8.7), GL-E5800 (4.10.3), GL-X2000 (4.7.14) and GL-MG1300 (4.11.1), and for
+all seven KVM models (1.10.3, or 1.8.7 for the RMQ1). When we last looked, at 23:10 UTC on 22
 November, there was none yet for GL-AX1800, GL-MT2500 or GL-MT3600BE.
+
+All of these builds are on our firmware mirror, <https://gl-fw.remotetohome.io/>, next to the
+builds they replace. Each file's checksum is verified against the one GL.iNet publishes. Use it
+to get a fixed build, or to compare a fixed build with the one before, as we did.
 
 What we have read ourselves is the GL-MT3000 build, compared with the one before it:
 
