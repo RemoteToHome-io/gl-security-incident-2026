@@ -13,7 +13,7 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 
 | ID | Finding | How it is known | Source |
 |---|---|---|---|
-| G‑1 | A vulnerability in GL.iNet's cloud remote management services was exploited to install malicious software on some routers and KVM devices. | GL statement | [Notice](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056), version of 2026-11-21 16:00 |
+| G‑1 | A vulnerability in GL.iNet's cloud remote management services was exploited to install malicious software on some routers and KVM devices. | GL statement | [Notice](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056), as read 2026-11-22 07:12 (marked "Last updated November 21, 2026") |
 | G‑2 | The attack path has been blocked; devices cannot be newly infected through it. This does not clean devices already infected. | GL statement | Same |
 | G‑3 | Indicator: a running process containing `crond -i /tmp/.log`. | GL statement | Same |
 | G‑4 | Stable firmware with fixes for routers and KVMs is scheduled for 2026-11-22. KVM beta builds are available: 1.10.2 for RM1, RM1V2, RM1PE, RM4PE, RM10, RM10RC; 1.8.6 for RMQ1. | GL statement | Same |
@@ -28,14 +28,19 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 | R‑2 | Two more GL-AXT1800 routers on 4.8.3 had the same shell to the same address on other ports; one started at about 21:40 on 2026-11-20. | Reported | [Posts 10](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/10) and [22](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/22) |
 | R‑3 | The shell command is appended to an `iptables` rule for the chain `SDWAN_IP_MAPPING`. The GoodCloud client on the router (package `gl-sdk4-cloud`) builds that rule from values in a cloud message and passes it to the shell without validating them. | Verified by RemoteToHome: read the client code from the affected router. Not confirmed by GL.iNet. | [Details](router-reverse-shell.md) |
 | R‑4 | That code runs whether or not AstroWarp / SD-WAN is enabled. It was disabled on the affected router. | Verified by RemoteToHome: code and the router's configuration | Same |
-| R‑5 | The same code is present in GL-AXT1800 4.8.4 (beta built 2026-11-11) and GL-MT3000 4.11.0 (built 2026-09-24). | Verified by RemoteToHome: read the client code from both | Same |
+| R‑5 | The same code is present in GL-AXT1800 4.8.4 (beta built 2026-11-11) and GL-MT3000 4.11.0 (built 2026-09-24). The earliest firmware in which we find it is GL-MT3000 4.7.0, released 2024-12-05; the GL-MT3000 4.6.9 and GL-AXT1800 4.6.11 images do not have it. | Verified by RemoteToHome: read the client code from both; the official images for the earlier versions | Same |
 | R‑6 | The GoodCloud client on the router only starts when GoodCloud is enabled on the device. | Verified by RemoteToHome: the client's start script on AXT1800 4.8.4 | |
 | R‑7 | The shell is not persistent. No file in the router's writable storage changed in that period except the client's own state file, and the shell is gone after a reboot. | Verified by RemoteToHome (file change times on the affected router); reboot behaviour Reported in post 22 | [Details](router-reverse-shell.md) |
 | R‑8 | The named pipe `/tmp/f` stays after the shell is stopped and until the next reboot. Its timestamp is the last data it carried. | Verified by RemoteToHome on the affected router; timestamp meaning tested on a different Linux system | Same |
 | R‑9 | GL.iNet's indicator process (G-3) was not present on the router in R-1. | Verified by RemoteToHome | Same |
-| R‑10 | No router firmware containing a fix had been published by 2026-11-21 16:00. | Verified by RemoteToHome: GL.iNet's firmware listing for eight models; see also G-4 | |
-| R‑11 | A startup script `/etc/init.d/urandom_seed` was overwritten on some routers as early as September 2025, surviving upgrades through a modified `/lib/upgrade/keep.d/netifd`. | Unconfirmed: one forum post with no evidence attached; a second user says they see the same. On three routers we checked (AXT1800 4.8.3 and 4.8.4 beta, MT3000 4.11.0) both files are identical to the firmware image. | Notice thread, posts [26](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/26) and [58](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/58) |
+| R‑10 | No router firmware released after the incident was in GL.iNet's firmware listing at 2026-11-22 06:20. The newest router entry is dated 16 November. | Verified by RemoteToHome: the listing as copied by our [firmware mirror](https://gl-fw.remotetohome.io/); see also G-4 | |
+| R‑11 | An older, separate backdoor: lines added at the top of the startup script `/etc/init.d/urandom_seed`, a file `/bin/ulogd`, and an added line in `/lib/upgrade/keep.d/netifd` so that both survive upgrades. We found it installed and running on four routers we manage (GL-MT3000 and GL-MT2500, firmware 4.7.4). The file dates are 2025-12-17, 2025-12-20 (two routers) and 2026-03-29. The indicator in G-3 was not present on any of them. On three other routers we checked earlier (AXT1800 4.8.3 and 4.8.4 beta, MT3000 4.11.0) both files are identical to the firmware image. | Reported by forum users, with dates from September and October 2025. Verified by RemoteToHome on 2026-11-22: files compared with the firmware's own copies in `/rom`, process list | Notice thread, posts [26](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/26) and [58](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/58); [forum topic](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097) |
 | R‑12 | A GL-MT3000 on 4.11.0 with GoodCloud connected, not rebooted since 19 November, showed none of the indicators. | Reported | [Router check thread, post 47](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/47) |
+| R‑13 | The same shell was still running on two more GL-AXT1800 routers, firmware 4.8.2, when we checked them on 2026-11-22. Neither had been restarted. On one, three shells had started at 20:46:35, 21:17:27 and 21:39:45 on 2026-11-20; on the other, one at 21:39:47. | Verified by RemoteToHome on routers we manage: process list and `/proc` | |
+| R‑14 | The handler in R-3 ends by writing `/etc/mp_ip_mapping_info`. An empty copy of that file written on or after 2026-11-20, on a router that does not use AstroWarp, shows the handler ran. It survives a restart; the firewall rule does not. | Verified by RemoteToHome: client code, and the file on affected routers | |
+| R‑15 | Routers that show the rule but no shell also ran a command from the attacker as root. We recovered the cloud message from the client's memory on seven routers (GL-MT3000 and GL-MT5000 on 4.9.0, GL-MT3600BE on 4.8.5 and 4.9.0). It is the same on all seven apart from a device identifier. It looks for the folders in K-1 (`/etc/config/.gl`, `/etc/glinet/.cache`) and sends the result to `170.39.226.219`. | Verified by RemoteToHome on routers we manage. The same message recovered from a GL-BE9300 is Reported by another owner | |
+| R‑16 | Fragments of the same folder check, typed by hand, were in the memory of two of the three shells on one router in R-13. | Verified by RemoteToHome: memory of the shell processes, saved before the shells were ended | |
+| R‑17 | The rule from R-3 was present on routers of seven models that we manage: GL-AXT1800, GL-AX1800, GL-MT2500, GL-MT3000, GL-MT5000, GL-MT6000 and GL-MT3600BE, on firmware from 4.7.4 to 4.9.0. | Verified by RemoteToHome, 2026-11-21 and 2026-11-22; the check of our routers is still running | [Field survey](field-survey.md) |
 
 ## The remote address
 
@@ -59,11 +64,11 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 | K‑7 | RM1 1.10.2 leaves SSH switched off after the upgrade. `/etc/init.d/S50dropbear enable` in the web terminal turns it back on. | Verified by RemoteToHome on a test RM1 | Same |
 | K‑8 | An RM10 on 1.11.3 beta whose owner says the cloud service was not in use "appears infected". No details given yet. | Reported | [Router check thread, post 45](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/45) |
 
-## Open questions
+## Not yet known
 
-1. Which models and firmware versions were sent the router command in R-3?
-2. What is the full time window, and is `170.39.226.219` the only address involved?
-3. What does the process in G-3 do, and how does it relate to the "gl-helper" files in K-1?
-4. Were devices with the cloud service enabled but not bound to an account reachable?
-5. What was run through the remote shells?
-6. Which firmware removes the unchecked code in R-3?
+1. Whether any address other than `170.39.226.219` was used in this attack.
+2. Whether devices with the cloud service enabled but not bound to an account were reachable.
+3. Which router firmware removes the unchecked code in R-3. None had been published at the time
+   in R-10.
+4. What the process in G-3 does.
+5. How the older backdoor in R-11 was installed.
