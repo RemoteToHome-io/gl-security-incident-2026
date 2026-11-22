@@ -1,18 +1,18 @@
 # Field survey
 
 Routers we manage or own, checked since 21 November 2026, by model and firmware. Counts only: no
-client, network or device is identified. The check is still running; this page is updated as
+owner, network or device is identified. The check is still running; this page is updated as
 batches finish.
 
-Last updated: 2026-11-22 10:04 UTC.
+Last updated: 2026-11-22 10:47 UTC.
 
 ## The result so far
 
-**Of 148 customer routers we have reached, 122 show the attack of 20 November, an older
-backdoor, or both. 26 show nothing.** GL.iNet's published indicator (a `crond -i /tmp/.log`
+**Of 183 routers we have reached, 152 show the attack of 20 November, an older
+backdoor, or both. 31 show nothing.** GL.iNet's published indicator (a `crond -i /tmp/.log`
 process) was not running on any of them.
 
-This is not a random sample. They are routers we set up for clients, almost all with GoodCloud
+This is not a random sample. They are routers we manage or own, almost all with GoodCloud
 switched on, and only those that were online when we checked.
 
 ## By model and firmware
@@ -21,18 +21,22 @@ switched on, and only those that were online when we checked.
 |---|---|---|---|---|---|---|---|
 | GL-AX1800 | 4.6.8 | 2 | 0 | 0 | 0 | 1 | 1 |
 | GL-AX1800 | 4.7.0 | 1 | 0 | 1 | 0 | 0 | 0 |
-| GL-AX1800 | 4.8.3 | 2 | 0 | 1 | 1 | 0 | 0 |
+| GL-AX1800 | 4.8.3 | 3 | 0 | 1 | 2 | 0 | 0 |
 | GL-AXT1800 | 4.6.8 | 1 | 0 | 0 | 0 | 0 | 1 |
 | GL-AXT1800 | 4.6.11 | 13 | 0 | 0 | 0 | 11 | 2 |
 | GL-AXT1800 | 4.7.0 | 2 | 0 | 2 | 0 | 0 | 0 |
-| GL-AXT1800 | 4.8.2 | 11 | 9 | 0 | 2 | 0 | 0 |
-| GL-AXT1800 | 4.8.3 | 13 | 8 | 0 | 4 | 1 | 0 |
+| GL-AXT1800 | 4.8.2 | 14 | 11 | 0 | 2 | 0 | 1 |
+| GL-AXT1800 | 4.8.3 | 14 | 9 | 0 | 4 | 1 | 0 |
 | GL-AXT1800 | 4.8.4 beta | 2 | 0 | 0 | 0 | 0 | 2 |
 | GL-IPQ5332/AP-MI01.2 | 4.8.7 | 1 | 0 | 0 | 1 | 0 | 0 |
+| GL-IPQ5332/AP-MI01.6 | 4.8.4 | 1 | 0 | 0 | 1 | 0 | 0 |
+| GL-IPQ5332/AP-MI01.6 | 4.9.0 | 1 | 0 | 0 | 1 | 0 | 0 |
 | GL-IPQ5332/AP-MI04.1-C2 | 4.7.3 | 1 | 0 | 0 | 0 | 0 | 1 |
+| GL-IPQ5332/AP-MI04.1-C2 | 4.8.1 | 3 | 0 | 0 | 3 | 0 | 0 |
+| GL-IPQ5332/AP-MI04.1-C2 | 4.8.3 | 1 | 0 | 0 | 1 | 0 | 0 |
 | GL-MT2500 | 4.7.0 | 2 | 0 | 2 | 0 | 0 | 0 |
 | GL-MT2500 | 4.7.4 | 7 | 0 | 7 | 0 | 0 | 0 |
-| GL-MT2500 | 4.7.13 | 7 | 0 | 6 | 1 | 0 | 0 |
+| GL-MT2500 | 4.7.13 | 9 | 0 | 8 | 1 | 0 | 0 |
 | GL-MT2500 | 4.9.0 | 1 | 0 | 0 | 1 | 0 | 0 |
 | GL-MT3000 | 4.7.4 | 10 | 0 | 9 | 1 | 0 | 0 |
 | GL-MT3000 | 4.8.0 | 3 | 0 | 3 | 0 | 0 | 0 |
@@ -42,21 +46,20 @@ switched on, and only those that were online when we checked.
 | GL-MT3000 | 4.11.0 | 5 | 0 | 1 | 0 | 3 | 1 |
 | GL-MT3600BE | 4.8.5 | 2 | 0 | 0 | 2 | 0 | 0 |
 | GL-MT3600BE | 4.9.0 | 3 | 0 | 0 | 1 | 0 | 2 |
-| GL-MT5000 | 4.8.6 | 3 | 0 | 0 | 3 | 0 | 0 |
-| GL-MT5000 | 4.9.0 | 10 | 0 | 0 | 10 | 0 | 0 |
+| GL-MT3600BE | 4.9.1 | 2 | 0 | 0 | 2 | 0 | 0 |
+| GL-MT5000 | 4.8.6 | 5 | 0 | 0 | 5 | 0 | 0 |
+| GL-MT5000 | 4.9.0 | 13 | 0 | 0 | 13 | 0 | 0 |
 | GL-MT6000 | 4.7.0 | 1 | 0 | 1 | 0 | 0 | 0 |
-| GL-MT6000 | 4.7.7 | 4 | 0 | 3 | 0 | 1 | 0 |
+| GL-MT6000 | 4.7.7 | 6 | 0 | 5 | 0 | 1 | 0 |
 | GL-MT6000 | 4.8.1 | 1 | 0 | 0 | 0 | 0 | 1 |
 | GL-MT6000 | 4.8.2 | 5 | 0 | 0 | 5 | 0 | 0 |
-| GL-MT6000 | 4.8.3 | 8 | 0 | 2 | 5 | 0 | 1 |
-| GL-MT6000 | 4.9.0 | 3 | 0 | 1 | 2 | 0 | 0 |
-| GL-MT6000 | 4.9.1 | 3 | 2 | 0 | 1 | 0 | 0 |
+| GL-MT6000 | 4.8.3 | 12 | 0 | 3 | 8 | 0 | 1 |
+| GL-MT6000 | 4.8.4 | 1 | 0 | 0 | 1 | 0 | 0 |
+| GL-MT6000 | 4.9.0 | 4 | 0 | 1 | 3 | 0 | 0 |
+| GL-MT6000 | 4.9.1 | 5 | 4 | 0 | 1 | 0 | 0 |
 | GL-MT6000 | 4.11.0 | 1 | 0 | 0 | 0 | 1 | 0 |
-| **All routers** | | **153** | **19** | **42** | **62** | **18** | **12** |
+| **All routers** | | **183** | **24** | **47** | **81** | **18** | **13** |
 | GL-RM1 (KVM) | 1.10.1 | 1 | 0 | 0 | 0 | 0 | 1 |
-
-The rows include five routers and one KVM of our own that we use for testing; one of those
-routers had the remote shell, the rest had been restarted.
 
 ## What the columns mean
 

@@ -42,7 +42,7 @@ All three ran as root, and `netstat` showed the connection to 170.39.226.219:424
 | a router we manage | AXT1800 4.8.2 | 170.39.226.219:41221 | three shells: 20:46:35, 21:17:27 and 21:39:45 UTC, Nov 20 |
 | a router we manage | AXT1800 4.8.2 | 170.39.226.219:41297 | 21:39:47 UTC, Nov 20 |
 
-Same address, a different port in each, and a shell started within a minute of 21:40 on all four where it was measured (ours are from the process start time in `/proc`). The two routers on 4.8.2 had not been restarted and the shells were still running when we checked them on 22 November. Since then we have found it running on 16 more routers we manage; counts are in the [field survey](field-survey.md).
+Same address, a different port in each, and a shell started within a minute of 21:40 on all four where it was measured (ours are from the process start time in `/proc`). The two routers on 4.8.2 had not been restarted and the shells were still running when we checked them on 22 November. Since then we have found it running on 21 more routers we manage; counts are in the [field survey](field-survey.md).
 
 ## How it got in
 
