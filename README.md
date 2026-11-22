@@ -11,7 +11,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 17:59 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 18:21 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -24,7 +24,9 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
    read from GL-MT3000 4.7.0 (released 5 December 2024) to 4.11.0 has it. For 715 days before the
    attack of 20 November 2026, any such router with GoodCloud switched on would run whatever
    command arrived over that channel, whether or not AstroWarp was in use. GL.iNet has not said
-   when the cloud side became usable by an outsider.
+   when the cloud side became usable by an outsider. The client is shipped as compiled code and
+   we have not found its source in GL.iNet's published repositories, so nobody outside the
+   company was in a position to review it.
 2. **This is not limited to one model, and it is not rare on the routers we manage.** Of 199
    routers we have reached so far, 166 show the attack of 20 November, an older backdoor, or both:
    a root remote shell on 24 (GL-AXT1800 and GL-MT6000), an older backdoor installed and running
