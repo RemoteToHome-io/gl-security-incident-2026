@@ -1,11 +1,27 @@
-# What the KVM 1.10.2 firmware does and does not do
+# What the KVM 1.10.2 and 1.10.3 firmware does and does not do
 
-**Note, 22 November 2026:** GL.iNet has since released stable firmware 1.10.3 for the RM1, RM1V2,
-RM1PE, RM4PE, RM10 and RM10RC, and 1.8.7 for the RMQ1; all are on our
-[firmware mirror](https://gl-fw.remotetohome.io/). This page describes 1.10.2, which is what we
-read and tested. We have not read 1.10.3, so we do not know whether the cleanup described below
-is now in every model's firmware. What the page says about checking before you upgrade, and about
-what an upgrade keeps, should be assumed to hold until someone has read the newer build.
+**Update, 22 November 2026: firmware 1.10.3.** GL.iNet has released stable 1.10.3 for the RM1,
+RM1V2, RM1PE, RM4PE, RM10 and RM10RC, and 1.8.7 for the RMQ1; all are on our
+[firmware mirror](https://gl-fw.remotetohome.io/). We read the six 1.10.3 images, each matching
+its published checksum (findings K-10 and K-11). We have not read the RMQ1 build, which ships in
+a different format, and we have not tested 1.10.3 on a device.
+
+- **The cleanup is now in all six.** The routine described below, which in 1.10.2 was in the
+  RM1PE image and not in the RM1 image, is in the 1.10.3 image of every one of the six models. It
+  is the same routine: the same four trigger files and the same five removals. The RM1PE's is
+  unchanged from 1.10.2.
+- **It still keeps no copy.** Upgrading an infected unit to 1.10.3 removes the evidence that it
+  was infected, on every model now. Check, and save what you find, before you upgrade.
+- **It still does not remove everything.** It does not touch `/root/.ssh` or
+  `/etc/kvmd/user`. The installer is reported to add an SSH key (finding K-9), so look for keys
+  you did not add after upgrading.
+- **SSH starts at boot again.** In the RM1's 1.10.2 the SSH server only started when a settings
+  file said so (see below). In 1.10.3 the SSH start script of all six models is the ordinary one
+  and starts the server at every boot. Read in the images; not tested on a device.
+- **The cloud remote terminal's start script is unchanged** from 1.10.2 on the RM1, and is the
+  same file in all six models.
+
+The rest of this page describes 1.10.2, which is what we tested on a device.
 
 Findings K-1 to K-7 in [findings.md](findings.md). Read from GL.iNet's official images for RM1PE
 (1.10.1 and 1.10.2) and RM1 (1.10.2), and tested on an RM1 upgraded from 1.10.1 to 1.10.2 with
