@@ -408,7 +408,8 @@ do not know whether it carries the same change.
 
 1. **One further weakness in the cloud client.** It is separate from the handler and not
    addressed in GL-MT3000 4.11.1: the component involved is byte for byte the same as in 4.11.0
-   (finding R-21). It is being reported to GL.iNet and is not described here until it is fixed.
+   (finding R-21). It was reported to GL.iNet on 22 November 2026 and is not described here
+   until it is fixed.
 2. **How the older backdoor was installed.**
 3. **What changed in `/etc/config/wireguard_server`** 9 to 12 seconds after each backdoor install.
    Only a copy of the file from before, or GL.iNet's records, can show it.

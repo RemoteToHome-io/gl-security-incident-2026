@@ -1,5 +1,16 @@
 # GL.iNet cloud incident, November 2026: what is known, how to check, how to recover
 
+> **New, 22 November 2026: the exploit in detail, and where it came from.** GL.iNet has released
+> fixed firmware, so the details we had held back are now published:
+>
+> - [Technical breakdown](docs/technical-breakdown.md): the flaw line by line, how we read code
+>   that ships only in compiled form, and its history back to firmware released in December 2024.
+> - [Fixed firmware](#fixed-firmware): what the fix does, what its clean-up leaves behind, and
+>   which models have it.
+>
+> One further weakness is not addressed by the fixed firmware we read. We reported it to GL.iNet
+> on 22 November and are withholding it until it is fixed.
+
 A place to coordinate findings on the GL.iNet cloud remote-management incident of 20 November 2026,
 kept by [RemoteToHome Consulting](https://remotetohome.io). GL.iNet's information is spread over
 forum threads that change and get buried; this page collects what is known in one place and is
@@ -11,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 22:59 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 23:23 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -47,8 +58,8 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
    as a clean-up.** Stable builds dated 22 and 23 November are in its listing for nine router
    models; see [Fixed firmware](#fixed-firmware). In the build we read, the handler that the
    attack came through has gained input validation. The firmware's own clean-up is partial, and one
-   further weakness in the cloud client is not addressed in that build: we are reporting it to
-   GL.iNet and are not publishing it. A router that shows any sign still needs the steps in
+   further weakness in the cloud client is not addressed in that build: we reported it to
+   GL.iNet on 22 November and are not publishing it. A router that shows any sign still needs the steps in
    [If you find something](#if-you-find-something).
 
 ## What GL.iNet has said
@@ -283,8 +294,8 @@ What we have read ourselves is the GL-MT3000 build, compared with the one before
   backdoor's added files or its keep-list line. It removes the entries of the KVM-style implant
   only if one particular folder exists. We have not tested what still runs afterwards.
 - **One weakness is not addressed in that build.** It concerns the cloud client and is separate
-  from the handler. The component involved is byte for byte the same as before. We are
-  reporting it to GL.iNet and will not describe it here until it is fixed.
+  from the handler. The component involved is byte for byte the same as before. We reported
+  it to GL.iNet on 22 November 2026 and will not describe it here until it is fixed.
 - **An update does not take back what was read.** Keys and passwords on a router that was hit
   still have to be replaced.
 
