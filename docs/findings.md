@@ -51,6 +51,7 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 | A‑2 | The range is routed by AS917. | Verified by RemoteToHome: RIPEstat, 2026-11-21 | Same |
 | A‑3 | The only earlier public trace is a passive-DNS record of `szlsntvpnxxx04.top` on this address on 2022-01-22. No record in GreyNoise or Shodan InternetDB. | Verified by RemoteToHome: those services' public lookups, 2026-11-21 | Same |
 | A‑4 | An abuse report was sent to the provider's abuse contact on 2026-11-21 at 17:24, copied to GL.iNet. The provider replied at about 20:54 the same day: server suspended, customer notified, data preserved, no flow records for that site, further details only on legal request (Provider statement, not checked by us). | RemoteToHome | Same |
+| A‑5 | Two further addresses, `66.245.219.252` and `65.20.71.131`, in the network logs of a compromised GL-RM1 KVM and in the installer script that KVM downloaded on 2026-11-19 (K-9). We searched everything we saved from routers for both: 73 state captures that include the connection table, and the check output of every router reached. No match. The address in A-1 appears in 23 of those captures. | Reported; our search Verified by RemoteToHome, 2026-11-22 | [BleepingComputer, 22 November 2026](https://www.bleepingcomputer.com/news/security/hackers-exploit-glinet-cloud-flaw-to-infect-routers-kvm-devices/) |
 
 ## KVMs
 
@@ -64,10 +65,12 @@ Times are UTC. Add rows through a pull request or an issue; see [CONTRIBUTING.md
 | K‑6 | KVM firmware runs any script named `S??*` in `/etc/kvmd/user/scripts` at boot, and that directory is inside the list in K-5. | Verified by RemoteToHome by reading the firmware. Whether a script there survives an upgrade has not been tested. | Same |
 | K‑7 | RM1 1.10.2 leaves SSH switched off after the upgrade. `/etc/init.d/S50dropbear enable` in the web terminal turns it back on. | Verified by RemoteToHome on a test RM1 | Same |
 | K‑8 | An RM10 on 1.11.3 beta whose owner says the cloud service was not in use "appears infected". No details given yet. | Reported | [Router check thread, post 45](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/45) |
+| K‑9 | The installer on that KVM is a script named `ni.sh`. As described by the publication that examined a copy: it recognises many GL.iNet router and KVM models, downloads programs named `gl-helper` and `gb`, sets itself to start again after a reboot, can run its process under the name `crond -i /tmp/.log` (the indicator in G-3), replaces `netstat` with a script that hides its own connections (G-5), and can add SSH keys. | Reported | [BleepingComputer, 22 November 2026](https://www.bleepingcomputer.com/news/security/hackers-exploit-glinet-cloud-flaw-to-infect-routers-kvm-devices/) |
 
 ## Not yet known
 
-1. Whether any address other than `170.39.226.219` was used in this attack.
+1. Whether any router was made to contact an address other than `170.39.226.219`. Two more
+   are reported for KVMs (A-5); we have not found them on a router.
 2. Whether devices with the cloud service enabled but not bound to an account were reachable.
 3. Which router firmware removes the unchecked code in R-3. None had been published at the time
    in R-10.

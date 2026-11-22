@@ -61,5 +61,12 @@ it in its own records.
 ## Blocking it
 
 Dropping traffic to `170.39.226.0/24` is a reasonable stopgap, shown in the
-[README](../README.md#reducing-exposure-until-fixed-firmware-is-installed). It only covers the one
-address seen so far. Whether other addresses were used is not known.
+[README](../README.md#reducing-exposure-until-fixed-firmware-is-installed). It only covers the
+address the router shells used.
+
+## Other addresses, reported
+
+Two more addresses are reported for the KVM side of the attack: `66.245.219.252` and
+`65.20.71.131`, from the network logs of a compromised GL-RM1 and from the installer script it
+downloaded on 19 November ([BleepingComputer, 22 November 2026](https://www.bleepingcomputer.com/news/security/hackers-exploit-glinet-cloud-flaw-to-infect-routers-kvm-devices/)). We have not looked these up and have not seen them
+ourselves: a search of everything we saved from routers found neither (finding A-5).

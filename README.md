@@ -11,7 +11,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 18:21 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 21:23 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -104,7 +104,7 @@ names.
 | **State file** | `/etc/mp_ip_mapping_info`, empty, dated 20 November 2026 or later, on a router that does not use AstroWarp | Yes | The same handler ran. It is the only trace left after a restart. It does not show what the message carried |
 | **Cloud log entry** | In the device log exported from your GoodCloud account: command responses containing `"astrowarp"` with the id `1`, where ordinary commands carry a 32-character id | Yes, it is kept on GL.iNet's side | The `virtual_ip_info` command was sent to that device, with the time. Reported by one owner; we have not checked it ourselves |
 | **Older backdoor** | Extra lines at the top of `/etc/init.d/urandom_seed`, a file `/bin/ulogd`, and an added line in `/lib/upgrade/keep.d/netifd`; when running, processes named `monitord` and `ujaild` | Yes; its keep-list line is there to carry it through upgrades that keep settings | A separate, earlier compromise, with file dates from October 2025 on. It starts at every boot and contacts its own servers |
-| **GL.iNet's indicator** | A process `crond -i /tmp/.log` | Not known to us | The one sign GL.iNet's notice tells owners to look for. We have not found it on any router |
+| **GL.iNet's indicator** | A process `crond -i /tmp/.log` | Not known to us | The one sign GL.iNet's notice tells owners to look for. It is reported to be the name the KVM installer gives its own process (findings K-9). We have not found it on any router |
 
 How to read a combination:
 
