@@ -53,6 +53,8 @@ So this came down the cloud management channel as a crafted address. Two things 
 - AstroWarp is not in use on this router (`mptun.global.enable='0'`, no AstroWarp tunnel running). The handler does not check that, so having the feature off did not help.
 - The same handler is also in 4.8.4 (a build dated November 11, 2026). We compared the two and they are identical.
 
+The cloud command is `virtual_ip_info`. Its message carries two address fields, and the second one is where the attacker's command sat. GL.iNet's fixed firmware, released on 22 and 23 November, changes this handler: in the GL-MT3000 4.11.1 build we read, it has gained a validation step with a rejection message for this command and patterns that accept only address characters. That is the vendor's confirmation, in code, of where the attack came in. Details and limits in the README under [Fixed firmware](../README.md#fixed-firmware) and in findings R-19 to R-21.
+
 ## Timeline on our router (UTC, November 20)
 
 - 20:47:14: the handler ran for the first time. It creates the state file `/etc/mp_ip_mapping_info`, and this is that file's creation time. On the two routers on 4.8.2 the first call came at 20:46:35 and 20:46:37.

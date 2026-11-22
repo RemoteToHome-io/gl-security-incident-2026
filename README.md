@@ -11,7 +11,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 21:23 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 22:26 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -43,10 +43,13 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
    every key and password stored on it should be treated as read by someone else. That includes
    its VPN client profiles and SSH keys: access has to be removed on the server side as well. See
    [If you find something](#if-you-find-something).
-6. **GL.iNet says the attack path is closed on its side** and that fixed stable firmware for routers
-   and KVMs is scheduled for 22 November 2026. At 06:20 UTC on 22 November its firmware listing
-   held no router firmware released since the attack, and the weakness on the router side is
-   still present in the firmware we have read.
+6. **GL.iNet has released fixed firmware for most router models. Install it, but do not treat it
+   as a clean-up.** Stable builds dated 22 and 23 November are in its listing for nine router
+   models; see [Fixed firmware](#fixed-firmware). In the build we read, the handler that the
+   attack came through has gained input validation. The firmware's own clean-up is partial, and one
+   further weakness in the cloud client is not addressed in that build: we are reporting it to
+   GL.iNet and are not publishing it. A router that shows any sign still needs the steps in
+   [If you find something](#if-you-find-something).
 
 ## What GL.iNet has said
 
@@ -73,6 +76,7 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 | The GoodCloud client on the router passes a value from a cloud message to the shell, as root, without checking it. That is how the attack got in | Verified by us by reading the client's code; not confirmed by GL.iNet |
 | The earliest firmware in which we find that code is GL-MT3000 4.7.0, released 5 December 2024. The 4.6 images we read do not have it. It is still in GL-AXT1800 4.8.4 (beta of 11 November) and GL-MT3000 4.11.0 | Verified by us from the official images and from routers |
 | It runs whether or not AstroWarp / SD-WAN is enabled | Verified by us |
+| GL.iNet's fixed firmware adds input validation in that same handler, and a start-up clean-up that restores the file the older backdoor changes. It leaves one further weakness in the cloud client unaddressed in the build we read | Verified by us in the GL-MT3000 4.11.1 build; see [Fixed firmware](#fixed-firmware) |
 | The attacker used it on at least seven models: GL-AXT1800, GL-AX1800, GL-MT2500, GL-MT3000, GL-MT5000, GL-MT6000 and GL-MT3600BE, on firmware from 4.7.4 to 4.9.0 | Verified by us on routers we manage |
 | On GL-AXT1800 (firmware 4.8.2 and 4.8.3) and GL-MT6000 (firmware 4.9.1) it opened a root remote shell to `170.39.226.219`, starting between 20:06 and 21:40 UTC on 20 November. On routers that were not restarted the shell was still running, or still trying to reconnect, on 22 November | Verified by us on 24 routers we manage or own; two more reported by other owners |
 | On most routers it ran a single command as root and left only a firewall rule. We recovered the command from memory on seven routers: it looks for the folders of the KVM implant ("gl-helper") and sends the result to `170.39.226.219` | Verified by us; another owner recovered the same message independently |
@@ -258,6 +262,38 @@ that access at the other end.
      loader not writable on both routers we read. That was true of one of them.*
 8. Check the computers behind the device. For a KVM, check the computer it was attached to.
 
+## Fixed firmware
+
+GL.iNet's listing holds stable firmware dated 22 and 23 November 2026 for GL-AXT1800 (4.8.4), GL-MT3000 (4.11.1), GL-MT6000 (4.11.1), GL-MT5000 (4.9.1), GL-BE9300 (4.10.2), GL-BE14000 (4.9.3), GL-E5800 (4.10.3), GL-X2000 (4.7.14) and GL-MG1300 (4.11.1), and for
+all seven KVM models (1.10.3, or 1.8.7 for the RMQ1). When we last looked, at 21:34 UTC on 22
+November, there was none yet for GL-AX1800, GL-MT2500 or GL-MT3600BE.
+
+What we have read ourselves is the GL-MT3000 build, compared with the one before it:
+
+- **The fix is in the handler we identified.** The cloud client's AstroWarp module is the file
+  that changed in substance. It now carries a validation step, with rejection messages for the
+  command the attack used, `virtual_ip_info`, and for at least two others, and with patterns
+  that accept only the characters of an address. GL.iNet has not said in words that this was
+  the entry point; its fix says so. We have not sent the attack message to a fixed router to
+  watch it being refused.
+- **The firmware cleans up only part of what we have found.** A new script runs once at the
+  first start after the update. It restores `/etc/init.d/urandom_seed` from the firmware's own
+  copy, which is the start-up file the older backdoor changes. It does not remove that
+  backdoor's added files or its keep-list line. It removes the entries of the KVM-style implant
+  only if one particular folder exists. We have not tested what still runs afterwards.
+- **One weakness is not addressed in that build.** It concerns the cloud client and is separate
+  from the handler. The component involved is byte for byte the same as before. We are
+  reporting it to GL.iNet and will not describe it here until it is fixed.
+- **An update does not take back what was read.** Keys and passwords on a router that was hit
+  still have to be replaced.
+
+We compared the two builds file by file and by their readable text, not instruction by
+instruction, and only for this one model. A comparison of the GL-BE14000 builds by Admon
+(Reported) describes a differently built fix there, covering eight cloud commands.
+
+Because of the unaddressed weakness we are leaving GoodCloud switched off on the routers we
+look after, also after updating. With GoodCloud off on the router, the cloud client does not run.
+
 ## Reducing exposure until fixed firmware is installed
 
 This is temporary hardening. It does not clean a device that was already hit; for that, see
@@ -331,9 +367,14 @@ not cover, mainly devices that are far away:
 
 ## What is deliberately not published here
 
-The exact cloud message that triggers the router-side weakness, and anything else that would work
-as instructions for attacking a device. Those details belong with GL.iNet's security team
-(security@gl-inet.com), not here. Reports that include them will be edited before they are merged.
+Until 22 November we did not name the cloud command or describe the handler. GL.iNet has now
+released fixed firmware, and anyone can compare it with the build before, so those are described
+on this page and in [docs/router-reverse-shell.md](docs/router-reverse-shell.md).
+
+Still not published: the message itself as sent, and one further weakness in the cloud client
+that the fixed firmware we read does not address. That one is with GL.iNet's security team
+(security@gl-inet.com) and stays out of this repository until it is fixed. Reports that include
+either will be edited before they are merged.
 
 ## Credits
 
