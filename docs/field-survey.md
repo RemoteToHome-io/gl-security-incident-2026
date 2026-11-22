@@ -13,8 +13,7 @@ backdoor, or both. 4 show nothing.** GL.iNet's published indicator (a `crond -i 
 was not running on any of them.
 
 This is not a random sample. They are routers we set up for clients, almost all with GoodCloud
-switched on, checked in the order our list happens to have them, and only those that were online.
-About 59 more on the list did not answer and are not counted.
+switched on, and only those that were online when we checked.
 
 ## By model and firmware
 
