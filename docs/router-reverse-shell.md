@@ -5,8 +5,8 @@ Findings R-1 to R-9 and R-13 to R-17 in [findings.md](findings.md). Times are UT
 
 ## Which routers
 
-This is not a GL-AXT1800 (Slate AX) problem. That model is where the shell was found; the code
-that let it in is in other models too.
+This is not a GL-AXT1800 (Slate AX) problem. That model is where the shell was first found; the
+code that let it in is in other models too, and so, by now, is the shell.
 
 - **The unchecked code** is in every GoodCloud client we have read from GL-MT3000 firmware 4.7.0
   (released 2024-12-05) to 4.11.0, and in GL-AXT1800 4.8.2, 4.8.3 and 4.8.4.
@@ -19,8 +19,8 @@ that let it in is in other models too.
   4.9.0, show the firewall rule this command leaves. On seven of them we recovered the command
   itself: it ran as root, looked for the folders of the KVM implant and sent the result to the
   attacker's server. See findings R-15 and R-17.
-- **The interactive shell described below** has so far been found only on GL-AXT1800, firmware
-  4.8.2 and 4.8.3.
+- **The interactive shell described below** was first found on GL-AXT1800. We have now found it on
+  GL-AXT1800 (firmware 4.8.2 and 4.8.3) and GL-MT6000 (firmware 4.9.1).
 
 ## What was running on our GL-AXT1800 (read at 15:25 UTC on November 21)
 
@@ -42,7 +42,7 @@ All three ran as root, and `netstat` showed the connection to 170.39.226.219:424
 | a router we manage | AXT1800 4.8.2 | 170.39.226.219:41221 | three shells: 20:46:35, 21:17:27 and 21:39:45 UTC, Nov 20 |
 | a router we manage | AXT1800 4.8.2 | 170.39.226.219:41297 | 21:39:47 UTC, Nov 20 |
 
-Same address, a different port in each, and a shell started within a minute of 21:40 on all four where it was measured (ours are from the process start time in `/proc`). The two routers on 4.8.2 had not been restarted and the shells were still running when we checked them on 22 November. Since then we have found it running on five more routers we manage; counts are in the [field survey](field-survey.md).
+Same address, a different port in each, and a shell started within a minute of 21:40 on all four where it was measured (ours are from the process start time in `/proc`). The two routers on 4.8.2 had not been restarted and the shells were still running when we checked them on 22 November. Since then we have found it running on ten more routers we manage; counts are in the [field survey](field-survey.md).
 
 ## How it got in
 

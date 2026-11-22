@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 08:46 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 08:49 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -25,11 +25,11 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
    attack of 20 November 2026, any such router with GoodCloud switched on would run whatever
    command arrived over that channel, whether or not AstroWarp was in use. GL.iNet has not said
    when the cloud side became usable by an outsider.
-2. **This is not limited to one model, and it is not rare on the routers we manage.** Of 57
-   customer routers we have reached so far, 51 show the attack of 20 November, an older backdoor,
-   or both: a root remote shell on 7 (GL-AXT1800), an older backdoor installed and running on 21
-   (GL-MT3000, GL-MT2500, GL-MT6000, GL-AX1800 and GL-AXT1800), and on 23 more a command from the
-   attacker that ran as root. That is not a random sample; see
+2. **This is not limited to one model, and it is not rare on the routers we manage.** Of 107
+   customer routers we have reached so far, 93 show the attack of 20 November, an older backdoor,
+   or both: a root remote shell on 12 (GL-AXT1800 and GL-MT6000), an older backdoor installed and
+   running on 29 (GL-MT3000, GL-MT2500, GL-MT6000, GL-AX1800 and GL-AXT1800), and on 52 more a
+   command from the attacker that ran as root. That is not a random sample; see
    [docs/field-survey.md](docs/field-survey.md).
 3. **If your router or KVM had GL.iNet's cloud service switched on, check it now**, before you
    reboot or upgrade it. Some traces only exist until the next restart.
@@ -72,9 +72,9 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 | The earliest firmware in which we find that code is GL-MT3000 4.7.0, released 5 December 2024. The 4.6 images we read do not have it. It is still in GL-AXT1800 4.8.4 (beta of 11 November) and GL-MT3000 4.11.0 | Verified by us from the official images and from routers |
 | It runs whether or not AstroWarp / SD-WAN is enabled | Verified by us |
 | The attacker used it on at least seven models: GL-AXT1800, GL-AX1800, GL-MT2500, GL-MT3000, GL-MT5000, GL-MT6000 and GL-MT3600BE, on firmware from 4.7.4 to 4.9.0 | Verified by us on routers we manage |
-| On GL-AXT1800 (firmware 4.8.2 and 4.8.3) it opened a root remote shell to `170.39.226.219`, starting between 20:46 and 21:40 UTC on 20 November. On routers that were not restarted the shell was still running on 22 November | Verified by us on our own router and on seven routers we manage; two more reported by other owners |
-| On the other models it ran a single command as root and left only a firewall rule. We recovered the command from memory on seven routers: it looks for the folders of the KVM implant ("gl-helper") and sends the result to `170.39.226.219` | Verified by us; another owner recovered the same message independently |
-| A separate, older backdoor is installed and running on 21 routers we manage (GL-MT3000, GL-MT2500, GL-MT6000, GL-AX1800 and GL-AXT1800; firmware 4.7.0 to 4.11.0), with file dates from October 2025 to March 2026. It was installed in batches on routers of unrelated clients, almost none of which has a public address. It starts at every boot and adds itself to the list of files kept across upgrades | Verified by us; first reported by forum users |
+| On GL-AXT1800 (firmware 4.8.2 and 4.8.3) and GL-MT6000 (firmware 4.9.1) it opened a root remote shell to `170.39.226.219`, starting between 20:06 and 21:40 UTC on 20 November. On routers that were not restarted the shell was still running, or still trying to reconnect, on 22 November | Verified by us on our own router and on 12 routers we manage; two more reported by other owners |
+| On most routers it ran a single command as root and left only a firewall rule. We recovered the command from memory on seven routers: it looks for the folders of the KVM implant ("gl-helper") and sends the result to `170.39.226.219` | Verified by us; another owner recovered the same message independently |
+| A separate, older backdoor is installed and running on 29 routers we manage (GL-MT3000, GL-MT2500, GL-MT6000, GL-AX1800 and GL-AXT1800; firmware 4.7.0 to 4.11.0), with file dates from October 2025 to March 2026. It was installed in batches on routers of unrelated clients, almost none of which has a public address. It starts at every boot and adds itself to the list of files kept across upgrades | Verified by us; first reported by forum users |
 | GL.iNet's published indicator, a `crond -i /tmp/.log` process, was not running on any router we checked, including all of the above | Verified by us |
 | The shells connected to `170.39.226.219`, a rented server at a US hosting provider with no named customer in the registry. We reported it to the provider on 21 November 2026; the provider replied the same day that it has suspended the server, notified its customer and preserved the data. On 22 November the address did not answer from any of 20 outside test points | Verified by us from public registries; see [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md) |
 | The shell leaves one file behind, an empty `/etc/mp_ip_mapping_info`; the shell, its named pipe `/tmp/f` and the firewall rule are gone after a reboot | Verified by us |
@@ -83,9 +83,15 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 
 ## The signs, and what each one means
 
-Six different things get called "an indicator" in this incident. They are not equal: some show
+Seven different things get called "an indicator" in this incident. They are not equal: some show
 that an attacker's command ran, some show a backdoor that is still running, and some vanish at
-the next restart. The checks further down and the [field survey](docs/field-survey.md) use these
+the next restart.
+
+The attack of 20 November came in through one cloud command, `virtual_ip_info`, in the AstroWarp
+part of the router's cloud client. The firewall rule, the state file and the cloud log entry
+below are all traces of that command; the remote shell is what the attacker chose to run through
+it on some routers. You may see the command's name on the forum, and the community triage
+script reports the state file as "cloud-command". The checks further down and the [field survey](docs/field-survey.md) use these
 names.
 
 | Sign | What you see | Survives a restart | What it tells you |
@@ -94,6 +100,7 @@ names.
 | **Shell pipe** | `/tmp/f`, a named pipe (the listing line starts with `p`) | No | The remote shell has run since the last boot, even if it has been stopped |
 | **Firewall rule** | `-A SDWAN_IP_MAPPING -d 127.0.0.1/32 -j DNAT --to-destination 127.0.0.1` in the NAT table | No | The cloud client was sent the attacker's message and ran it as root. The rule itself is harmless; it is the wrapper the attacker's command arrived in |
 | **State file** | `/etc/mp_ip_mapping_info`, empty, dated 20 November 2026 or later, on a router that does not use AstroWarp | Yes | The same handler ran. It is the only trace left after a restart. It does not show what the message carried |
+| **Cloud log entry** | In the device log exported from your GoodCloud account: command responses containing `"astrowarp"` with the id `1`, where ordinary commands carry a 32-character id | Yes, it is kept on GL.iNet's side | The `virtual_ip_info` command was sent to that device, with the time. Reported by one owner; we have not checked it ourselves |
 | **Older backdoor** | Extra lines at the top of `/etc/init.d/urandom_seed`, a file `/bin/ulogd`, and an added line in `/lib/upgrade/keep.d/netifd`; when running, processes named `monitord` and `ujaild` | Yes; its keep-list line is there to carry it through upgrades that keep settings | A separate, earlier compromise, with file dates from October 2025 on. It starts at every boot and contacts its own servers |
 | **GL.iNet's indicator** | A process `crond -i /tmp/.log` | Not known to us | The one sign GL.iNet's notice tells owners to look for. We have not found it on any router |
 
@@ -131,13 +138,13 @@ As of version 2.17 (22 November) it also checks two things the hand checks below
   file on the router that had the shell.
 - **An older, separate backdoor** (Reported by several owners in
   [this forum topic](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097);
-  Verified by us on 22 November: we found it running on 21 routers we manage
+  Verified by us on 22 November: we found it running on 29 routers we manage
   (GL-MT3000, GL-MT2500, GL-MT6000, GL-AX1800 and GL-AXT1800;
   firmware 4.7.0 to 4.11.0), with file dates from October 2025 to March 2026. An earlier
   version of this page said we had not seen an affected device). Its signs are extra lines at
   the top of `/etc/init.d/urandom_seed` and a file `/bin/ulogd`, reported on GL-AX1800, GL-X2000
   and GL-MT3000 routers with file dates from October 2025. GL.iNet's check does not find it: the
-  process it looks for was not running on any of the 21. The script's `--fix` does not remove
+  process it looks for was not running on any of the 29. The script's `--fix` does not remove
   it; the remedy is the reinstall in [If you find something](#if-you-find-something). By hand, the first command prints nothing
   when the start-up script is the firmware's own, and the second should say the file does not
   exist:
