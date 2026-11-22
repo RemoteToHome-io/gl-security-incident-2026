@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-21 21:09 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 00:36 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -100,6 +100,14 @@ ls -l /bin/netstat
 No output only tells you nothing is running now and nothing of this kind has run since the last
 boot. It cannot tell you a device was never compromised.
 
+**After a restart, the GoodCloud device log may still show it** (Reported by one owner; we have
+not checked it). In their GoodCloud account, the exported device log for a GL-AXT1800 on 4.8.3
+that never used AstroWarp held three command responses on 20 November, between 20:46 and 21:31
+UTC, of the form `{"id":1,"astrowarp":[],"code":0}`. Ordinary commands in that log carry a
+32-character id and a matching `publish` entry; these had the number `1` and no matching entry.
+If you look, export the log before you change anything on the account: the same owner lost it
+after resetting the account password.
+
 For KVMs see [docs/kvm-firmware.md](docs/kvm-firmware.md).
 
 ## If you find something
@@ -130,8 +138,8 @@ that access at the other end.
    `authorized_keys`. Check the router's own `authorized_keys` as well for keys you did not add.
 6. Replace the rest of what it stored: Wi-Fi passwords, the admin password, DDNS and cloud
    credentials.
-7. Reinstall the firmware with "Keep Settings" switched off, from an image you downloaded
-   yourself (see [Firmware downloads](#firmware-downloads)), then set the device up again from
+7. **Reinstall the firmware with "Keep Settings" switched off, from an image you downloaded
+   yourself** (see [Firmware downloads](#firmware-downloads)), then set the device up again from
    known-good information and the new keys.
    - **Do not upgrade a suspect router with settings kept.** The firmware's own keep list carries
      `/etc/rc.local`, the root crontab, everything under `/etc/config`, `/etc/openvpn` and
