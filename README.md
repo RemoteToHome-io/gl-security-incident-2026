@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 00:38 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 00:41 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -119,6 +119,13 @@ that access at the other end.
 
 1. Save the output and note the time. In a business network, talk to whoever handles incidents or
    insurance for you before changing anything.
+   - **Take the evidence archive while the device is still running, before any restart.** The
+     triage script's `--archive` records what exists only in memory and is gone after a reboot:
+     the process list, the details and the program file of each suspect process (even one
+     whose file was deleted), open connections, the firewall rules in force and the system log.
+     It does not copy all of `/tmp` or the memory of running programs. By default it writes
+     the archive to `/tmp`, which is memory too, so copy it off the device before you restart,
+     or stream it to your computer with `--archive --stdout`.
    - **If it is a KVM that was attached to a work computer, think carefully before you wipe it
      and install new firmware.** If someone used it to reach that computer and went on into
      your employer's systems, the compromised KVM may be the only evidence you have that it was
