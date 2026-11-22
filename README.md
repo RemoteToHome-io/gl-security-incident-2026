@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 03:07 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 03:12 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -78,9 +78,10 @@ As of version 2.17 (22 November) it also checks two things the hand checks below
 
 - **A trace that survives a restart.** The cloud command behind this attack ends by writing
   `/etc/mp_ip_mapping_info`. An empty copy of that file, written on or after 20 November on a
-  router that does not use AstroWarp, means the command ran there. The script reports it as
-  "ATTACKED". We read that behaviour in the firmware and found the file on the router that had
-  the shell.
+  router that does not use AstroWarp, means the handler for that command ran there. The file
+  does not show what the message carried or who sent it, so treat such a device as attacked;
+  the script reports it as "ATTACKED". We read that behaviour in the firmware and found the
+  file on the router that had the shell.
 - **An older, separate backdoor** (Reported by several owners in
   [this forum topic](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097);
   we have not seen an affected device). Its signs are extra lines at the top of
