@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 02:48 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 03:07 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -73,6 +73,31 @@ here, saves evidence before it changes anything, and is being updated as finding
 
 Read a script before you run it as root. To keep it off the device's storage, pipe it over SSH from
 a copy you have read, as that repository's README shows.
+
+As of version 2.17 (22 November) it also checks two things the hand checks below do not:
+
+- **A trace that survives a restart.** The cloud command behind this attack ends by writing
+  `/etc/mp_ip_mapping_info`. An empty copy of that file, written on or after 20 November on a
+  router that does not use AstroWarp, means the command ran there. The script reports it as
+  "ATTACKED". We read that behaviour in the firmware and found the file on the router that had
+  the shell.
+- **An older, separate backdoor** (Reported by several owners in
+  [this forum topic](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097);
+  we have not seen an affected device). Its signs are extra lines at the top of
+  `/etc/init.d/urandom_seed` and a file `/bin/ulogd`, reported on GL-AX1800, GL-X2000 and
+  GL-MT3000 routers with file dates from October 2025. The owners say GL.iNet's check does not
+  find it. The script's `--fix` does not remove it; the remedy is the reinstall in
+  [If you find something](#if-you-find-something). By hand, the first command prints nothing
+  when the start-up script is the firmware's own, and the second should say the file does not
+  exist:
+
+  ```
+  /rom/bin/busybox cmp /etc/init.d/urandom_seed /rom/etc/init.d/urandom_seed
+  ```
+
+  ```
+  ls -l /bin/ulogd
+  ```
 
 If you only want to look by hand, over SSH on a router:
 
