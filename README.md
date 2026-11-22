@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 00:36 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 00:38 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -119,6 +119,11 @@ that access at the other end.
 
 1. Save the output and note the time. In a business network, talk to whoever handles incidents or
    insurance for you before changing anything.
+   - **If it is a KVM that was attached to a work computer, think carefully before you wipe it
+     and install new firmware.** If someone used it to reach that computer and went on into
+     your employer's systems, the compromised KVM may be the only evidence you have that it was
+     not you personally. Save the evidence archive first (the triage script's `--archive`), keep
+     a copy off the device, and consider setting the unit aside untouched.
 2. Stop the processes or disconnect the device from the internet.
 3. **Revoke every VPN client profile the router held, on the server side.** Deleting the profile
    from the router is not enough: a copy of it still works from anywhere.
