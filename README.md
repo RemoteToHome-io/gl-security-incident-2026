@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 07:07 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 07:34 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -19,23 +19,36 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
 
 ## The short version
 
-1. **If your router or KVM had GL.iNet's cloud service switched on, check it now**, before you
+1. **The weakness on the router has shipped in GL.iNet firmware since December 2024.** The cloud
+   client runs, as root, a value from a cloud message without checking it. Every version we have
+   read from GL-MT3000 4.7.0 (released 5 December 2024) to 4.11.0 has it. For 715 days before the
+   attack of 20 November 2026, any such router with GoodCloud switched on would run whatever
+   command arrived over that channel, whether or not AstroWarp was in use. GL.iNet has not said
+   when the cloud side became usable by an outsider.
+2. **This is not limited to one model, and it is not rare on the routers we manage.** Of 42
+   customer routers we have reached so far, 38 show the attack of 20 November, an older backdoor,
+   or both: a root remote shell on 5 (GL-AXT1800), an older backdoor installed and running on 12
+   (GL-MT3000, GL-MT2500, GL-MT6000, GL-AX1800), and on 21 more a command from the attacker that
+   ran as root. That is not a random sample; see [docs/field-survey.md](docs/field-survey.md).
+3. **If your router or KVM had GL.iNet's cloud service switched on, check it now**, before you
    reboot or upgrade it. Some traces only exist until the next restart.
-2. **GL.iNet's published check looks for one process (`crond -i /tmp/.log`). It does not catch
-   everything.** A root remote shell has been found on GL-AXT1800 routers that this check reads as
-   healthy. Use the wider checks in [Check a device](#check-a-device).
-3. **Killing a process or reinstalling firmware does not undo a compromise.** If a device was hit,
+4. **GL.iNet's published check looks for one process (`crond -i /tmp/.log`). We have not found
+   that process on a single router.** The remote shell, the attacker's command and the older
+   backdoor all read as healthy in that check. Use the wider checks in
+   [Check a device](#check-a-device).
+5. **Killing a process or reinstalling firmware does not undo a compromise.** If a device was hit,
    every key and password stored on it should be treated as read by someone else. That includes
    its VPN client profiles and SSH keys: access has to be removed on the server side as well. See
    [If you find something](#if-you-find-something).
-4. **GL.iNet says the attack path is closed on its side** and that fixed stable firmware for routers
-   and KVMs is scheduled for 22 November 2026. The weakness on the router side is still present in
-   the firmware we have read.
+6. **GL.iNet says the attack path is closed on its side** and that fixed stable firmware for routers
+   and KVMs is scheduled for 22 November 2026. At 06:20 UTC on 22 November its firmware listing
+   held no router firmware released since the attack, and the weakness on the router side is
+   still present in the firmware we have read.
 
 ## What GL.iNet has said
 
 From the [security notice](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
-as it read at 16:00 UTC on 21 November 2026:
+as it read at 07:12 UTC on 22 November 2026 (marked "Last updated November 21, 2026"):
 
 - A vulnerability in its cloud remote management services was exploited to install malicious
   software on some routers and KVM devices.
@@ -54,15 +67,16 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 
 | Finding | Status |
 |---|---|
-| A root remote shell to `170.39.226.219` on GL-AXT1800 routers on firmware 4.8.3, started about 21:40 UTC on 20 November | Three independent reports; one verified by us on our own router |
-| The shell came in through the GoodCloud client on the router, which passes a value from a cloud message to the shell without checking it | Verified by us by reading the client's code; not confirmed by GL.iNet |
-| The shell is not limited to firmware 4.8.3. It was still running on two more GL-AXT1800 routers on 4.8.2 when we checked them on 22 November, more than 30 hours after it started, because they had not been restarted | Verified by us on routers we manage |
-| Routers that show the firewall rule but no shell still ran a command from the attacker as root. We recovered it from the cloud client's memory on seven routers of three models (GL-MT3000, GL-MT5000, GL-MT3600BE): it looks for the folders of the KVM implant ("gl-helper") and sends the result to `170.39.226.219` | Verified by us; another owner recovered the same message independently |
-| The same unchecked code is in AXT1800 4.8.4 (beta of 11 November) and GL-MT3000 4.11.0 | Verified by us |
-| The earliest firmware in which we find that code is GL-MT3000 4.7.0, released 5 December 2024. The 4.6 images we read do not have it | Verified by us from the official images |
+| The GoodCloud client on the router passes a value from a cloud message to the shell, as root, without checking it. That is how the attack got in | Verified by us by reading the client's code; not confirmed by GL.iNet |
+| The earliest firmware in which we find that code is GL-MT3000 4.7.0, released 5 December 2024. The 4.6 images we read do not have it. It is still in GL-AXT1800 4.8.4 (beta of 11 November) and GL-MT3000 4.11.0 | Verified by us from the official images and from routers |
 | It runs whether or not AstroWarp / SD-WAN is enabled | Verified by us |
-| The shells connected to `170.39.226.219`, a rented server at a US hosting provider with no named customer in the registry. We reported it to the provider on 21 November 2026; the provider replied the same day that it has suspended the server, notified its customer and preserved the data | Verified by us from public registries; see [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md) |
-| That shell leaves no file behind and is gone after a reboot; its named pipe `/tmp/f` remains until then | Verified by us |
+| The attacker used it on at least seven models: GL-AXT1800, GL-AX1800, GL-MT2500, GL-MT3000, GL-MT5000, GL-MT6000 and GL-MT3600BE, on firmware from 4.7.4 to 4.9.0 | Verified by us on routers we manage |
+| On GL-AXT1800 (firmware 4.8.2 and 4.8.3) it opened a root remote shell to `170.39.226.219`, starting between 20:46 and 21:40 UTC on 20 November. On routers that were not restarted the shell was still running on 22 November | Verified by us on our own router and on five routers we manage; two more reported by other owners |
+| On the other models it ran a single command as root and left only a firewall rule. We recovered the command from memory on seven routers: it looks for the folders of the KVM implant ("gl-helper") and sends the result to `170.39.226.219` | Verified by us; another owner recovered the same message independently |
+| A separate, older backdoor is installed and running on 12 routers we manage (GL-MT3000, GL-MT2500, GL-MT6000, GL-AX1800; firmware 4.7.0 to 4.11.0), with file dates from October 2025 to March 2026. It starts at every boot and adds itself to the list of files kept across upgrades | Verified by us; first reported by forum users |
+| GL.iNet's published indicator, a `crond -i /tmp/.log` process, was not running on any router we checked, including all of the above | Verified by us |
+| The shells connected to `170.39.226.219`, a rented server at a US hosting provider with no named customer in the registry. We reported it to the provider on 21 November 2026; the provider replied the same day that it has suspended the server, notified its customer and preserved the data. On 22 November the address did not answer from any of 20 outside test points | Verified by us from public registries; see [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md) |
+| The shell leaves one file behind, an empty `/etc/mp_ip_mapping_info`; the shell, its named pipe `/tmp/f` and the firewall rule are gone after a reboot | Verified by us |
 | KVM firmware RM1PE 1.10.2 removes an implant called "gl-helper" at boot; RM1 1.10.2 has no such cleanup | Verified by us from the official images |
 | On the RM1, an upgrade that keeps settings carries the password, SSH keys and `/etc/kvmd/user` across | Verified by us on a test unit |
 
@@ -87,12 +101,12 @@ As of version 2.17 (22 November) it also checks two things the hand checks below
   file on the router that had the shell.
 - **An older, separate backdoor** (Reported by several owners in
   [this forum topic](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097);
-  Verified by us on 22 November: we found it running on four routers we manage, GL-MT3000 and
-  GL-MT2500 on firmware 4.7.4, with file dates of December 2025 and March 2026. An earlier
-  version of this page said we had not seen an affected device). Its signs are extra lines at
+  Verified by us on 22 November: we found it running on 12 routers we manage, GL-MT3000,
+  GL-MT2500, GL-MT6000 and GL-AX1800 on firmware 4.7.0 to 4.11.0, with file dates from October
+  2025 to March 2026. An earlier version of this page said we had not seen an affected device). Its signs are extra lines at
   the top of `/etc/init.d/urandom_seed` and a file `/bin/ulogd`, reported on GL-AX1800, GL-X2000
   and GL-MT3000 routers with file dates from October 2025. GL.iNet's check does not find it: the
-  process it looks for was not running on any of the four. The script's `--fix` does not remove
+  process it looks for was not running on any of the 12. The script's `--fix` does not remove
   it; the remedy is the reinstall in [If you find something](#if-you-find-something). By hand, the first command prints nothing
   when the start-up script is the firmware's own, and the second should say the file does not
   exist:
@@ -188,8 +202,9 @@ that access at the other end.
      `/etc/rc.local`, the root crontab, everything under `/etc/config`, `/etc/openvpn` and
      `/etc/udhcpc.user.d` into the new installation, and the router runs every script in that
      last directory on each DHCP event (read in the GL-AXT1800 4.6.11 and GL-MT3600BE 4.9.0
-     images). Forum users report a backdoor that survived upgrades with settings kept (Reported;
-     we have not seen such a device).
+     images). Forum users report a backdoor that survived upgrades with settings kept. We have
+     since found that backdoor on routers we manage, with its own line added to the keep list
+     (*corrected 22 November: this page said we had not seen such a device*).
    - **A factory reset alone is the second choice.** It erases the writable layer, where
      everything in those reports lives, but leaves the installed firmware image as it is. On a
      GL-AXT1800 (4.8.4) the flash partition that holds that image is writable from a root shell
@@ -274,7 +289,7 @@ not cover, mainly devices that are far away:
 
 - [docs/findings.md](docs/findings.md): every finding, its source, and how it was checked
 - [docs/field-survey.md](docs/field-survey.md): devices checked so far, by model and firmware
-- [docs/router-reverse-shell.md](docs/router-reverse-shell.md): the AXT1800 remote shell
+- [docs/router-reverse-shell.md](docs/router-reverse-shell.md): the remote shell, the cloud command behind it and which routers have that code
 - [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md): what is known about the address the shells
   connected to, and the abuse report
 - [docs/kvm-firmware.md](docs/kvm-firmware.md): what the KVM 1.10.2 firmware does and does not do

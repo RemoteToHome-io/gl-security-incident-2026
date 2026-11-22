@@ -1,14 +1,14 @@
 # The address the remote shells connected to
 
 What is publicly known about `170.39.226.219`, the address in findings R-1 and R-2. Everything here
-comes from public registries and public databases, looked up on 21 November 2026. Nobody connected
-to the address to gather it. Times are UTC.
+comes from public registries and public databases, looked up on 21 November 2026, and one outside
+reachability test on 22 November. We did not connect to the address ourselves. Times are UTC.
 
 ## What it is
 
 | Item | Value | Source |
 |---|---|---|
-| Address | `170.39.226.219`, TCP, a different port for each affected router (42499, 43104 and 43149 seen so far) | Findings R-1, R-2 |
+| Address | `170.39.226.219`, TCP, a different port for each affected router (41221, 41297, 42499, 43104 and 43149 among those seen) | Findings R-1, R-2, R-13 |
 | Reverse DNS | `aa27e2db.ewr.customer.misaka.io` | DNS lookup |
 | Network | `170.39.226.0/24`, registry name US-MISAKA-EWR02-1, inside `170.39.224.0/22` (MISAKA-ARIN-02) | ARIN registration data |
 | Registered to | Misaka Network, Inc. | ARIN registration data |
@@ -36,13 +36,17 @@ UTC**, copied to the provider's network operations contact and to GL.iNet. It gi
 connections with their ports and times, and asks the provider to stop the service on that address
 and to preserve the server and its records for 19 to 22 November 2026.
 
-**The provider replied on 21 November 2026 at about 20:54 UTC** (Provider statement; we have not
-tested the address ourselves):
+**The provider replied on 21 November 2026 at about 20:54 UTC** (Provider statement):
 
 - it has suspended the server and notified its customer;
 - the data has been preserved under its standard abuse process;
 - it has no network flow records for that site;
 - it will give further details only on a subpoena or similar legal request.
+
+On 22 November at 07:21 UTC we asked a public test service to try the address from 20 points
+around the world: ping, and TCP to three ports including two the attack used. None got an
+answer; every attempt timed out or was rejected as unreachable. That agrees with the provider's
+statement. It does not show since when.
 
 So the known address should no longer accept these connections, and the evidence on it is held
 for an investigation by GL.iNet or law enforcement. A shell that is still running on a router
@@ -58,4 +62,4 @@ it in its own records.
 
 Dropping traffic to `170.39.226.0/24` is a reasonable stopgap, shown in the
 [README](../README.md#reducing-exposure-until-fixed-firmware-is-installed). It only covers the one
-address seen so far. Whether other addresses were used is an open question for GL.iNet.
+address seen so far. Whether other addresses were used is not known.
