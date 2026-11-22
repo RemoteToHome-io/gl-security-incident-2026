@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 00:41 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 02:48 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -168,11 +168,15 @@ that access at the other end.
      off, starts with an empty writable layer (read in the upgrade scripts of the GL-MT3600BE
      4.9.0 image; other models not checked, and on a model with two firmware slots the other
      slot is not rewritten).
-   - **The boot loader is an open question.** We found no step in a reset or a reinstall that
-     rewrites it. Whether a root shell can write the boot loader partitions is not settled: on
-     two GL-AXT1800 routers the kernel's partition flags say it cannot, but the kernel let us
-     open those partitions for writing (we wrote nothing). If a boot loader had been changed,
-     none of the steps above would undo it. We know of no report of that.
+   - **The boot loader.** We found no step in a reset or a reinstall that rewrites it (read in
+     the GL-AXT1800 and GL-MT3600BE firmware). On the GL-AXT1800 that had the remote shell
+     (firmware 4.8.3) the kernel marks the boot loader partition writable and let us open it
+     for writing; we wrote nothing. We compared that router's boot loader with the binaries
+     GL.iNet publishes for the model in its
+     [uboot-ipq60xx](https://github.com/gl-inet/uboot-ipq60xx) repository: it is byte for byte
+     the one published on 1 December 2021. That is one router; we know of no report of a
+     changed boot loader. *Corrected 22 November: this page said the kernel marked the boot
+     loader not writable on both routers we read. That was true of one of them.*
 8. Check the computers behind the device. For a KVM, check the computer it was attached to.
 
 ## Reducing exposure until fixed firmware is installed
