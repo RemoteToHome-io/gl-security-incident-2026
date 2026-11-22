@@ -50,6 +50,9 @@ routers had the remote shell, the rest had been restarted.
 
 ## What the columns mean
 
+Each sign is described in the README under
+[The signs, and what each one means](../README.md#the-signs-and-what-each-one-means).
+
 - **Remote shell**: an interactive root shell to `170.39.226.219`, running when we checked.
   See [details](router-reverse-shell.md).
 - **Older backdoor**: the changed start-up script and `/bin/ulogd` described in finding R-11,

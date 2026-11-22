@@ -11,7 +11,7 @@ nothing that identifies a client, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-22 07:48 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-22 08:46 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -80,6 +80,35 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 | The shell leaves one file behind, an empty `/etc/mp_ip_mapping_info`; the shell, its named pipe `/tmp/f` and the firewall rule are gone after a reboot | Verified by us |
 | KVM firmware RM1PE 1.10.2 removes an implant called "gl-helper" at boot; RM1 1.10.2 has no such cleanup | Verified by us from the official images |
 | On the RM1, an upgrade that keeps settings carries the password, SSH keys and `/etc/kvmd/user` across | Verified by us on a test unit |
+
+## The signs, and what each one means
+
+Six different things get called "an indicator" in this incident. They are not equal: some show
+that an attacker's command ran, some show a backdoor that is still running, and some vanish at
+the next restart. The checks further down and the [field survey](docs/field-survey.md) use these
+names.
+
+| Sign | What you see | Survives a restart | What it tells you |
+|---|---|---|---|
+| **Remote shell** | Processes `nc 170.39.226.219 <port>`, `/bin/sh -i`, `cat /tmp/f`, and a parent whose command line starts `sh -c iptables -t nat -A SDWAN_IP_MAPPING` | No | Someone outside has, or had, an interactive root shell on the router. The parent keeps retrying, so it reconnects by itself if that server answers again |
+| **Shell pipe** | `/tmp/f`, a named pipe (the listing line starts with `p`) | No | The remote shell has run since the last boot, even if it has been stopped |
+| **Firewall rule** | `-A SDWAN_IP_MAPPING -d 127.0.0.1/32 -j DNAT --to-destination 127.0.0.1` in the NAT table | No | The cloud client was sent the attacker's message and ran it as root. The rule itself is harmless; it is the wrapper the attacker's command arrived in |
+| **State file** | `/etc/mp_ip_mapping_info`, empty, dated 20 November 2026 or later, on a router that does not use AstroWarp | Yes | The same handler ran. It is the only trace left after a restart. It does not show what the message carried |
+| **Older backdoor** | Extra lines at the top of `/etc/init.d/urandom_seed`, a file `/bin/ulogd`, and an added line in `/lib/upgrade/keep.d/netifd`; when running, processes named `monitord` and `ujaild` | Yes; its keep-list line is there to carry it through upgrades that keep settings | A separate, earlier compromise, with file dates from October 2025 on. It starts at every boot and contacts its own servers |
+| **GL.iNet's indicator** | A process `crond -i /tmp/.log` | Not known to us | The one sign GL.iNet's notice tells owners to look for. We have not found it on any router |
+
+How to read a combination:
+
+- **Rule or state file, nothing else:** the attacker's command ran on the router. On the routers
+  where we recovered it, that command only looked for another implant and reported back. Treat
+  the router as reached by the attacker; we cannot show that nothing more was sent.
+- **Remote shell or shell pipe:** treat every key and password on the router as read.
+- **Older backdoor:** the same, and for much longer.
+- **None of them on a router that has been restarted since 20 November:** only the state file
+  and the older backdoor could still be there. A clean result says less than it seems to.
+
+On a GL-AXT1800 the firewall rule did not appear in the listing on our own unit although the
+handler had run, so on that model do not rely on the rule being absent.
 
 ## Check a device
 
