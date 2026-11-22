@@ -1,5 +1,12 @@
 # What the KVM 1.10.2 firmware does and does not do
 
+**Note, 22 November 2026:** GL.iNet has since released stable firmware 1.10.3 for the RM1, RM1V2,
+RM1PE, RM4PE, RM10 and RM10RC, and 1.8.7 for the RMQ1; all are on our
+[firmware mirror](https://gl-fw.remotetohome.io/). This page describes 1.10.2, which is what we
+read and tested. We have not read 1.10.3, so we do not know whether the cleanup described below
+is now in every model's firmware. What the page says about checking before you upgrade, and about
+what an upgrade keeps, should be assumed to hold until someone has read the newer build.
+
 Findings K-1 to K-7 in [findings.md](findings.md). Read from GL.iNet's official images for RM1PE
 (1.10.1 and 1.10.2) and RM1 (1.10.2), and tested on an RM1 upgraded from 1.10.1 to 1.10.2 with
 settings kept. Other models have not been read by us.
