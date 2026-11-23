@@ -50,7 +50,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 17:34 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 17:39 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -271,9 +271,12 @@ removal. We ran none of it. Full hashes and install dates are in the
    telling it what to download. Forum users who decoded the bytecode describe the same thing in
    detail (next part).
 
-**What the loader does, as decoded by forum users.** We have not disassembled the loader
-ourselves; everything in this part is reported by owners who did, in
-[this forum topic](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097). Where our own measurements agree, we say so.
+**What the loader does.** Forum users decoded it first, in
+[this forum topic](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097);
+the points below credit their posts. On 23 November we decoded all 49 of our own copies and the
+memory of 47 running loaders, and confirmed every point below except where noted. The full
+account, field by field and command by command, with a decoder you can run on your own sample,
+is in [docs/older-backdoor-loader.md](docs/older-backdoor-loader.md).
 
 - **It hides its text.** Every string is stored one character at a time as a value, a
   position, an operation (add, subtract or xor) and a key, so a plain search of the file finds
@@ -311,7 +314,7 @@ ourselves; everything in this part is reported by owners who did, in
   oldest reported (files dated October 2025, on a GL-X2000), decodes to three other names:
   `cdn.lede-openproject.org`, `cdn.adxinsight.com` and `cdn.openwrt-project.org`, all with the
   path `/v1/gl/access`, tried in random order ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2), [post 21](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/21)). We have the 35,745-byte loader
-  on 7 of our 49 routers; we have not decoded ours to confirm the names.
+  on 7 of our 49 routers and decoded all seven: the same three names.
 - **When the servers were set up** ([post 18](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/18), [post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14), from public registration and certificate
   records): `lede-openproject.org` and `adxinsight.com` registered on 4 July 2025, eight
   minutes apart at two registrars; `openwrt-project.org` on 18 August 2025, with certificates
@@ -333,7 +336,11 @@ on 42 and `53736d5db721a358bec5b9ddf6056df73b36fc5330300342c42f866a05191432` on 
 report that it gives its operator remote control of the router and a proxy into the network
 behind it; one found the names of a multiplexing library (`yamux`), `socks5` and `proxy` in its
 text ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2)). Another reports that only one of the scanners on VirusTotal flagged
-it ([post 22](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/22)). We have not analysed it ourselves.
+it ([post 22](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/22)). On 23 November we read both
+builds and the memory of 47 running copies ourselves: it takes four kinds of task from its server
+(run a program, write a file, write and run, forward traffic through a SOCKS5 proxy), its server
+names are `up.adguardns.com`, `up.adguardns.org` and `up.adsanalypro.com`, and no task was in
+memory on any of the 47 when we captured them (findings R-30; a full page is being added).
 
 **Its servers.** In the saved memory of the loader and the second stage: `cdn.adguardns.com`,
 `cdn.adguardns.org`, `up.adguardns.com` and `up.adguardns.org`, still answering on 21 November
@@ -381,8 +388,8 @@ times ([post 31](https://forum.gl-inet.com/t/found-other-malware-while-looking-f
 ([post 26](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/26)); that may refer to the other malware. Treat the dates as probably right, not proven.
 
 **What we do not know.** How it was installed (see the technical breakdown for the batches and
-dates). What the second stage does in detail. Whether every loader on our 49 routers decodes to
-the servers above: we have the files and have not decoded them yet.
+dates). What rewrites the VPN server settings file at install time: neither the loader nor the
+second stage holds code for it.
 
 **One more warning from an owner.** After reinstalling, an online upgrade to 4.11.0 with
 settings kept switched the cloud client, AstroWarp and GoodCloud's remote SSH and web access
@@ -748,6 +755,9 @@ not cover, mainly devices that are far away:
 - [docs/router-reverse-shell.md](docs/router-reverse-shell.md): the remote shell, the cloud command behind it and which routers have that code
 - [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md): what is known about the address the shells
   connected to, and the abuse report
+- [docs/older-backdoor-loader.md](docs/older-backdoor-loader.md): the older backdoor's loader decoded:
+  the string hiding, every command it builds, what it sends, what its servers answered, and a
+  decoder ([tools/ulogd-decode](tools/ulogd-decode)) to run on your own sample
 - [docs/open-weaknesses.md](docs/open-weaknesses.md): what the fixed firmware does not close: the
   other commands the cloud channel accepts, the remote terminal, a lead in the fixed handler, a
   flaw in a DDNS helper, and what would close them

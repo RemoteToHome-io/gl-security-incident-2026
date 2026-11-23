@@ -370,7 +370,8 @@ Its parts, as measured on those routers:
 - **`/bin/ulogd`.** A different SHA-256 on every router (49 routers, 49 values), in two sizes:
   33,722 bytes on 42 of them and 35,745 bytes on 7. It is compiled Lua 5.1 bytecode, not a native
   program. Its internal names are random six-letter strings and its text constants are not
-  readable as they stand. We have not disassembled it.
+  readable as they stand. Decoded in full on 23 November: see
+  [the loader](older-backdoor-loader.md).
 - **`/usr/bin/monitord`.** One SHA-256 on every MediaTek router (12,299 bytes) and another on
   every Qualcomm one (65,547 bytes). That is consistent with a copy of the router's own Lua
   interpreter, which is what the start-up lines copy. The MediaTek value,
