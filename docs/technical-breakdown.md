@@ -44,12 +44,25 @@ module as "Lua bytecode, version 5.4" and the 4.7.0 module as "Lua bytecode, ver
 bytecode is not stripped: it still carries the source line numbers, which is why the line
 numbers below can be given at all.
 
-We have not found the source published. On 22 November we searched, with no match, the local
-copies of GL.iNet's `gl-feeds` and `gl-image` repositories and the SDK feeds of its build kit, for
-a file named `*gl-sdk4-cloud*` and for the string `virtual_ip_info`, and ran a repository search
-for `sdk4-cloud` and a code search for `virtual_ip_info` over GL.iNet's GitHub organisation. That
-is "not found by us in these places", not proof that it exists nowhere: a code search can miss
-files that are not indexed.
+We have not found the source published. What we searched, on 22 and 23 November:
+
+- GL.iNet's build kit (`glbuilder`) as we hold it, 27 GB with the SDKs of nine model and firmware
+  combinations and the GL.iNet and OpenWrt feeds those SDKs check out; GL.iNet's `gl-image`
+  repository; and the feeds of a 4.9.0 image build, which include GL.iNet's `mptcp-feeds`.
+- By name: no file or folder named `*gl-sdk4-cloud*` in any of them.
+- By content, every file, binary files included: no file contains `virtual_ip_info`. One file
+  contains `SDWAN_IP_MAPPING`: a shell script in `mptcp-feeds` (`aw-s2s/files/mptun.sh`), which
+  uses the name in a comment on a different firewall rule. It belongs to the package `aw-s2s`
+  ("AstroWarp s2s API"), not to the cloud client.
+- The build kit knows the cloud client only as a ready-made package: its configuration lists
+  `gl-sdk4-cloud` per model and firmware version as something to include, with no source and no
+  build recipe for it.
+- A repository search for `sdk4-cloud` and a code search for `virtual_ip_info` over GL.iNet's
+  GitHub organisation: no result.
+
+That is "not found by us in these places", not proof that it exists nowhere: a code search can
+miss files that are not indexed, and we hold a copy of the build kit, not every branch of every
+repository.
 
 ## The flaw
 
