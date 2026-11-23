@@ -23,8 +23,11 @@ Last updated: 2026-11-22.
   and on most others a one-shot command that looked for a KVM implant (measured).
 - A separate, older backdoor was running on 49 of the routers we checked, installed in batches
   from September 2025 to May 2026. How it was installed is not known.
-- The fixed firmware adds input checks to that handler (read in GL-MT3000 4.11.1 only); its
-  clean-up is partial. One further weakness in the cloud client is not addressed and is withheld.
+- The fixed firmware adds input checks to that handler (read in GL-MT3000 4.11.1 only). Its
+  clean-up is one short script, the same in the seventeen fixed builds we unpacked. In a test,
+  an upgrade with settings kept removed the start-up routes that script names; other start-up
+  entries placed in kept settings survived and ran. One further weakness in the cloud client is
+  not addressed and is withheld.
 
 ## The component
 
@@ -375,11 +378,12 @@ show that it was the route.
 
 ## The fix
 
-GL.iNet's listing holds stable router firmware dated 22 and 23 November 2026 for GL-AXT1800
-(4.8.4), GL-MT3000 (4.11.1), GL-MT6000 (4.11.1), GL-MT5000 (4.9.1), GL-BE9300 (4.10.2),
-GL-BE14000 (4.9.3), GL-BE6500 (4.9.1), GL-BE10000 (4.8.7), GL-E5800 (4.10.3), GL-X2000 (4.7.14)
-and GL-MG1300 (4.11.1). At 23:10 on 22 November there was none yet for GL-AX1800, GL-MT2500 or
-GL-MT3600BE (finding R-10). All of these builds, and the ones they replace, are on our
+GL.iNet's listing holds stable router firmware dated 22 and 23 November 2026 for eighteen
+models: GL-MG1300, GL-MT3000 and GL-MT6000 (4.11.1), GL-E5800 (4.10.3), GL-BE3600 and GL-BE9300
+(4.10.2), GL-BE14000 (4.9.3), GL-BE6500, GL-MT3600BE and GL-MT5000 (4.9.1), GL-BE10000 (4.8.7),
+GL-AX1800, GL-AXT1800, GL-SFT1200, GL-X3000 and GL-XE3000 (4.8.4), GL-MT2500 and GL-X2000
+(4.7.14). That is the list at 01:18 UTC on 23 November; at 23:10 on 22 November it held eleven
+(finding R-10). All of these builds, and the ones they replace, are on our
 [firmware mirror](https://gl-fw.remotetohome.io/).
 
 What we read in GL-MT3000 4.11.1 against 4.11.0. Both official images matched their published
@@ -416,8 +420,68 @@ all 46 lines (finding R-20).
   `/etc/glinet/.cache` itself. Restoring the start-up script removes the lines that start the
   backdoor at boot; we have not tested what still runs after the update.
 
-We read one model's fixed build only. We have not read the fixed firmware of any other model and
-do not know whether it carries the same change.
+**The same script in every build (finding R-23).** On 23 November we took the fixed build of
+each of the eighteen models from the mirror, each matching its published SHA-256, and unpacked
+seventeen (the GL-E5800 file is in a format we could not open).
+
+- All seventeen carry `gl-sdk4-system-check` 1.0-1 with one file, the script above, byte for
+  byte the same: SHA-256 `1632adc736f1f84c0df3fb84846dbf10c05908ee5ceb41b273176cb4d1fbf6c5`.
+- A plain-text search of every unpacked file for `ulogd`, `monitord`, `ujaild`, `adguardns` and
+  `config/.gl` finds the last only in that script and the others nowhere. So the script is the
+  whole clean-up. The search would not see a name held inside compressed data.
+- The cloud package build differs by model: git-2026.323 (GL-MT3000, GL-MT6000, GL-MG1300),
+  git-2026.325 (GL-BE10000, GL-BE14000, GL-BE3600, GL-BE6500, GL-BE9300, GL-MT3600BE,
+  GL-MT5000, GL-SFT1200, GL-X2000) and git-2026.326 (GL-AX1800, GL-AXT1800, GL-MT2500,
+  GL-X3000, GL-XE3000).
+- In GL-MT3000 4.11.1 the script runs at boot step 10, before the scheduled-task service (50)
+  and before the start-up script it restores (99).
+- The handler fix above was read in the GL-MT3000 build only. We have not read it in the other
+  sixteen.
+
+**What an upgrade with settings kept leaves behind (finding R-24).** GL.iNet's notice of
+23 November says the security firmware removes the malware and that settings can be kept. We
+tested that on a GL-MT3000 with harmless stand-ins: files of our own that only write a log line
+when they run, placed where the known persistence sits and in other places that an upgrade
+keeps. Controls: before placing them, none present; after a restart on 4.11.0, every one that
+can run had run. Then the upgrade to 4.11.1, settings kept.
+
+| Placed before the upgrade | After the upgrade | Ran on 4.11.1 |
+|---|---|---|
+| The changed start-up file of the older backdoor | Put back to the firmware's own | No |
+| `/bin/ulogd`, with the backdoor's own line in the upgrade keep list | Still there | No |
+| `/usr/bin/monitord` | Gone: an upgrade does not carry it | No |
+| `/etc/config/.gl` with a `boot.sh`, its `rc.local` line, three scheduled-task lines | Removed by the script | No |
+| `/etc/glinet/.cache`, a replaced `netstat` | Gone: an upgrade does not carry them | No |
+| An added SSH key; an added account | Still there | (these do not run) |
+| A different line in `rc.local` | Still there | Yes, at boot |
+| A different scheduled-task line | Still there | Yes |
+| A script in `/etc/udhcpc.user.d` | Still there | Yes, at boot |
+| A script in `/etc/profile.d` | Still there | Not triggered in the test |
+
+- The script does what it says: the start-up routes it names are removed before they run.
+- `/bin/ulogd` survives only because the backdoor adds it to the keep list. A file placed in
+  `/bin` without that line is dropped by any upgrade. After the upgrade the keep-list line
+  itself is gone, because the keep list is the new firmware's.
+- Everything the script does not name is carried over with the settings. The keep list in
+  4.11.1 is not narrowed: all of `/etc/config`, the scheduled-task tables, `/etc/rc.local`,
+  the SSH server's authorised keys, the account and password files, `/etc/udhcpc.user.d` and
+  `/etc/profile.d`.
+- On 4.11.0 the firmware itself ran the replaced `netstat` 133 times in five minutes, so a
+  replaced `netstat` does not wait for the owner to type the command.
+- Limits: one router, one model, upgraded with the router's command-line upgrade tool (the web
+  interface runs the same tool; which options it passes was not read). The stand-ins copy file
+  names and start-up routes, not the real programs. A real implant that is running during the
+  upgrade is not covered.
+
+**What a reinstall replaces (finding R-25).** Read on the same GL-MT3000: the upgrade removes
+and recreates the kernel, the firmware image and the writable layer. It does not write the boot
+loader partitions or the partition that holds the device's own data (serial number, hardware
+address, DDNS id, country code); a factory reset clears only the writable layer. No
+before-and-after comparison of those partitions was made.
+
+**KVMs.** The same test on an RM1, upgraded from 1.10.2 to 1.10.3 through its web interface with
+the configuration kept: a boot script and an added SSH key both survived, and the script ran at
+the first boot (finding K-12, [kvm-firmware.md](kvm-firmware.md)).
 
 ## What is still open
 
@@ -429,7 +493,9 @@ do not know whether it carries the same change.
 3. **What changed in `/etc/config/wireguard_server`** 9 to 12 seconds after each backdoor install.
    Only a copy of the file from before, or GL.iNet's records, can show it.
 4. **Whether devices with the cloud service on but not bound to an account were reachable.**
-5. **Whether the fixed firmware of every model carries the same fix.** We have read one.
+5. **Whether the fixed firmware of every model carries the same handler fix.** We have read it
+   in one. The clean-up script is the same in the seventeen builds we unpacked; the GL-E5800
+   build is unread.
 6. **Who sent the message that tried to end the shells**, and whether routers that reported the
    implant folders were sent anything further.
 
