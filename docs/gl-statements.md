@@ -100,6 +100,11 @@ This is the version summarised in the README under "What GL.iNet has said".
 - Unchanged: the indicator and the four checks; "no factory reset or other cleanup is needed"
   when the indicator is not found; the email notifications; the continuing investigation.
 
+  ![GL.iNet's security notice on its own site, 23 November 2026: what to do, and how to check a router, with the router check marked](images/gl-notice-2026-11-23-router-check.png)
+
+  *The "What you should do" and "How to check a GL.iNet router" passages on GL.iNet's own site,
+  screenshot taken on 23 November 2026, not later than 05:32 UTC. The red box is ours.*
+
 ## What the notice has not said in any version we hold
 
 - Which firmware versions were affected, or since when.
