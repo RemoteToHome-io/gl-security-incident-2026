@@ -176,7 +176,7 @@ Against the version of 01:53 UTC:
 ## GL.iNet's published vulnerability reports
 
 GL.iNet keeps vulnerability reports in a public repository, [gl-inet/CVE-issues](https://github.com/gl-inet/CVE-issues). We read
-it on 23 November 2026 at 19:08 UTC. The dates below are the dates of the commits that added
+it on 23 November 2026 at 19:08 UTC and again at 20:30 UTC. The dates below are the dates of the commits that added
 each file; we do not know when the repository itself became public.
 
 Created on 23 November 2026, and linked from the site notice:
@@ -196,6 +196,17 @@ Added on 15 and 16 October 2026, five weeks before the attack:
 | [TLS certificate host name not verified in the cloud agent](https://github.com/gl-inet/CVE-issues/blob/main/KVM/RM1/Improper%20TLS%20certificate%20hostname%20verification%20in%20gl-cloud%20agent%20enables%20cloud%20service%20impersonation%20on%20GLKVM%20RM1.md) | 16 October, 03:39 | GL-RM1 V1.10.1: the cloud agent checked the certificate chain but not the name, so anyone on the network path with any valid public certificate could pose as the cloud |
 | [Certificate authorities downloaded at run time](https://github.com/gl-inet/CVE-issues/blob/main/KVM/RM1/Runtime-downloaded%20CA%20certificates%20allow%20TLS%20trust%20root%20replacement%20on%20GLKVM%20RM1.md) | 16 October, 03:39 | GL-RM1 V1.10.1: the authorities used for the message broker and the remote terminal were downloaded (for example from `/getCaCert/ca.crt`) and trusted with no check, so the trust root could be replaced |
 
+Other reports added to the same repository since mid-October. The site notice, as we read it at
+19:07 UTC, does not link any of these, and GL.iNet has not connected them to the incident. We
+read them on 23 November 2026 at 20:30 UTC:
+
+| Report | Added (UTC) | What GL.iNet states |
+|---|---|---|
+| [Login timestamp enumeration allows authentication bypass in `gl_nas_sys`](https://github.com/gl-inet/CVE-issues/blob/main/4.0.0/Login%20Timestamp%20Enumeration%20Allows%20Authentication%20Bypass%20in%20GL.iNet%20gl_nas_sys.md) | 23 November, 18:27 | The router's network-storage service runs as root. Its session token is the MD5 digest of the login time in whole seconds. Someone with access to the router's internal network who can estimate when a user logged in to network storage through the mobile app can try nearby times, and, while that session is still held, act as that user on the storage management functions: list, add, delete and change storage users. No login is needed. Twenty router models are listed. For the GL-MG1300, GL-MT6000 and GL-MT3000 it is "already fixed in 4.11.1"; for the other seventeen an "expected fix" version is given. For thirteen of those it is the version of the model's security firmware. The four exceptions: GL-MT2500 (4.7.5; the security firmware is 4.7.14), GL-A1300 and GL-B3000 (4.5.24; neither model is in the notice's security firmware list), and GL-BE14000 (4.9.3 affected, expected fix 4.9.4). |
+| [HTTP response header injection and response splitting via download filename on GL-MT3000](https://github.com/gl-inet/CVE-issues/blob/main/4.0.0/HTTP%20response%20header%20injection%20and%20response%20splitting%20via%20download%20filename%20on%20GL-MT3000.md) | 19 October, 02:34 | GL-MT3000 4.9.0 (build of 2 September 2026). A logged-in user of the download function can put extra headers into the router's reply through the file name. Shown by the reporter in an emulated system, not on a device. It does not get around the login. |
+| [Insufficient input validation in WireGuard client configuration on GL-MT3000](https://github.com/gl-inet/CVE-issues/blob/main/4.0.0/Insufficient%20input%20validation%20in%20WireGuard%20client%20configuration%20on%20GL-MT3000.md) | 19 October, 02:34 | GL-MT3000 4.9.0. A logged-in user can store line breaks and shell characters in the WireGuard client settings file. GL.iNet calls this "a review draft, not a confirmed remote code execution advisory": no place where the stored text is run has been shown. |
+| [Insufficient path validation in the default RPC validator on GL-MT3000](https://github.com/gl-inet/CVE-issues/blob/main/4.0.0/Insufficient%20path%20validation%20in%20the%20default%20RPC%20validator%20on%20GL-MT3000.md) | 19 October, 02:34 | GL-MT3000 4.9.0. The web interface's default check on a field accepts `../`. GL.iNet calls this "a review draft pending evidence": no access to a file outside the permitted folder has been shown. A login is assumed. |
+
 Points we note, from our own data:
 
 - The router report names one affected version per model. We found the same code from
@@ -209,6 +220,12 @@ Points we note, from our own data:
 - Our test RM1 was running V1.10.1 on 21 November 2026, and the 1.10.2 images are dated
   21 November. So the three RM1 reports of 16 October describe the firmware that was in use
   when the attack happened.
+- The network-storage report gives 4.9.4 as the expected fix for the GL-BE14000. The security
+  firmware GL.iNet lists for that model is 4.9.3, which the report names as affected. Going by
+  GL.iNet's own report, a GL-BE14000 on the security firmware still has that flaw. We have not
+  tested the network-storage flaw or its fix on any device.
+- The WireGuard report concerns the WireGuard client settings. It is not the WireGuard server
+  settings file that changed on routers in our data, and we know of no link between the two.
 
 ## GL.iNet staff posts in the forum
 
