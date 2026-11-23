@@ -25,6 +25,11 @@
 >   before, **`up.adsanalypro.com`**. In the memory of 47 routers we found check-ins going back to
 >   May 2026 and no task: none had been given a command that was still in memory.
 >
+> - **GL.iNet changed its guidance on 23 November.** Its site notice now says to reinstall
+>   without keeping settings where access is known or suspected, and to replace passwords and
+>   keys. It also published the cause and its own vulnerability reports, four of which are dated
+>   mid-October. See [What GL.iNet has said](#what-glinet-has-said).
+>
 > Pages added today: [every attacker message](docs/attacker-messages.md) ·
 > [the older backdoor's loader](docs/older-backdoor-loader.md) ·
 > [its second stage](docs/older-backdoor-second-stage.md) ·
@@ -55,7 +60,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 18:37 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 20:23 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -99,48 +104,52 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
 
 ## What GL.iNet has said
 
-From the [security notice](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
-as it read at 02:38 UTC on 23 November 2026 (marked "Last updated November 23, 2026 (UTC)"; the
-same text is on [GL.iNet's site](https://www.gl-inet.com/en-us/blogs/blog/glinet-security-notice-2026-11-20)).
-These are GL.iNet's statements, not our findings:
+From the notice on [GL.iNet's site](https://www.gl-inet.com/en-gb/blogs/blog/glinet-security-notice-2026-11-20) as it read at 19:07 UTC on 23 November 2026
+(marked "Updated November 23, 2026 (UTC)"). GL.iNet rewrote that page on 23 November. Its
+[forum copy](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
+still carried the earlier text when we checked at 19:06 UTC; the table below shows how the
+wording has moved. These are GL.iNet's statements, not our findings:
 
-- **The incident.** On 20 November 2026 GL.iNet identified a vulnerability in its cloud remote
-  management services. An unauthorized party used it to access some routers and KVM devices and
-  install malicious software on them.
-- **The attack path has been blocked.** The cloud vulnerability is fixed and devices can no
-  longer be newly infected through it. That does not remove malware from devices already
-  infected.
-- **Install the security firmware,** for your exact model, even if the checks find nothing.
-  The notice lists minimum versions:
+- **The incident.** On 20 November 2026 GL.iNet identified unauthorized access to some routers
+  and KVM devices connected to GoodCloud. The attack path was blocked the same day.
+- **How it happened.** A configuration error in GoodCloud's device-messaging service let a client
+  send management messages to other users' connected devices. Separately, a flaw in the
+  AstroWarp / SD-WAN part of the router could run such input as commands with root rights,
+  "even when AstroWarp was turned off". GL.iNet has published
+  [vulnerability reports](https://github.com/gl-inet/CVE-issues) for these; the identifiers are pending.
+- **Install the security firmware,** for your exact model. The minimum versions:
   - Routers: GL-MG1300, GL-MT3000, GL-MT6000: 4.11.1. GL-E5800: 4.10.3. GL-BE3600, GL-BE9300:
     4.10.2. GL-BE14000: 4.9.3. GL-BE6500, GL-MT3600BE, GL-MT5000: 4.9.1. GL-BE10000: 4.8.7.
     GL-AX1800, GL-AXT1800, GL-SFT1200, GL-X3000, GL-XE3000: 4.8.4. GL-MT2500 / GL-MT2500A,
     GL-X2000: 4.7.14.
   - KVMs: RM1, RM1V2, RM10, RM10RC, RM1PE, RM4PE: 1.10.3. RMQ1: 1.8.7.
-  - "An unlisted model is not necessarily unaffected."
-- **"The security firmware update removes the malware identified in this incident without
-  requiring a factory reset. You can keep your existing settings during the update."**
-- **The check.** On a router: `ps | grep tmp` over SSH, or search for `tmp/.log` in LuCI under
-  Status → Processes. On a KVM, in its own terminal: `ps -aux | grep tmp` (`ps -a | grep tmp`
-  on the RMQ1). In each case the indicator is the exact text `crond -i /tmp/.log` in the
-  details of a running process. The full steps are under
-  [GL.iNet's own checks](#glinets-own-checks).
-- **If you find the indicator:** treat the device as infected and install the security
-  firmware; settings can be kept. If the indicator is still there afterwards, or the model is
-  not listed, contact support@gl-inet.com.
-- **If you do not find it** and have no other reason to suspect infection: "no factory reset or
-  other cleanup is needed".
-- **If a KVM is infected,** also check the computer connected to it.
-- **The official checks "may not detect every affected device".** The notice now says further
-  indicators have been identified and points to the community script as an optional,
-  unofficial, more comprehensive check.
-- **Notifications.** GL.iNet says it will email the owners it identifies as affected, at the
-  address of their GL.iNet cloud account.
-- **The investigation continues,** including whether computers connected to affected KVMs were
-  impacted.
+- **If access is known or suspected:** "for the strongest standard recovery assurance", install
+  the official security firmware **without keeping settings**, configure the device again by
+  hand, use new passwords and keys, and do not restore a backup from that device. On a router
+  turn "Keep Settings" off; on a KVM clear "Save current configuration". A factory reset alone
+  does not install the fixes.
+- **Keeping settings** "remains an option you may choose", for example to preserve remote
+  access; the notice says it "may retain other unauthorized changes" and gives less assurance.
+- **Passwords and keys.** If your device connected to GoodCloud, change the passwords and
+  replace the keys stored on it, "even if a check finds nothing". An update cannot take back a
+  key that was already copied.
+- **What the firmware's clean-up is:** "targeted cleanup" of the known malware of 20 November,
+  "not a general malware scan or a complete integrity check".
+- **Checks are optional and cannot rule out earlier access.** The community script is the first
+  choice. The router check for the process `crond -i /tmp/.log` is no longer on the page.
+- **The older backdoor** that forum users reported is acknowledged as a separate finding whose
+  entry path is not established; owners should not assume the clean-up resolves it.
+- **If a KVM is affected,** also check the computer connected to it.
+- **Notifications.** GL.iNet will email the owners of devices it identifies as affected.
+- **Still being determined:** how many devices, over what period, and whether computers
+  connected to affected KVMs were accessed.
 
-GL.iNet has not published which firmware versions were affected, the time window, how many
-devices, or what the malicious software does.
+The notice now links to this repository twice: to our KVM firmware page and to the
+[If you find something](#if-you-find-something) section of this page.
+
+GL.iNet has not published the time window, how many devices, or what the malicious software
+does. Its router report names one affected firmware version per model; we find the same code
+from December 2024 onward.
 
 **How the notice has changed.** Earlier wording is kept, with dates, in
 [docs/gl-statements.md](docs/gl-statements.md). The times are the forum's edit times of the
@@ -151,17 +160,18 @@ versions we saved; three earlier edits on 21 November were made before our first
 | 21 November, 10:35 | Factory reset every router and KVM and set it up again. Corrective measures had been implemented "on affected devices". No indicator and no check |
 | 21 November, 14:10 | The factory reset recommendation was removed. In its place: links to two forum topics on how to check a router and a KVM |
 | 21 November, 16:00 | Rewritten. One indicator, `crond -i /tmp/.log`. If found: KVM beta firmware, or a factory reset. If not found: no reset or cleanup needed. The sentence about corrective measures on affected devices was removed |
-| 23 November, 01:53 | The current text above. The security firmware is said to remove the malware with settings kept; the factory reset option is gone, also when the indicator is found; the official checks "may not detect every affected device" |
+| 23 November, 01:53 | The security firmware is said to remove the malware with settings kept; the factory reset option is gone, also when the indicator is found; the official checks "may not detect every affected device". The forum copy still showed this text at 19:06 UTC |
+| 23 November, after 14:31 (site only) | The current text above. Reinstall without keeping settings is the strongest recovery; keeping settings is a lesser option; replace passwords and keys; the router process check is gone; the cause and vulnerability reports are published |
 
-**Where this differs from what we found.** The notice says the update removes the malware and
-that settings can be kept. We unpacked the fixed build of seventeen router models: the clean-up
-is one short script, the same in each. It puts back the start-up file the older backdoor
-changes, leaves that backdoor's other file on the router, and does not examine the settings an
-upgrade keeps. In our test on a GL-MT3000, start-up entries it does not name survived an
-upgrade with settings kept and ran on the fixed firmware; see
-[Fixed firmware](#fixed-firmware). Our advice in
-[If you find something](#if-you-find-something) is unchanged: reinstall with "Keep Settings"
-switched off.
+**Where this stands against what we found.** The site notice now agrees with the main points on
+this page: do not keep settings on a device that may have been hit, replace what it stored, and
+do not rely on one process name. Two differences remain. It still offers keeping settings as a
+choice; in our tests start-up entries placed in kept settings survived the upgrade and ran, on
+a router and on a KVM ([Fixed firmware](#fixed-firmware)). And it treats the older backdoor as
+possibly unrelated; we cannot show how it was installed either, but every one of our 49 routers
+that had it and that we could check was bound to GoodCloud before its install date. GL.iNet's
+own reports also show that part of what made the KVM side possible was written up in mid-October
+([docs/gl-statements.md](docs/gl-statements.md#glinets-published-vulnerability-reports)).
 
 ## What has been found beyond that
 
@@ -169,7 +179,7 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 
 | Finding | Status |
 |---|---|
-| The GoodCloud client on the router passes a value from a cloud message to the shell, as root, without checking it. That is how the attack got in | Verified by us by reading the client's code; not confirmed by GL.iNet |
+| The GoodCloud client on the router passes a value from a cloud message to the shell, as root, without checking it. That is how the attack got in | Verified by us by reading the client's code. Confirmed by GL.iNet's own vulnerability report on 23 November |
 | The earliest firmware in which we find that code is GL-MT3000 4.7.0, released 5 December 2024. The 4.6 images we read do not have it. It is still in GL-AXT1800 4.8.4 (beta of 11 November) and GL-MT3000 4.11.0 | Verified by us from the official images and from routers |
 | It runs whether or not AstroWarp / SD-WAN is enabled | Verified by us |
 | GL.iNet's fixed firmware adds input validation in that same handler, and a start-up clean-up that restores the file the older backdoor changes. It leaves one further weakness in the cloud client unaddressed in the build we read | Verified by us in the GL-MT3000 4.11.1 build; see [Fixed firmware](#fixed-firmware) |
@@ -498,9 +508,11 @@ resetting the account password.
 
 ### GL.iNet's own checks
 
-These are the checks in GL.iNet's
+These are the checks in the forum copy of GL.iNet's
 [security notice](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
-as it stood on 23 November 2026. All four look for the same thing: the exact text
+as it stood on 23 November 2026. *Update, 23 November: GL.iNet's site notice has since dropped
+the two router checks and calls the KVM check one of "limited coverage"; the forum copy still
+had all four when we last looked. They are kept here because owners were told to run them.* All four look for the same thing: the exact text
 `crond -i /tmp/.log` in the details of a running process. A line that shows only the `grep`
 command is not a match.
 

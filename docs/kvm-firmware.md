@@ -34,6 +34,18 @@ interface with "Save current configuration" ticked (finding K-12).
 - **The cloud remote terminal's start script is unchanged** from 1.10.2 on the RM1, and is the
   same file in all six models.
 
+**What GL.iNet itself had written up before the attack.** GL.iNet's public vulnerability
+repository holds three reports on the GL-RM1's 1.10.1 firmware, added on 16 October 2026: the
+cloud agent did not check the name on the cloud's certificate; the certificate authorities for
+the message broker and the remote terminal were downloaded at run time and trusted without any
+check; and the remote-terminal start-up script built its command from cloud-delivered
+configuration without quoting, so a crafted entry could open a root terminal with no login. A
+fourth, of 15 October, describes cross-tenant device control in the KVM cloud service. Our test
+RM1 was still on 1.10.1 on 21 November. What we read in 1.10.2 (the remote terminal always using
+TLS with a fixed authority, finding K-4) fits a fix for these. See
+[GL.iNet's published vulnerability reports](gl-statements.md#glinets-published-vulnerability-reports)
+(finding G-17).
+
 The rest of this page describes 1.10.2, which is what we tested on a device.
 
 Findings K-1 to K-7 in [findings.md](findings.md). Read from GL.iNet's official images for RM1PE

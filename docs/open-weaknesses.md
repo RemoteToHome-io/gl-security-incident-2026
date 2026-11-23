@@ -12,7 +12,8 @@ them we would withhold it until it is fixed. Everything else we know is here.
 in a plain script. *Tested*: we ran it on a device of our own. *Lead*: read in part, not tested;
 it may turn out not to be reachable. *Reported*: someone else's finding, with a link.
 
-Nothing here has been confirmed by GL.iNet.
+When this page was written nothing here had been confirmed by GL.iNet. Since then GL.iNet has
+published its own reports on the command injection and on the remote terminal (item 2).
 
 ## Summary for owners
 
@@ -83,6 +84,14 @@ from, or what `rtty` asks for before it hands over a shell.
 
 On KVMs the same program runs permanently on a bound device; see
 [kvm-firmware.md](kvm-firmware.md).
+
+*Added 23 November.* GL.iNet has now published its own report on this program: certificate
+checking in the remote-terminal client can be bypassed by changing the arguments of its start
+command, so a device can be made to connect to a hostile terminal server, which then has root.
+It lists all seven KVM models (fixed in 1.10.3 and 1.8.7) and 31 router models with an "expected
+fix" version, among them older models on the 4.3 and 4.5 firmware lines. Three earlier reports
+of 16 October 2026 describe the same chain on the GL-RM1's 1.10.1 firmware. See
+[GL.iNet's published vulnerability reports](gl-statements.md#glinets-published-vulnerability-reports).
 
 ## 3. Unbinding does not stop the cloud client
 
