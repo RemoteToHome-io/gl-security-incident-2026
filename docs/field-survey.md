@@ -4,7 +4,7 @@ Routers we manage or own, checked since 21 November 2026, by model and firmware.
 owner, network or device is identified. The check is still running; this page is updated as
 batches finish.
 
-Last updated: 2026-11-22 12:55 UTC.
+Last updated: 2026-11-23 08:39 UTC.
 
 ## The result so far
 
@@ -29,13 +29,13 @@ switched on, and only those that were online when we checked.
 | GL-AXT1800 | 4.8.3 | 14 | 9 | 0 | 4 | 1 | 0 |
 | GL-AXT1800 | 4.8.4 | 2 | 0 | 0 | 1 | 0 | 1 |
 | GL-BE10000 | 4.8.6 | 1 | 0 | 0 | 1 | 0 | 0 |
-| GL-IPQ5332/AP-MI01.2 | 4.8.7 | 1 | 0 | 0 | 1 | 0 | 0 |
-| GL-IPQ5332/AP-MI01.6 | 4.8.4 | 1 | 0 | 0 | 1 | 0 | 0 |
-| GL-IPQ5332/AP-MI01.6 | 4.9.0 | 1 | 0 | 0 | 1 | 0 | 0 |
-| GL-IPQ5332/AP-MI04.1-C2 | 4.7.3 | 1 | 0 | 0 | 0 | 0 | 1 |
-| GL-IPQ5332/AP-MI04.1-C2 | 4.8.1 | 3 | 0 | 0 | 3 | 0 | 0 |
-| GL-IPQ5332/AP-MI04.1-C2 | 4.8.3 | 1 | 0 | 0 | 1 | 0 | 0 |
-| GL-MBB | 4.10.0 | 2 | 0 | 0 | 0 | 0 | 2 |
+| GL-BE3600 | 4.7.3 | 1 | 0 | 0 | 0 | 0 | 1 |
+| GL-BE3600 | 4.8.1 | 3 | 0 | 0 | 3 | 0 | 0 |
+| GL-BE3600 | 4.8.3 | 1 | 0 | 0 | 1 | 0 | 0 |
+| GL-BE6500 | 4.8.7 | 1 | 0 | 0 | 1 | 0 | 0 |
+| GL-BE9300 | 4.8.4 | 1 | 0 | 0 | 1 | 0 | 0 |
+| GL-BE9300 | 4.9.0 | 1 | 0 | 0 | 1 | 0 | 0 |
+| GL-E5800 | 4.10.0 | 2 | 0 | 0 | 0 | 0 | 2 |
 | GL-MT2500 | 4.7.0 | 2 | 0 | 2 | 0 | 0 | 0 |
 | GL-MT2500 | 4.7.4 | 7 | 0 | 7 | 0 | 0 | 0 |
 | GL-MT2500 | 4.7.13 | 11 | 0 | 10 | 1 | 0 | 0 |
