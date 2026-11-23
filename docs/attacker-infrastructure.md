@@ -68,5 +68,24 @@ address the router shells used.
 
 Two more addresses are reported for the KVM side of the attack: `66.245.219.252` and
 `65.20.71.131`, from the network logs of a compromised GL-RM1 and from the installer script it
-downloaded on 19 November ([BleepingComputer, 22 November 2026](https://www.bleepingcomputer.com/news/security/hackers-exploit-glinet-cloud-flaw-to-infect-routers-kvm-devices/)). We have not looked these up and have not seen them
-ourselves: a search of everything we saved from routers found neither (finding A-5).
+downloaded on 19 November ([BleepingComputer, 22 November 2026](https://www.bleepingcomputer.com/news/security/hackers-exploit-glinet-cloud-flaw-to-infect-routers-kvm-devices/)). *Corrected 23 November 2026:* this page said we had not seen either on a router. We have now
+found the first of them in the saved memory of one router's cloud client, inside a command sent
+through GL.iNet's cloud: `http://66.245.219.252:8899/wake?m=KK_<id>` (finding A-6). Forum users
+report the KVM implant calls the same server, port and path. The second address,
+`65.20.71.131`, is in none of the 255 memory images we hold.
+
+## Servers of the older backdoor
+
+Separate from the above. Read from our own samples on 23 November 2026 (findings R-28 to R-30):
+
+| Name | Used by | Path |
+|---|---|---|
+| `cdn.adguardns.com`, `cdn.adguardns.org` | the loader, 33,722-byte build (42 of 49 routers) | `/v1/gl/access`, downloads from `/v1/gl/download` |
+| `cdn.lede-openproject.org`, `cdn.adxinsight.com`, `cdn.openwrt-project.org` | the loader, 35,745-byte build (7 of 49) | the same |
+| `up.adguardns.com`, `up.adguardns.org` | the second stage, build on 42 routers | `/v1/gl/instance` |
+| `up.adsanalypro.com` | the second stage, build on 7 routers | `/v1/gl/instance` |
+
+All are reached over HTTPS. The names imitate AdGuard, OpenWrt and an advertising service; nothing
+we have links them to those. If your DNS resolver keeps a query log, look for these names: a device that
+asks for one of them should be checked at once. Blocking them stops the loader from fetching the
+second stage; it does not remove anything.

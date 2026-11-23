@@ -1,5 +1,33 @@
 # GL.iNet cloud incident, November 2026: what is known, how to check, how to recover
 
+> **New, 23 November 2026: what our own samples show.** We have now taken apart the malware and
+> the memory images we saved from the routers we manage. Nothing was run; everything was read.
+> The full pages are being added today; the main results:
+>
+> - **The attack of 20 November and the KVM implant used the same server.** In one router's
+>   memory we found a command, sent through GL.iNet's cloud, that calls
+>   `http://66.245.219.252:8899/wake?m=KK_<id>`. That is the server, port and path that forum
+>   users found in the KVM implant ("gl-helper"). *Correction: until today this page said neither
+>   KVM-side address had been found on a router.*
+> - **The attacker's folder check reached far more routers than we first showed:** it was still
+>   in the memory of 98 routers of 11 models, not seven. We recovered eight distinct attacker
+>   messages in all, including two ways of ending the shells that we had not published. The only
+>   thing typed into any reverse shell that we could recover was that same folder check.
+> - **The older backdoor's loader is fully decoded,** all 49 copies. One XOR key for every router;
+>   a different 40-character identifier built into each router's file, so one file was built per
+>   victim; five server names in two sets. Its servers answered the routers with a download
+>   address, the second stage's name (`ujaild`) and one password for all:
+>   `JHWmVqTwEryeXiAyXwEnCmKrQvRtnpxV`.
+> - **The second stage is a general remote-control tool.** It can run any command, write any
+>   file, drop and run a program, and open a proxy into the network behind the router. It is
+>   written in Go and hidden with the `garble` tool. Its server names are stored encrypted in the
+>   program; decrypted they are `up.adguardns.com`, `up.adguardns.org` and a name not reported
+>   before, **`up.adsanalypro.com`**. In the memory of 47 routers we found check-ins going back to
+>   May 2026 and no task: none had been given a command that was still in memory.
+>
+> See [The older backdoor, step by step](#the-older-backdoor-step-by-step) and the
+> [technical breakdown](docs/technical-breakdown.md).
+
 > **New, 22 November 2026: the exploit in detail, and where it came from.** GL.iNet has released
 > fixed firmware, so the details we had held back are now published:
 >
@@ -22,7 +50,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 16:33 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 17:32 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
