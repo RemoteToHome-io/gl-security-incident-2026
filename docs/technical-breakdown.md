@@ -367,7 +367,10 @@ Its parts, as measured on those routers:
   On the one router where we timed it (GL-MT3000 4.7.4) the loader started 36 seconds after
   boot and the second stage about five minutes after boot.
 - **`/bin/ulogd`.** A different SHA-256 on every router (49 routers, 49 values), in two sizes:
-  33,722 bytes on 42 of them and 35,745 bytes on 7. It is compiled Lua 5.1 bytecode, not a native
+  33,722 bytes on 42 of them and 35,745 bytes on 7. The hashes differ because each copy carries
+  its own 40-character identifier, which it sends to the server as `randomkey`; within each size
+  every other byte is the same
+  ([the loader, section 5](older-backdoor-loader.md#5-the-per-device-identifier)). It is compiled Lua 5.1 bytecode, not a native
   program. Its internal names are random six-letter strings and its text constants are not
   readable as they stand. Decoded in full on 23 November: see
   [the loader](older-backdoor-loader.md).
