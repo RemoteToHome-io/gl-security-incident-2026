@@ -304,6 +304,12 @@ Described in the README under
 
 ## The older backdoor
 
+*Added 23 November: the mechanism step by step, and what forum users have decoded of the loader
+(its hidden strings, the server protocol and its key, the two sets of server names and when they
+were registered), is in the README under
+[The older backdoor, step by step](../README.md#the-older-backdoor-step-by-step). This section
+holds our own measurements.*
+
 A separate compromise, first reported by forum users in
 [this forum thread](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097).
 We found it installed and running on 49 routers we manage (finding R-11): GL-MT2500, GL-MT3000,
