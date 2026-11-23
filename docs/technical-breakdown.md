@@ -315,14 +315,31 @@ Its parts, as measured on those routers:
   `/usr/bin/lua` to `/usr/bin/monitord`, copy `/bin/ulogd` to `/var/run/monitord.pid`, run it,
   wait, and delete the copy. The changed file has SHA-256
   `3265f27feb954744581cdea2373b88ceae9d85b67e90487353fd48902cf4fc19`, the value forum users
-  report, on all 49 routers.
+  report, on all 49 routers. The lines, added directly under the script's first line:
+
+  ```
+  cp /usr/bin/lua /usr/bin/monitord
+  cp /bin/ulogd /var/run/monitord.pid
+  /usr/bin/monitord /var/run/monitord.pid &
+  sleep 2
+  rm /var/run/monitord.pid
+  ```
+
+  On the one router where we timed it (GL-MT3000 4.7.4) the loader started 36 seconds after
+  boot and the second stage about five minutes after boot.
 - **`/bin/ulogd`.** A different SHA-256 on every router (49 routers, 49 values), in two sizes:
-  33,722 bytes on 42 of them and 35,745 bytes on 7.
+  33,722 bytes on 42 of them and 35,745 bytes on 7. It is compiled Lua 5.1 bytecode, not a native
+  program. Its internal names are random six-letter strings and its text constants are not
+  readable as they stand. We have not disassembled it.
 - **`/usr/bin/monitord`.** One SHA-256 on every MediaTek router (12,299 bytes) and another on
   every Qualcomm one (65,547 bytes). That is consistent with a copy of the router's own Lua
-  interpreter, which is what the start-up lines copy.
+  interpreter, which is what the start-up lines copy. The MediaTek value,
+  `dc824e186b783450961d98709b458c7be82f40f9a0cfdbef0693dbfc37b10b46`, is the SHA-256 of
+  `/usr/bin/lua5.1` in GL.iNet's GL-MT3000 4.11.1 image, so on those routers it is that file
+  byte for byte.
 - **The second stage, `ujaild`.** Runs as `/usr/sbin/ujaild` from a file in `/tmp` that is
-  deleted once it has started. Copied from the running process on all 49 routers, it has two
+  deleted once it has started. The copy from a GL-MT3000 is a statically linked 64-bit ARM
+  program with its symbols removed, and carries a Go build marker. Copied from the running process on all 49 routers, it has two
   SHA-256 values:
   - `311b5767e7d63e7dbdc1476c36608b8d7ef729c8bbcc64ded63b9470396351d6`, 6,815,892 bytes, 42
     routers; the same as a sample another owner collected from a GL-AX1800 (Reported);

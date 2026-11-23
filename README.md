@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 08:39 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 16:27 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -184,6 +184,102 @@ How to read a combination:
 
 On a GL-AXT1800 the firewall rule did not appear in the listing on our own unit although the
 handler had run, so on that model do not rely on the rule being absent.
+
+## The older backdoor, step by step
+
+This is the compromise in the "Older backdoor" row above: separate from the attack of
+20 November, and on the routers we manage it had been running for up to fourteen months. What
+follows is measured on those 49 routers and read from the files we saved from them before
+removal. We ran none of it. Full hashes and install dates are in the
+[technical breakdown](docs/technical-breakdown.md#the-older-backdoor).
+
+**What it puts on the router.** Three changes on disk, all in the writable layer:
+
+1. A new file, `/bin/ulogd`. It is not a program in the usual sense: it is compiled Lua 5.1
+   bytecode, 33,722 bytes on 42 routers and 35,745 bytes on 7. Its SHA-256 is different on
+   every router. Its internal names are scrambled (random six-letter names) and its text is not
+   readable as it stands. The name imitates a real logging daemon.
+2. Five lines added directly under the first line of `/etc/init.d/urandom_seed`, a start-up
+   script that belongs to the firmware and runs last at boot:
+
+   ```
+   cp /usr/bin/lua /usr/bin/monitord
+   cp /bin/ulogd /var/run/monitord.pid
+   /usr/bin/monitord /var/run/monitord.pid &
+   sleep 2
+   rm /var/run/monitord.pid
+   ```
+
+   The changed file has the same SHA-256 on all 49 routers:
+   `3265f27feb954744581cdea2373b88ceae9d85b67e90487353fd48902cf4fc19`.
+3. Two lines added to `/lib/upgrade/keep.d/netifd`, the list of files an upgrade carries over:
+
+   ```
+   /bin/ulogd
+   /etc/init.d/urandom_seed
+   ```
+
+   On 9 of the 49 routers these two lines were missing and the rest was there and running.
+
+**What happens at every boot.**
+
+1. The firmware runs `urandom_seed` as one of its last start-up steps. The five lines run
+   first.
+2. They copy the router's own Lua interpreter to `/usr/bin/monitord`. That copy is not
+   malicious in itself: on our MediaTek routers it is byte for byte the firmware's
+   `/usr/bin/lua5.1` (12,299 bytes, SHA-256
+   `dc824e186b783450961d98709b458c7be82f40f9a0cfdbef0693dbfc37b10b46`, the same as in GL.iNet's
+   GL-MT3000 4.11.1 image). The copy exists so that the process is called `monitord` and not
+   `lua`.
+3. They copy `/bin/ulogd` to `/var/run/monitord.pid`, a name that looks like an ordinary
+   process-id file, and start it with the renamed interpreter. This is the loader. In the
+   process list it shows as `/usr/bin/monitord /var/run/monitord.pid`.
+4. Two seconds later they delete `/var/run/monitord.pid`. The loader keeps running, but the
+   file it was started from is gone.
+5. The loader fetches the second stage, writes it to `/tmp/ujaild`, starts it under the name
+   `/usr/sbin/ujaild`, and the file in `/tmp` is deleted. On the router where we timed it the
+   loader started 36 seconds after boot and the second stage about five minutes after boot.
+   That the loader does the fetching is from its saved memory, which holds a server's reply
+   telling it what to download; we have not taken the bytecode apart.
+
+**The second stage.** `ujaild` is a single self-contained program for 64-bit ARM, 6.8 MB,
+written in Go, with its symbols removed. Because its file is deleted once it runs, the only
+copy is the one in memory; we took ours from the running process on each router. It has only
+two versions over the 49 routers (SHA-256 `311b5767e7d63e7dbdc1476c36608b8d7ef729c8bbcc64ded63b9470396351d6`
+on 42 and `53736d5db721a358bec5b9ddf6056df73b36fc5330300342c42f866a05191432` on 7). Forum users
+report that it gives its operator remote control of the router and a proxy into the network
+behind it. We have not analysed it ourselves.
+
+**Its servers.** In the saved memory of the loader and the second stage: `cdn.adguardns.com`,
+`cdn.adguardns.org`, `up.adguardns.com` and `up.adguardns.org`, still answering on 21 November
+2026. The names imitate AdGuard; nothing we have links them to AdGuard.
+
+**Why it stays out of sight.**
+
+- Nothing it leaves on disk is an ordinary executable: one bytecode file with a daemon's name,
+  and a copy of the firmware's own interpreter.
+- Neither running process has a file behind it: the loader's script and the second stage's
+  program are both deleted after start.
+- Every process and file name is one a router could plausibly have.
+- GL.iNet's published check does not look for any of it.
+
+**How it survives, and what ends it.**
+
+- A restart: it starts again, from `urandom_seed`.
+- An upgrade with settings kept: its two keep-list lines carry `/bin/ulogd` and the changed
+  start-up script into the new firmware. GL.iNet's fixed firmware puts the start-up script
+  back, so it is no longer started that way, and leaves `/bin/ulogd` on the router (see
+  [Fixed firmware](#fixed-firmware)).
+- By hand, as we did on the 49 after saving the evidence: end the `monitord` and `ujaild`
+  processes, put `/etc/init.d/urandom_seed` and `/lib/upgrade/keep.d/netifd` back from the
+  copies under `/rom`, delete `/bin/ulogd` and `/usr/bin/monitord`. That stops it. It is not a
+  recovery: whoever ran it had root on the router for months.
+- The recovery is the reinstall in [If you find something](#if-you-find-something).
+
+**What we do not know.** How it was installed (see the technical breakdown for the batches and
+dates). What the loader's bytecode does step by step: we have not disassembled it. What the
+second stage does: not analysed by us. Why `/etc/config/wireguard_server` changed within
+seconds of the install on most of these routers.
 
 ## Check a device
 
