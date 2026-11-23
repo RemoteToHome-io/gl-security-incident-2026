@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 02:40 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 02:50 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -65,18 +65,53 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
 ## What GL.iNet has said
 
 From the [security notice](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
-as it read at 07:12 UTC on 22 November 2026 (marked "Last updated November 21, 2026"):
+as it read at 02:38 UTC on 23 November 2026 (marked "Last updated November 23, 2026 (UTC)"; the
+same text is on [GL.iNet's site](https://www.gl-inet.com/en-us/blogs/blog/glinet-security-notice-2026-11-20)).
+These are GL.iNet's statements, not our findings:
 
-- A vulnerability in its cloud remote management services was exploited to install malicious
-  software on some routers and KVM devices.
-- The attack path has been blocked. This does not remove malware from devices already infected.
-- The indicator to look for is a running process containing `crond -i /tmp/.log`.
-- If the check finds nothing and there is no other reason for suspicion, no cleanup is needed.
-- KVM beta firmware with fixes is available; stable firmware for routers and KVMs is scheduled for
-  22 November 2026.
+- **The incident.** On 20 November 2026 GL.iNet identified a vulnerability in its cloud remote
+  management services. An unauthorized party used it to access some routers and KVM devices and
+  install malicious software on them.
+- **The attack path has been blocked.** The cloud vulnerability is fixed and devices can no
+  longer be newly infected through it. That does not remove malware from devices already
+  infected.
+- **Install the security firmware,** for your exact model, even if the checks find nothing.
+  The notice lists minimum versions:
+  - Routers: GL-MG1300, GL-MT3000, GL-MT6000: 4.11.1. GL-E5800: 4.10.3. GL-BE3600, GL-BE9300:
+    4.10.2. GL-BE14000: 4.9.3. GL-BE6500, GL-MT3600BE, GL-MT5000: 4.9.1. GL-BE10000: 4.8.7.
+    GL-AX1800, GL-AXT1800, GL-SFT1200, GL-X3000, GL-XE3000: 4.8.4. GL-MT2500 / GL-MT2500A,
+    GL-X2000: 4.7.14.
+  - KVMs: RM1, RM1V2, RM10, RM10RC, RM1PE, RM4PE: 1.10.3. RMQ1: 1.8.7.
+  - "An unlisted model is not necessarily unaffected."
+- **"The security firmware update removes the malware identified in this incident without
+  requiring a factory reset. You can keep your existing settings during the update."**
+- **The indicator** is the exact text `crond -i /tmp/.log` in the details of a running process,
+  on routers and KVMs alike. The notice gives four ways to look for it; they are listed under
+  [GL.iNet's own checks](#glinets-own-checks).
+- **If you find the indicator:** treat the device as infected and install the security
+  firmware; settings can be kept. If the indicator is still there afterwards, or the model is
+  not listed, contact support@gl-inet.com.
+- **If you do not find it** and have no other reason to suspect infection: "no factory reset or
+  other cleanup is needed".
+- **If a KVM is infected,** also check the computer connected to it.
+- **The official checks "may not detect every affected device".** The notice now says further
+  indicators have been identified and points to the community script as an optional,
+  unofficial, more comprehensive check.
+- **Notifications.** GL.iNet says it will email the owners it identifies as affected, at the
+  address of their GL.iNet cloud account.
+- **The investigation continues,** including whether computers connected to affected KVMs were
+  impacted.
 
-GL.iNet has not published which models and firmware versions were affected, the time window, how
-many devices, or what the malicious software does.
+GL.iNet has not published which firmware versions were affected, the time window, how many
+devices, or what the malicious software does.
+
+**Where this differs from what we found.** The notice says the update removes the malware and
+that settings can be kept. We unpacked the fixed build of seventeen router models: the clean-up
+is one short script, the same in each. It puts back the start-up file the older backdoor
+changes, leaves that backdoor's other file on the router, and does not examine the settings an
+upgrade keeps; see [Fixed firmware](#fixed-firmware). Our advice in
+[If you find something](#if-you-find-something) is unchanged: reinstall with "Keep Settings"
+switched off.
 
 ## What has been found beyond that
 
@@ -305,9 +340,12 @@ that access at the other end.
 
 ## Fixed firmware
 
-GL.iNet's listing holds stable firmware dated 22 and 23 November 2026 for GL-AXT1800 (4.8.4), GL-MT3000 (4.11.1), GL-MT6000 (4.11.1), GL-MT5000 (4.9.1), GL-BE9300 (4.10.2), GL-BE14000 (4.9.3), GL-BE6500 (4.9.1), GL-BE10000 (4.8.7), GL-E5800 (4.10.3), GL-X2000 (4.7.14) and GL-MG1300 (4.11.1), and for
-all seven KVM models (1.10.3, or 1.8.7 for the RMQ1). When we last looked, at 23:10 UTC on 22
-November, there was none yet for GL-AX1800, GL-MT2500 or GL-MT3600BE.
+GL.iNet's listing holds stable firmware dated 22 and 23 November 2026 for eighteen router
+models: GL-MG1300, GL-MT3000 and GL-MT6000 (4.11.1), GL-E5800 (4.10.3), GL-BE3600 and GL-BE9300
+(4.10.2), GL-BE14000 (4.9.3), GL-BE6500, GL-MT3600BE and GL-MT5000 (4.9.1), GL-BE10000 (4.8.7),
+GL-AX1800, GL-AXT1800, GL-SFT1200, GL-X3000 and GL-XE3000 (4.8.4), GL-MT2500 and GL-X2000
+(4.7.14); and for all seven KVM models (1.10.3, or 1.8.7 for the RMQ1). That is the list as our
+mirror held it at 01:18 UTC on 23 November.
 
 All of these builds are on our firmware mirror, <https://gl-fw.remotetohome.io/>, next to the
 builds they replace. Each file's checksum is verified against the one GL.iNet publishes. Use it
@@ -327,15 +365,30 @@ What we have read ourselves is the GL-MT3000 build, compared with the one before
   copy, which is the start-up file the older backdoor changes. It does not remove that
   backdoor's added files or its keep-list line. It removes the entries of the KVM-style implant
   only if one particular folder exists. We have not tested what still runs afterwards.
+- **That script is the whole clean-up, and it is the same in every build we could open.** On
+  23 November we unpacked the fixed build of seventeen of the eighteen models (not the
+  GL-E5800, whose file format we could not open). Each carries that one script, byte for byte
+  the same, and no other file in any of them mentions the names of the older backdoor's files
+  or of its servers. Nothing in the firmware looks for `/bin/ulogd`, for added SSH keys, or
+  for anything else in the settings an upgrade keeps.
+- **What an upgrade keeps has not been narrowed.** Read in the GL-MT3000 4.11.1 image, the
+  keep list still carries all of `/etc/config`, the cron tables, `/etc/rc.local`, the SSH
+  server's authorised keys, the account and password files and the scripts in
+  `/etc/udhcpc.user.d`. A root-level intruder could have written to any of those.
+- **So "removes the malware, keep your settings" holds only for the known start-up routes.**
+  By our reading the script puts the changed start-up file back before it would run, so the
+  older backdoor is no longer started the way we saw it started. Its file stays on the router,
+  and anything else left in kept settings stays too. This is from reading the images; we have
+  not yet upgraded an infected or test router to confirm it.
 - **One weakness is not addressed in that build.** It concerns the cloud client and is separate
   from the handler. The component involved is byte for byte the same as before. We reported
   it to GL.iNet on 22 November 2026 and will not describe it here until it is fixed.
 - **An update does not take back what was read.** Keys and passwords on a router that was hit
   still have to be replaced.
 
-We compared the two builds file by file, and read the changed handler and the new checker
-instruction by instruction, for this one model only. We have not read the fixed firmware of the
-other models.
+We compared the two GL-MT3000 builds file by file, and read the changed handler and the new
+checker instruction by instruction, for that one model only. In the other sixteen builds we
+read the clean-up script and searched the files; we have not read their handler.
 
 Because of the unaddressed weakness we are leaving GoodCloud switched off on the routers we
 look after, also after updating. With GoodCloud off on the router, the cloud client does not run.
