@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 00:45 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 02:40 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -136,8 +136,9 @@ handler had run, so on that model do not rely on the rule being absent.
 
 ## Check a device
 
-Two ways: the community script, or by hand. Both follow the table in
-[The signs, and what each one means](#the-signs-and-what-each-one-means).
+Three ways: the community script, by hand, or GL.iNet's own checks. The first two follow the
+table in [The signs, and what each one means](#the-signs-and-what-each-one-means). GL.iNet's
+checks look for one sign only and are listed last.
 
 ### With the script
 
@@ -201,7 +202,36 @@ that still shows the command after the router has been restarted or reinstalled.
 export the log before you change anything on the account: the same owner lost it after
 resetting the account password.
 
-For KVMs see [docs/kvm-firmware.md](docs/kvm-firmware.md).
+### GL.iNet's own checks
+
+These are the checks in GL.iNet's
+[security notice](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
+as it stood on 23 November 2026. All four look for the same thing: the exact text
+`crond -i /tmp/.log` in the details of a running process. A line that shows only the `grep`
+command is not a match.
+
+| Device | Where | Check |
+|---|---|---|
+| Router, web interface | Admin Panel: **System → Advanced Settings**, sign in to LuCI, then **Status → Processes** | Search the page (Ctrl+F) for `tmp/.log` |
+| Router, SSH | SSH session | `ps \| grep tmp` |
+| KVM, RMQ1 | KVM web interface: **Toolbox → Terminal → Access** | `ps -a \| grep tmp` |
+| KVM, all other models | The same terminal | `ps -aux \| grep tmp` |
+
+Run the KVM commands in the KVM's own terminal, not on the computer connected to it. If a KVM
+is infected, the notice also says to check that computer: unfamiliar programs, browser
+extensions or user accounts, unexpected start-up items or scheduled tasks, unusual settings
+changes or network activity, and a full scan with up-to-date security software.
+
+What we can say about these checks:
+
+- **On routers, not known to us.** That process was not running on any router we checked,
+  including every router where we found one of the other signs.
+- **On KVMs, not known to us either.** We have not examined an infected KVM. It is reported to
+  be the name the KVM installer gives its own process (findings K-9).
+- A result without a match says nothing about the other signs in the table above. The notice
+  itself now says its quick checks "may not detect every affected device".
+
+For KVM firmware see [docs/kvm-firmware.md](docs/kvm-firmware.md).
 
 ## If you find something
 
