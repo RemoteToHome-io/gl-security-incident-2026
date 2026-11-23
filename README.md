@@ -50,7 +50,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 17:39 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 17:40 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -340,7 +340,7 @@ it ([post 22](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-
 builds and the memory of 47 running copies ourselves: it takes four kinds of task from its server
 (run a program, write a file, write and run, forward traffic through a SOCKS5 proxy), its server
 names are `up.adguardns.com`, `up.adguardns.org` and `up.adsanalypro.com`, and no task was in
-memory on any of the 47 when we captured them (findings R-30; a full page is being added).
+memory on any of the 47 when we captured them (finding R-30; full page: [docs/older-backdoor-second-stage.md](docs/older-backdoor-second-stage.md)).
 
 **Its servers.** In the saved memory of the loader and the second stage: `cdn.adguardns.com`,
 `cdn.adguardns.org`, `up.adguardns.com` and `up.adguardns.org`, still answering on 21 November
@@ -758,6 +758,9 @@ not cover, mainly devices that are far away:
 - [docs/older-backdoor-loader.md](docs/older-backdoor-loader.md): the older backdoor's loader decoded:
   the string hiding, every command it builds, what it sends, what its servers answered, and a
   decoder ([tools/ulogd-decode](tools/ulogd-decode)) to run on your own sample
+- [docs/older-backdoor-second-stage.md](docs/older-backdoor-second-stage.md): the second stage
+  (`ujaild`): what it can do, its servers and how they are hidden, what 47 memory images show,
+  and detection rules ([tools/ujaild](tools/ujaild))
 - [docs/open-weaknesses.md](docs/open-weaknesses.md): what the fixed firmware does not close: the
   other commands the cloud channel accepts, the remote terminal, a lead in the fixed handler, a
   flaw in a DDNS helper, and what would close them
