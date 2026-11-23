@@ -50,7 +50,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 17:32 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 17:34 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -485,6 +485,10 @@ What we can say about these checks:
   including every router where we found one of the other signs.
 - **On KVMs, not known to us either.** We have not examined an infected KVM. It is reported to
   be the name the KVM installer gives its own process (findings K-9).
+- **The web-interface check does not work on some models.** GL.iNet staff confirm that on
+  Qualcomm-based models such as the GL-BE9300 the LuCI "Status → Processes" page is empty, and
+  point to SSH instead
+  ([forum post](https://forum.gl-inet.com/t/be9300-luci-no-info-in-status-processes/73166/4)).
 - A result without a match says nothing about the other signs in the table above. The notice
   itself now says its quick checks "may not detect every affected device".
 
@@ -744,6 +748,9 @@ not cover, mainly devices that are far away:
 - [docs/router-reverse-shell.md](docs/router-reverse-shell.md): the remote shell, the cloud command behind it and which routers have that code
 - [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md): what is known about the address the shells
   connected to, and the abuse report
+- [docs/open-weaknesses.md](docs/open-weaknesses.md): what the fixed firmware does not close: the
+  other commands the cloud channel accepts, the remote terminal, a lead in the fixed handler, a
+  flaw in a DDNS helper, and what would close them
 - [docs/gl-statements.md](docs/gl-statements.md): what GL.iNet has said in public, version by
   version, with what was added and removed
 - [docs/kvm-firmware.md](docs/kvm-firmware.md): what the KVM 1.10.2 and 1.10.3 firmware does and
@@ -754,7 +761,8 @@ not cover, mainly devices that are far away:
 ## What is deliberately not published here
 
 One thing only: a further weakness in the cloud client that the fixed firmware we read does not
-address. We reported it to GL.iNet's security team (security@gl-inet.com) on 22 November 2026
+address. (The other weaknesses we know of are published in
+[docs/open-weaknesses.md](docs/open-weaknesses.md).) We reported it to GL.iNet's security team (security@gl-inet.com) on 22 November 2026
 and told them we would withhold it until it is fixed. Reports that include it will be edited
 before they are merged.
 
