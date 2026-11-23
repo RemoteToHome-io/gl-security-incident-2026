@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 03:57 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 04:45 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -391,7 +391,7 @@ What we have read ourselves is the GL-MT3000 build, compared with the one before
   | Planted before the upgrade | After the upgrade | Ran on 4.11.1 |
   |---|---|---|
   | The changed start-up file of the older backdoor | Put back to the firmware's own | No |
-  | `/bin/ulogd` | Still there | No |
+  | `/bin/ulogd`, with the backdoor's own line in the upgrade keep list | Still there. The keep-list line is what carries it: a file put in `/bin` without that line is dropped by any upgrade | No |
   | The KVM-style implant's folder in `/etc/config`, its `rc.local` line and its three cron lines | Removed | No |
   | An added SSH key, and an added account | Still there | (these do not run) |
   | A different line in `rc.local` | Still there | Yes |
@@ -406,8 +406,25 @@ What we have read ourselves is the GL-MT3000 build, compared with the one before
 - **One weakness is not addressed in that build.** It concerns the cloud client and is separate
   from the handler. The component involved is byte for byte the same as before. We reported
   it to GL.iNet on 22 November 2026 and will not describe it here until it is fixed.
-- **An update does not take back what was read.** Keys and passwords on a router that was hit
-  still have to be replaced.
+- **The VPN server settings were changed on most routers with the older backdoor, and an
+  upgrade keeps them.** On 27 of the 30 such routers with a dated install,
+  `/etc/config/wireguard_server` was changed 9 to 12 seconds after the backdoor's files were
+  written. We had saved only the time of the change, so we do not know what was changed. That
+  file is in `/etc/config`, which an upgrade with settings kept carries over whole, and the
+  clean-up does not look at it. A clean-up that removed every file of the backdoor would still
+  leave it as the intruder left it.
+- **An update does not take back what was read.** A router with the remote shell or the older
+  backdoor has had everything on it readable by someone else: its SSH keys, the Wi-Fi and admin
+  passwords, VPN keys and profiles, its Tailscale and ZeroTier identities, DDNS and cloud
+  credentials. Keeping settings keeps exactly those. They have to be replaced whatever the
+  firmware does.
+- **So once any of [the signs](#the-signs-and-what-each-one-means) is found, do not keep
+  settings.** What was read has to
+  be replaced, what was changed cannot be told apart from your own settings, and where only the
+  attacker's command ran we cannot show that nothing more was sent. We know of no case in which
+  an upgrade with settings kept is the right way to recover such a router. Reinstall with
+  "Keep Settings" switched off and set it up again, as in
+  [If you find something](#if-you-find-something).
 
 We compared the two GL-MT3000 builds file by file, and read the changed handler and the new
 checker instruction by instruction, for that one model only. In the other sixteen builds we
