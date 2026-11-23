@@ -270,8 +270,8 @@ router's identifier, the listing of the two implant folders (or the "No such fil
 and two end markers. The `"id": 1` at the front is why the cloud's own log shows these replies
 with the number 1 where ordinary commands carry a 32-character id.
 
-On one of the seven the message had arrived in the client's encrypted message type and we
-decrypted it; on the other six it was in memory as plain text. The text is the same.
+The full catalogue of what we recovered, with counts by model, is in
+[attacker-messages.md](attacker-messages.md): this message was still in the memory of 98 routers.
 
 On the routers where the call was recorded twice, we found this one text only. On one more router
 of the same batch the message was no longer in memory; on routers that had restarted nothing was
@@ -280,8 +280,7 @@ did with the answer, or whether a router that answered "the folders exist" was t
 something else.
 
 **3. A message that tried to end the shell.** On one GL-AXT1800 4.8.2 with live shells, the
-client's memory held one more `virtual_ip_info` message, built the same way (249 bytes, recovered
-by decrypting it):
+client's memory held one more `virtual_ip_info` message, built the same way (249 bytes):
 
 ```json
 {"id": 1, "astrowarp": {"virtual_ip_info": {"data": [{"mac": "", "virtualIp": "127.0.0.1", "ip": "127.0.0.1;pkill -9 -f \"mkfifo /tmp/[f]\"; pkill -9 -f \"/tmp/.l[p]\"; pkill -9 -f \"cat /tmp/[f]\"; pkill -9 -f \"nc 170.39.226.21[9]\"; sleep 1"}]}}}

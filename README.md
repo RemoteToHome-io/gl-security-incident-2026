@@ -50,7 +50,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 17:40 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 17:41 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -755,6 +755,9 @@ not cover, mainly devices that are far away:
 - [docs/router-reverse-shell.md](docs/router-reverse-shell.md): the remote shell, the cloud command behind it and which routers have that code
 - [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md): what is known about the address the shells
   connected to, and the abuse report
+- [docs/attacker-messages.md](docs/attacker-messages.md): every message and command the attacker
+  sent to routers on 20 and 21 November, verbatim, with counts by model, and what was typed into
+  the reverse shells ([tools/memory-scan](tools/memory-scan))
 - [docs/older-backdoor-loader.md](docs/older-backdoor-loader.md): the older backdoor's loader decoded:
   the string hiding, every command it builds, what it sends, what its servers answered, and a
   decoder ([tools/ulogd-decode](tools/ulogd-decode)) to run on your own sample
