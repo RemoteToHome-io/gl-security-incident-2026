@@ -83,6 +83,12 @@ This is the version summarised in the README under "What GL.iNet has said".
   checks find nothing.
 - **New claim:** the security firmware removes the malware identified in this incident without
   a factory reset, and existing settings can be kept during the update.
+
+  ![GL.iNet's security notice on its own site, 23 November 2026, with the sentence about keeping settings marked](images/gl-notice-2026-11-23-keep-settings.png)
+
+  *The same passage on GL.iNet's own site
+  ([gl-inet.com](https://www.gl-inet.com/en-us/blogs/blog/glinet-security-notice-2026-11-20)),
+  screenshot taken on 23 November 2026, not later than 05:31 UTC. The red box is ours.*
 - **If the indicator is found, the factory reset option is gone.** The instruction is now to
   install the security firmware, with settings kept; contact support if the indicator is still
   there afterwards or the model is not listed.
