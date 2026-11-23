@@ -2,7 +2,7 @@
 
 > **New, 23 November 2026: what our own samples show.** We have now taken apart the malware and
 > the memory images we saved from the routers we manage. Nothing was run; everything was read.
-> The full pages are being added today; the main results:
+> The main results, each with its own page:
 >
 > - **The attack of 20 November and the KVM implant used the same server.** In one router's
 >   memory we found a command, sent through GL.iNet's cloud, that calls
@@ -25,8 +25,13 @@
 >   before, **`up.adsanalypro.com`**. In the memory of 47 routers we found check-ins going back to
 >   May 2026 and no task: none had been given a command that was still in memory.
 >
-> See [The older backdoor, step by step](#the-older-backdoor-step-by-step) and the
-> [technical breakdown](docs/technical-breakdown.md).
+> Pages added today: [every attacker message](docs/attacker-messages.md) ·
+> [the older backdoor's loader](docs/older-backdoor-loader.md) ·
+> [its second stage](docs/older-backdoor-second-stage.md) ·
+> [the KVM implant](docs/gl-helper-implant.md) ·
+> [weaknesses the fix leaves open](docs/open-weaknesses.md) ·
+> [GL.iNet's statements and staff posts over time](docs/gl-statements.md). Tools you can run on
+> your own samples are in [tools/](tools).
 
 > **New, 22 November 2026: the exploit in detail, and where it came from.** GL.iNet has released
 > fixed firmware, so the details we had held back are now published:
@@ -50,7 +55,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 17:41 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 17:42 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -758,6 +763,9 @@ not cover, mainly devices that are far away:
 - [docs/attacker-messages.md](docs/attacker-messages.md): every message and command the attacker
   sent to routers on 20 and 21 November, verbatim, with counts by model, and what was typed into
   the reverse shells ([tools/memory-scan](tools/memory-scan))
+- [docs/gl-helper-implant.md](docs/gl-helper-implant.md): the KVM implant as forum users took it
+  apart: installer, servers, files, persistence, hashes, what to look for, and how GL.iNet's
+  clean-up compares
 - [docs/older-backdoor-loader.md](docs/older-backdoor-loader.md): the older backdoor's loader decoded:
   the string hiding, every command it builds, what it sends, what its servers answered, and a
   decoder ([tools/ulogd-decode](tools/ulogd-decode)) to run on your own sample
@@ -768,7 +776,7 @@ not cover, mainly devices that are far away:
   other commands the cloud channel accepts, the remote terminal, a lead in the fixed handler, a
   flaw in a DDNS helper, and what would close them
 - [docs/gl-statements.md](docs/gl-statements.md): what GL.iNet has said in public, version by
-  version, with what was added and removed
+  version, with what was added and removed, and every staff post in the forum
 - [docs/kvm-firmware.md](docs/kvm-firmware.md): what the KVM 1.10.2 and 1.10.3 firmware does and
   does not do
 - [docs/monitoring.md](docs/monitoring.md): how to record what the cloud sends a device
