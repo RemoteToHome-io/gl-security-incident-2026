@@ -253,11 +253,27 @@ specifically for GL.iNet routers.
   [the loader page](older-backdoor-loader.md).
 - Outbound HTTPS to **`up.adguardns.com`**, **`up.adguardns.org`** or **`up.adsanalypro.com`**, to
   the path `/v1/gl/instance`, at long intervals (1, 2, 12 or 24 hours).
+- *Added 23 November 2026.* The text **`__DAEMON_STAGE=`** in the process's environment
+  (`/proc/<pid>/environ`). **Reported** by an owner who saw
+  `__DAEMON_STAGE=2/…` on an infected GL-MT6000
+  ([issue 14](https://github.com/admonstrator/glinet-csa-2026-01/issues/14) of the community
+  script's repository) and explained by infinisec, who traced it to the library the program uses
+  to put itself in the background
+  ([issue 24](https://github.com/admonstrator/glinet-csa-2026-01/issues/24)). **Verified by us**
+  as far as the files go: the text `__DAEMON_STAGE` is in both builds we hold, once in each. We
+  did not save the environment of a running copy, so we have not seen the variable set. This
+  mark does not depend on the program's name or on its servers.
 
 ### In a file or in memory (stable markers, the same in both builds)
 
 - The RC4 ciphertext constants above (`0329bd5c…`, `033cbb50…`, `442dbb43…`) — stable because the
   key and plain text are fixed.
+- *Added 23 November 2026.* Use the short server prefix above, not a longer one. A 40-character
+  prefix, `442dbb438c6785d61b216a8ad2eabb06c0120007`, has been proposed elsewhere as a mark
+  ([issue 24](https://github.com/admonstrator/glinet-csa-2026-01/issues/24)). It covers the two
+  `up.adguardns` addresses only: it is in build A (twice) and **not in build B**, the build on 7
+  of our routers that uses `up.adsanalypro.com`. The 26-character prefix `442dbb438c6785d61b216a8ad2`
+  and the hardware-path prefix `0329bd5c…` are in both. **Verified** by byte search in both files.
 - The recovered names `TaskForwardReq`, `TaskWriteExecReq`, `InstanceFields`, `UniqueID2`,
   `RetryWait`, `AutoKill`, and the strings `` unknown message type `%c` `` and `unknown op: %v`.
 - The Go build-info header `\xff Go buildinf:` with the function-table magic `0x26364a1c`.

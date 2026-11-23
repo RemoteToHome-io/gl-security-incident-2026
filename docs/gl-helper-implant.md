@@ -337,6 +337,41 @@ device was clearly infected even though GL.iNet's quick check found nothing.
 
 ---
 
+### Further traces, from a second reading of the samples
+
+*Added 23 November 2026.* A second researcher, infinisec, read the same installer (`ni.sh`,
+version 63) and its four programs and compared them with the community script
+([issue 25 of that script's repository](https://github.com/admonstrator/glinet-csa-2026-01/issues/25)).
+The points below are **Reported** from that issue; we hold no sample of this implant and have not
+checked them. They add to what is listed above:
+
+| Trace | What the issue says about it |
+|---|---|
+| `/var/spool/cron/crontabs` and `/var/spool/cron/crontabs/root` | The installer writes its cron entry and a `cron.update` file here as well as in `/etc/crontabs` and `/tmp/gl_crontabs`, and changes the files' times to hide it |
+| A second cron service | If no cron service is running, the installer starts `/etc/init.d/crond` or a bare `crond -b`. On GL.iNet routers `/tmp/gl_crontabs` is served by a separate cron process, so restarting one cron service does not stop the watchdog |
+| `/tmp/rc.local.bak` | Made when the installer adds its start-up line, and never deleted |
+| `/tmp/.bt` | Made by `watch.sh` or `run.sh` within 900 seconds of boot |
+| `/tmp/.wl` (with `/tmp/.wl/t`), `/tmp/.p`, `/tmp/.r` | A lock folder and the buffers `wake.sh` uses for its encrypted exchange with the server |
+| `gl-helper.dl` | The name of the implant while it is being downloaded directly |
+| `rn`, `wv` | Two more old names the installer cleans up, besides `eco` and `node` |
+| `$BASE/.rk1` as a process | Runs as `/bin/sh <folder>/.rk1` for up to an hour, checking `/etc/rtty_conf` every 60 seconds |
+| `/etc/rtty_conf` content | With `--rtty-keep --rtty-server <host>` the file is rewritten as `{"servers":["..."],"heartbeat":5,"timeout":0,"tls":false}`. The host is the operator's choice, so it need not be one of the known addresses |
+| `.u` | With `--wake-on --wake-url <URL>` the operator's own address is stored here; the helper reads it before it falls back to `http://gl-inet.top:8899/api/v2/sync` |
+| Any SSH key | `--ssh-key "<key>"` adds whatever key the operator gives. The name `gl-agent` is the default, not a fixed mark |
+| Any process name | `--fake <name>` sets the false process name. `crond -i /tmp/.log` is the default, not a fixed mark |
+
+The same researcher states, in
+[issue 23](https://github.com/admonstrator/glinet-csa-2026-01/issues/23), that both of the implant's
+addresses belong to one hosting company's network (`66.245.219.252` in `66.245.216.0/21` and
+`65.20.71.131` in `65.20.64.0/19`, both AS20473, Vultr), and names four ports for it: 8000, 8899,
+5912 and 5913. **Reported**; we have not checked the network ownership. Ports 8000 and 8899 match
+what is recorded above.
+
+What follows from this for an owner: the folder names, the default process name and the three
+known addresses are the operator's defaults. A device set up with other options would show none
+of them. That is one more reason to reinstall without keeping settings and not to rely on a
+check that found nothing.
+
 ## What this means for an owner
 
 An owner who still has an infected device (not yet reset or reflashed) can look for the fixed signs
