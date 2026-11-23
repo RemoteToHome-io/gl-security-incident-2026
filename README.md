@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 16:29 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 16:33 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -725,14 +725,21 @@ not cover, mainly devices that are far away:
 
 ## What is deliberately not published here
 
-Until 22 November we did not name the cloud command or describe the handler. GL.iNet has now
-released fixed firmware, and anyone can compare it with the build before, so those are described
-on this page and in [docs/router-reverse-shell.md](docs/router-reverse-shell.md).
+One thing only: a further weakness in the cloud client that the fixed firmware we read does not
+address. We reported it to GL.iNet's security team (security@gl-inet.com) on 22 November 2026
+and told them we would withhold it until it is fixed. Reports that include it will be edited
+before they are merged.
 
-Still not published: the message itself as sent, and one further weakness in the cloud client
-that the fixed firmware we read does not address. That one is with GL.iNet's security team
-(security@gl-inet.com) and stays out of this repository until it is fixed. Reports that include
-either will be edited before they are merged.
+Everything else we have verified is on these pages in full, including the attacker's messages
+as recovered ([technical breakdown](docs/technical-breakdown.md#what-was-sent-through-it-on-20-and-21-november))
+and the older backdoor's files, servers and protocol
+([The older backdoor, step by step](#the-older-backdoor-step-by-step)). Until 22 November we
+also held back the name of the cloud command and the handler; until 23 November, the text of
+the attacker's messages. Both are public elsewhere and both are now here.
+
+We never publish anything that identifies an owner or a device: no names, addresses, network
+ids, serial numbers or hardware addresses. In the attacker's messages the router's identifier is
+replaced by `<id>`.
 
 ## Credits
 
