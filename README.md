@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 03:48 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 03:57 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -135,6 +135,7 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 | The shells connected to `170.39.226.219`, a rented server at a US hosting provider with no named customer in the registry. We reported it to the provider on 21 November 2026; the provider replied the same day that it has suspended the server, notified its customer and preserved the data. On 22 November the address did not answer from any of 20 outside test points | Verified by us from public registries; see [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md) |
 | The shell leaves one file behind, an empty `/etc/mp_ip_mapping_info`; the shell, its named pipe `/tmp/f` and the firewall rule are gone after a reboot | Verified by us |
 | KVM firmware 1.10.3 removes an implant called "gl-helper" at boot on all six models we read. In 1.10.2 the RM1PE did and the RM1 did not. It keeps no copy, so upgrading an infected KVM removes the evidence | Verified by us from the official images; see [docs/kvm-firmware.md](docs/kvm-firmware.md) |
+| A KVM upgrade to 1.10.3 that keeps the configuration also keeps a boot script and an added SSH key, and the script runs on the new firmware. SSH is on at every boot in 1.10.3 | Verified by us on a test RM1 with harmless stand-ins; see [docs/kvm-firmware.md](docs/kvm-firmware.md) |
 | On the RM1, an upgrade that keeps settings carries the password, SSH keys and `/etc/kvmd/user` across | Verified by us on a test unit |
 
 ## The signs, and what each one means
@@ -411,6 +412,11 @@ What we have read ourselves is the GL-MT3000 build, compared with the one before
 We compared the two GL-MT3000 builds file by file, and read the changed handler and the new
 checker instruction by instruction, for that one model only. In the other sixteen builds we
 read the clean-up script and searched the files; we have not read their handler.
+
+**KVMs.** The same holds for the KVM firmware. On a test RM1, a boot script and an added SSH
+key that we placed before the upgrade were both still there on 1.10.3 after an upgrade with
+"Save current configuration" ticked, and the script ran at the first boot. Details and what to
+do are in [docs/kvm-firmware.md](docs/kvm-firmware.md).
 
 Because of the unaddressed weakness we are leaving GoodCloud switched off on the routers we
 look after, also after updating. With GoodCloud off on the router, the cloud client does not run.

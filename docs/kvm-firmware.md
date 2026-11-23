@@ -4,7 +4,18 @@
 RM1V2, RM1PE, RM4PE, RM10 and RM10RC, and 1.8.7 for the RMQ1; all are on our
 [firmware mirror](https://gl-fw.remotetohome.io/). We read the six 1.10.3 images, each matching
 its published checksum (findings K-10 and K-11). We have not read the RMQ1 build, which ships in
-a different format, and we have not tested 1.10.3 on a device.
+a different format. On 23 November we upgraded a test RM1 from 1.10.2 to 1.10.3 through its web
+interface with "Save current configuration" ticked (finding K-12).
+
+- **An upgrade that keeps the configuration also keeps a boot script and an SSH key.** Before
+  the upgrade we placed two harmless stand-ins on the RM1: a script in
+  `/etc/kvmd/user/scripts` that only writes a log line, and an extra public key in
+  `/root/.ssh/authorized_keys`. After the upgrade both were still there, and the script had run
+  ten seconds into the first boot on 1.10.3. The clean-up routine below names neither place.
+  So on a KVM that may have been hit, do not rely on the upgrade: untick "Save current
+  configuration" when you upgrade, or look in both places afterwards. By our reading of the
+  1.10.2 upgrade code, nothing is copied across when the box is unticked; we have not run that
+  case, and we have not read that code in 1.10.3.
 
 - **The cleanup is now in all six.** The routine described below, which in 1.10.2 was in the
   RM1PE image and not in the RM1 image, is in the 1.10.3 image of every one of the six models. It
@@ -17,7 +28,9 @@ a different format, and we have not tested 1.10.3 on a device.
   you did not add after upgrading.
 - **SSH starts at boot again.** In the RM1's 1.10.2 the SSH server only started when a settings
   file said so (see below). In 1.10.3 the SSH start script of all six models is the ordinary one
-  and starts the server at every boot. Read in the images; not tested on a device.
+  and starts the server at every boot. Read in the images, and confirmed on our RM1: after the
+  upgrade to 1.10.3 it answered on SSH fifteen seconds after boot with nothing switched on by
+  hand. With a kept SSH key, that key works again straight after the upgrade.
 - **The cloud remote terminal's start script is unchanged** from 1.10.2 on the RM1, and is the
   same file in all six models.
 
@@ -57,8 +70,9 @@ firmware has no cleanup routine. It kept:
 
 So after an upgrade on a unit that may have been hit: change the device and web passwords, look in
 `/root/.ssh` for keys you did not add, and look in `/etc/kvmd/user/scripts`. The firmware runs any
-script there named `S??*` at every boot, and that directory is inside the kept list. Whether a
-script placed there survives an upgrade has not been tested yet.
+script there named `S??*` at every boot, and that directory is inside the kept list. A script
+placed there survives an upgrade that keeps the configuration and runs afterwards: tested on
+23 November on the upgrade to 1.10.3 (see the top of this page).
 
 A factory reset wipes the whole writable partition on these models (read from the firmware's reset
 script; not run by us).
