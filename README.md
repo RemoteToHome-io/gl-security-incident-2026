@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 02:50 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 03:27 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -109,7 +109,9 @@ devices, or what the malicious software does.
 that settings can be kept. We unpacked the fixed build of seventeen router models: the clean-up
 is one short script, the same in each. It puts back the start-up file the older backdoor
 changes, leaves that backdoor's other file on the router, and does not examine the settings an
-upgrade keeps; see [Fixed firmware](#fixed-firmware). Our advice in
+upgrade keeps. In our test on a GL-MT3000, start-up entries it does not name survived an
+upgrade with settings kept and ran on the fixed firmware; see
+[Fixed firmware](#fixed-firmware). Our advice in
 [If you find something](#if-you-find-something) is unchanged: reinstall with "Keep Settings"
 switched off.
 
@@ -375,11 +377,27 @@ What we have read ourselves is the GL-MT3000 build, compared with the one before
   keep list still carries all of `/etc/config`, the cron tables, `/etc/rc.local`, the SSH
   server's authorised keys, the account and password files and the scripts in
   `/etc/udhcpc.user.d`. A root-level intruder could have written to any of those.
-- **So "removes the malware, keep your settings" holds only for the known start-up routes.**
-  By our reading the script puts the changed start-up file back before it would run, so the
-  older backdoor is no longer started the way we saw it started. Its file stays on the router,
-  and anything else left in kept settings stays too. This is from reading the images; we have
-  not yet upgraded an infected or test router to confirm it.
+- **So "removes the malware, keep your settings" holds only for the known start-up routes.
+  We tested it.** On 23 November we put harmless stand-ins for each known way of starting at
+  boot on a test GL-MT3000 (files of our own that only write a log line when they run),
+  confirmed that every one ran after a restart on 4.11.0, then upgraded to 4.11.1 with settings
+  kept:
+
+  | Planted before the upgrade | After the upgrade | Ran on 4.11.1 |
+  |---|---|---|
+  | The changed start-up file of the older backdoor | Put back to the firmware's own | No |
+  | `/bin/ulogd` | Still there | No |
+  | The KVM-style implant's folder in `/etc/config`, its `rc.local` line and its three cron lines | Removed | No |
+  | An added SSH key, and an added account | Still there | (these do not run) |
+  | A different line in `rc.local` | Still there | Yes |
+  | A different cron line | Still there | Yes |
+  | A script in `/etc/udhcpc.user.d` | Still there | Yes |
+
+  The clean-up does what its script says: the start-up routes it names are removed before they
+  run. Everything it does not name is carried over with the settings, and what can run does
+  run on the fixed firmware. An intruder with root access was not limited to the routes that
+  have been found so far. One router, one model, upgraded with the router's command-line tool;
+  the stand-ins copy the file names and start-up routes, not the real programs.
 - **One weakness is not addressed in that build.** It concerns the cloud client and is separate
   from the handler. The component involved is byte for byte the same as before. We reported
   it to GL.iNet on 22 November 2026 and will not describe it here until it is fixed.
