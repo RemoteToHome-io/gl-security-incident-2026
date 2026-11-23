@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 03:27 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 03:48 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -85,8 +85,10 @@ These are GL.iNet's statements, not our findings:
   - "An unlisted model is not necessarily unaffected."
 - **"The security firmware update removes the malware identified in this incident without
   requiring a factory reset. You can keep your existing settings during the update."**
-- **The indicator** is the exact text `crond -i /tmp/.log` in the details of a running process,
-  on routers and KVMs alike. The notice gives four ways to look for it; they are listed under
+- **The check.** On a router: `ps | grep tmp` over SSH, or search for `tmp/.log` in LuCI under
+  Status → Processes. On a KVM, in its own terminal: `ps -aux | grep tmp` (`ps -a | grep tmp`
+  on the RMQ1). In each case the indicator is the exact text `crond -i /tmp/.log` in the
+  details of a running process. The full steps are under
   [GL.iNet's own checks](#glinets-own-checks).
 - **If you find the indicator:** treat the device as infected and install the security
   firmware; settings can be kept. If the indicator is still there afterwards, or the model is
@@ -156,7 +158,7 @@ names.
 | **State file** | `/etc/mp_ip_mapping_info`, empty, dated 20 November 2026 or later, on a router that does not use AstroWarp | Yes | The same handler ran. It is the only trace left after a restart. It does not show what the message carried |
 | **Cloud log entry** | In the device log exported from your GoodCloud account: command responses containing `"astrowarp"` with the id `1`, where ordinary commands carry a 32-character id | Yes, it is kept on GL.iNet's side | The `virtual_ip_info` command was sent to that device, with the time. Reported by one owner; we have not checked it ourselves |
 | **Older backdoor** | Extra lines at the top of `/etc/init.d/urandom_seed`, a file `/bin/ulogd`, and an added line in `/lib/upgrade/keep.d/netifd`; when running, processes named `monitord` and `ujaild` | Yes; its keep-list line is there to carry it through upgrades that keep settings | A separate, earlier compromise, with file dates from October 2025 on. It starts at every boot and contacts its own servers |
-| **GL.iNet's indicator** | A process `crond -i /tmp/.log` | Not known to us | The one sign GL.iNet's notice tells owners to look for. It is reported to be the name the KVM installer gives its own process (findings K-9). We have not found it on any router |
+| **GL.iNet's indicator** | GL.iNet's check for a router is `ps \| grep tmp` over SSH (or search for `tmp/.log` in LuCI under Status → Processes); a hit is a line containing `crond -i /tmp/.log`. On a KVM it is `ps -aux \| grep tmp` (`ps -a \| grep tmp` on the RMQ1). All four are in [GL.iNet's own checks](#glinets-own-checks) | Not known to us | The one sign GL.iNet's notice tells owners to look for. It is reported to be the name the KVM installer gives its own process (findings K-9). We have not found it on any router |
 
 How to read a combination:
 
@@ -195,7 +197,9 @@ remote-terminal setting added by an attacker. Its `--fix` does not remove the ol
 
 ### By hand, over SSH on a router
 
-One check per sign, in the order of the table. Run them before you restart the router.
+One check per sign, in the order of the table. Run them before you restart the router. The first
+command is ours and covers three signs at once; GL.iNet's own command for its indicator is
+`ps | grep tmp`, listed under [GL.iNet's own checks](#glinets-own-checks).
 
 | Sign | Command | A hit looks like |
 |---|---|---|
