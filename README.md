@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 05:32 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 08:18 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -335,9 +335,19 @@ that access at the other end.
      last directory on each DHCP event (read in the GL-AXT1800 4.6.11 and GL-MT3600BE 4.9.0
      images). Forum users report a backdoor that survived upgrades with settings kept. We have
      since found that backdoor on routers we manage, with its own line added to the keep list
-     (*corrected 22 November: this page said we had not seen such a device*).
-   - **A factory reset alone is the second choice.** It erases the writable layer, where
-     everything in those reports lives, but leaves the installed firmware image as it is. On a
+     (*corrected 22 November: this page said we had not seen such a device*). We also
+     tested it: on a GL-MT3000, start-up entries placed in kept settings survived an upgrade to
+     the fixed firmware and ran on it (see [Fixed firmware](#fixed-firmware)).
+   - **Do it in one step, not two.** A reinstall with settings off replaces the firmware image
+     and the writable layer at the same moment. Any sequence that renews them one after the
+     other (a factory reset and then an upgrade with settings kept, or the other way round)
+     leaves one of the two as it was while the other is renewed, so whatever is in the old half
+     gets a first boot in which it can write into the new half. We have not seen a changed
+     firmware image on a router. That is not much comfort: our checks find what we already know
+     to look for, and someone careful would not have left that.
+   - **A factory reset alone is not a recovery.** Use it only as a stop-gap when you cannot
+     reinstall yet. It erases the writable layer, where everything we and the forum reports have
+     found lives, but leaves the installed firmware image as it is. On a
      GL-AXT1800 (4.8.4) the flash partition that holds that image is writable from a root shell
      and the tools a firmware update uses are on the router, so an attacker with root was not
      prevented from changing the image (read from the device; we did not attempt a write, and we
@@ -345,6 +355,12 @@ that access at the other end.
      off, starts with an empty writable layer (read in the upgrade scripts of the GL-MT3600BE
      4.9.0 image; other models not checked, and on a model with two firmware slots the other
      slot is not rewritten).
+   - **What a reinstall does not replace.** It is the most complete step an owner has; it is
+     not a guarantee. On a GL-MT3000 (4.11.1) the upgrade rewrites only the firmware image and
+     the writable layer. The boot loader and the partition that holds the device's own data
+     (serial number, hardware address, DDNS id, country code) are left as they were, by a reset
+     and by a reinstall alike (read in that firmware's upgrade scripts and partition table; we
+     have not compared them before and after an upgrade).
    - **The boot loader.** We found no step in a reset or a reinstall that rewrites it (read in
      the GL-AXT1800 and GL-MT3600BE firmware). On the GL-AXT1800 that had the remote shell
      (firmware 4.8.3) the kernel marks the boot loader partition writable and let us open it
@@ -354,6 +370,10 @@ that access at the other end.
      the one published on 1 December 2021. That is one router; we know of no report of a
      changed boot loader. *Corrected 22 November: this page said the kernel marked the boot
      loader not writable on both routers we read. That was true of one of them.*
+   - **KVMs.** The same applies. An upgrade with "Save current configuration" ticked carried a
+     boot script and an added SSH key into 1.10.3 on our test RM1. Untick it. By our reading of
+     the 1.10.2 upgrade code nothing is then copied across; we have not run that case. See
+     [docs/kvm-firmware.md](docs/kvm-firmware.md).
 8. Check the computers behind the device. For a KVM, check the computer it was attached to.
 
 ## Fixed firmware
