@@ -22,7 +22,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 04:45 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-23 05:31 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -106,6 +106,17 @@ These are GL.iNet's statements, not our findings:
 
 GL.iNet has not published which firmware versions were affected, the time window, how many
 devices, or what the malicious software does.
+
+**How the notice has changed.** Earlier wording is kept, with dates, in
+[docs/gl-statements.md](docs/gl-statements.md). The times are the forum's edit times of the
+versions we saved; three earlier edits on 21 November were made before our first copy.
+
+| Version edited (UTC) | What it told owners |
+|---|---|
+| 21 November, 10:35 | Factory reset every router and KVM and set it up again. Corrective measures had been implemented "on affected devices". No indicator and no check |
+| 21 November, 14:10 | The factory reset recommendation was removed. In its place: links to two forum topics on how to check a router and a KVM |
+| 21 November, 16:00 | Rewritten. One indicator, `crond -i /tmp/.log`. If found: KVM beta firmware, or a factory reset. If not found: no reset or cleanup needed. The sentence about corrective measures on affected devices was removed |
+| 23 November, 01:53 | The current text above. The security firmware is said to remove the malware with settings kept; the factory reset option is gone, also when the indicator is found; the official checks "may not detect every affected device" |
 
 **Where this differs from what we found.** The notice says the update removes the malware and
 that settings can be kept. We unpacked the fixed build of seventeen router models: the clean-up
@@ -508,6 +519,8 @@ not cover, mainly devices that are far away:
 - [docs/router-reverse-shell.md](docs/router-reverse-shell.md): the remote shell, the cloud command behind it and which routers have that code
 - [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md): what is known about the address the shells
   connected to, and the abuse report
+- [docs/gl-statements.md](docs/gl-statements.md): what GL.iNet has said in public, version by
+  version, with what was added and removed
 - [docs/kvm-firmware.md](docs/kvm-firmware.md): what the KVM 1.10.2 and 1.10.3 firmware does and
   does not do
 - [docs/monitoring.md](docs/monitoring.md): how to record what the cloud sends a device
