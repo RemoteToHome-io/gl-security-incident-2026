@@ -46,6 +46,79 @@ by a shell, either field can carry shell metacharacters. We saw both injection p
 **How it is known:** Verified — we read the handler building this string and read the messages that
 drove it in the cloud client's memory on many routers (below).
 
+## The topic a message arrives on, and how to tell the attacker's from GoodCloud's own
+
+*Added 23 November 2026.* The cloud client keeps each message in memory together with the name of
+the channel (the MQTT "topic") it arrived on. In the 147 cloud-client images (143 first captures
+and 4 second captures) we recovered 1,495 framed messages with their topics. Every image holds at
+least one. For 75 of them, all replies from the router, only the topic could be read and not the
+body; every request was read in full.
+
+The attacker's message arrives on, and the router answers on:
+
+```
+/sys/<model>/<version>/<device id>/command/astrowarp/virtual_ip_info/request
+/sys/<model>/<version>/<device id>/command/astrowarp/virtual_ip_info/respond
+```
+
+`<model>` is the model in lower case without "GL-" (`mt6000`, `axt1800`), `<version>` is the
+firmware version (`4.8.3`), and `<device id>` is the router's hardware address as twelve
+hexadecimal characters. This matches GL.iNet's own report, which says the attacker needs to know a
+device's MAC address ([GL.iNet's statements](gl-statements.md#glinets-published-vulnerability-reports)).
+
+Every topic recovered, with the part after `/sys/<model>/<version>/<device id>/`:
+
+| Topic | Messages | Images | Models |
+|---|---|---|---|
+| `command/goodcloud/bind_goodcloud/request` | 716 | 93 | 11 |
+| `command/astrowarp/server_latency_detection/request` | 388 | 100 | 11 |
+| **`command/astrowarp/virtual_ip_info/request`** | **187** | **123** | **11** |
+| **`command/astrowarp/virtual_ip_info/respond`** | **114** | **52** | **9** |
+| `command/base/rpc/request` | 21 | 13 | 5 |
+| `command/astrowarp/server_latency_detection/respond` | 21 | 21 | 5 |
+| `attribute/get_respond` | 14 | 6 | 3 |
+| `command/base/rpc/respond` | 11 | 4 | 3 |
+| `attribute/get_request` | 9 | 7 | 4 |
+| `command/goodcloud/bind_goodcloud/respond` | 7 | 7 | 2 |
+| `command/goodcloud/rtty_run/request` | 2 | 2 | 2 |
+| `command/wg_server/get_status/respond` | 2 | 1 | 1 |
+| `command/wg_server/get_status/request` | 1 | 1 | 1 |
+| `command/dpi/get_top_app_flow_statistics/request` | 1 | 1 | 1 |
+| `command/dpi/get_top_app_flow_statistics/respond` | 1 | 1 | 1 |
+
+These count framed copies only. The partial, re-encoded copies described in the next
+section are counted in the per-command figures further down, not here.
+
+**All 187 `virtual_ip_info` requests carry an injected command. We recovered no ordinary one.**
+
+**The attacker's messages are written differently from every other command on the channel.** All
+1,129 command requests on the other topics have the same form: no spaces, an `id` that is a string
+of 32 hexadecimal characters, and a `ts` field:
+
+```
+{"<module>":{"<method>":{ ... }},"id":"<32 hexadecimal characters>","ts":<number>}
+```
+
+All 187 `virtual_ip_info` requests have this form instead: a space after each colon and comma, `id`
+first and equal to the number `1`, and no `ts` field:
+
+```
+{"id": 1, "astrowarp": {"virtual_ip_info": {"data": [ ... ]}}}
+```
+
+So in a log of this channel, a request on a `virtual_ip_info/request` topic with `"id": 1` and no
+`ts` is the attacker's. The router copies the `id` into its answer, which is why the replies R1 and
+R2 below carry `"id":1`.
+
+**The other topics hold ordinary GoodCloud traffic, as far as their content shows.** The
+`base/rpc` requests ask for the router's status (14), a modem's signal readings (4) and a ping of
+one of GL.iNet's own remote-terminal hosts (3). The two `rtty_run` requests name that same
+GL.iNet host. We do not know who sent them; nothing in them carries a command, and they have the
+ordinary form above.
+
+**How it is known:** Verified, by reading the framed messages in the 147 images. Limit: we see
+what was still in memory when each image was saved, not everything that was ever sent.
+
 ## The forms a message takes in memory
 
 The same message text appears in memory in more than one form, and our analysis read all of them:
