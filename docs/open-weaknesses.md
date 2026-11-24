@@ -152,7 +152,8 @@ part. It may be that the values cannot reach it in a harmful form.
 
 *Read by disassembly and in the plain shell script, GL-MT3000 4.11.1 (package `gl-sdk4-ddns`
 build git-2026.237). Not reachable in the configuration that firmware ships with. Not tested with
-a crafted value. Not yet reported to GL.iNet when this page was written.*
+a crafted value. Not yet reported to GL.iNet when this page was written; reported on
+23 November 2026.*
 
 - `/usr/lib/gl_ddns/get_ddns_post_cmd.lua` reads the device's DDNS identifier from its device
   data (`/proc/gl-hw-info/device_ddns`) as it is, puts it into a JSON object, wraps that in
