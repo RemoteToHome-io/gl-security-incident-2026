@@ -1,8 +1,9 @@
 # GL.iNet cloud incident, November 2026: what is known, how to check, how to recover
 
 **What this page is.** A place to coordinate findings on the GL.iNet cloud remote-management
-incident of 20 November 2026, kept by [RemoteToHome Consulting](https://remotetohome.io), an
-independent networking and VPN consultancy. GL.iNet's information is spread over
+incident of 20 November 2026, kept by [RemoteToHome Consulting](https://remotetohome.io), a
+security consultancy providing networking, VPN and IT solutions for digital nomads, expats and
+small business. GL.iNet's information is spread over
 forum threads that change and get buried; this page collects what is known in one place and is
 updated as findings come in.
 
@@ -12,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-24 05:04 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-24 05:15 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
