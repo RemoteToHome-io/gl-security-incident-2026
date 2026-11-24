@@ -23,7 +23,8 @@
 >   written in Go and hidden with the `garble` tool. Its server names are stored encrypted in the
 >   program; decrypted they are `up.adguardns.com`, `up.adguardns.org` and a name not reported
 >   before, **`up.adsanalypro.com`**. In the memory of 47 routers we found check-ins going back to
->   May 2026 and no task: none had been given a command that was still in memory.
+>   May 2026, but no order from the server: at the time we looked, none of them was being told to
+>   do anything. That does not show none ever was.
 >
 > - **GL.iNet changed its guidance on 23 November.** Its site notice now says to reinstall
 >   without keeping settings where access is known or suspected, and to replace passwords and
@@ -60,7 +61,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-24 00:32 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-24 04:39 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
