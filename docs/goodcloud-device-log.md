@@ -97,6 +97,68 @@ the cause, a message broker that let an outside client publish to other people's
 after they reconnect. We saw it twice in the four days. Those have a `publish` row and a long
 quoted `id`. So the command name alone is not the mark; the `id` and the missing `publish` row are.
 
+## Model by model
+
+*Added 24 November 2026.* When a device connects, the log records its model and firmware. That
+gives both for 195 of the 260 devices; the other 65 did not reconnect in those four days, so
+the log does not say what they are. The table is in the order the attacker reached each group. It
+uses each device's first answer in the attacker's form; the single early answer of 19 November
+is from a device without a registration row and is not in it.
+
+| Model | Firmware | Devices | Answered | First answers (UTC) |
+|---|---|---|---|---|
+| GL-MT6000 | 4.9.1 | 6 | 6 | 20 Nov 20:06:29 to 20:07:19 |
+| GL-AXT1800 | 4.8.4 | 2 | 2 | 20 Nov 20:46:14 to 20:47:14 |
+| GL-AXT1800 | 4.8.2 | 16 | 13 | 20 Nov 20:46:15 to 20:48:40 |
+| GL-AXT1800 | 4.8.3 | 22 | 19 | 20 Nov 20:46:22 to 20:48:41 |
+| GL-MT6000 | 4.8.3 | 13 | 12 | 20 Nov 23:46:58 to 21 Nov 00:49:05 |
+| GL-AX1800 | 4.8.3 | 1 | 1 | 20 Nov 23:50:12 |
+| GL-BE3600 | 4.8.3 | 1 | 1 | 20 Nov 23:51:19 |
+| GL-BE9300 | 4.9.0 | 1 | 1 | 20 Nov 23:54:16 |
+| GL-BE9300 | 4.8.4 | 1 | 1 | 20 Nov 23:54:52 |
+| GL-MT3000 | 4.8.1 | 16 | 13 | 21 Nov 00:21:10 to 00:23:05 |
+| GL-MT3000 | 4.9.0 | 7 | 7 | 21 Nov 00:21:12 to 00:22:59 |
+| GL-MT3000 | 4.8.0 | 3 | 3 | 21 Nov 00:21:47 to 00:22:40 |
+| GL-MT3000 | 4.8.2 | 1 | 1 | 21 Nov 00:21:48 |
+| GL-MT6000 | 4.8.2 | 5 | 5 | 21 Nov 00:48:04 to 00:48:31 |
+| GL-MT6000 | 4.9.0 | 4 | 4 | 21 Nov 00:48:16 to 00:49:10 |
+| GL-MT6000 | 4.8.4 | 2 | 2 | 21 Nov 00:48:35 to 00:48:49 |
+| GL-MT6000 | 4.8.1 | 1 | 1 | 21 Nov 00:48:41 |
+| GL-BE3600 | 4.9.2 | 1 | 1 | 21 Nov 01:16:36 |
+| GL-BE3600 | 4.8.1 | 4 | 4 | 21 Nov 01:20:04 to 01:26:24 |
+| GL-MT5000 | 4.9.0 | 19 | 18 | 21 Nov 01:40:55 to 01:41:51 |
+| GL-MT5000 | 4.8.6 | 7 | 7 | 21 Nov 01:41:08 to 01:41:49 |
+| GL-BE6500 | 4.8.7 | 1 | 1 | 21 Nov 02:11:44 |
+| GL-MT2500 | 4.9.0 | 1 | 1 | 21 Nov 03:01:47 |
+| GL-BE10000 | 4.8.6 | 1 | 1 | 21 Nov 03:17:49 |
+| GL-MT3600BE | 4.9.0 | 10 | 8 | 21 Nov 04:39:39 to 04:40:14 |
+| GL-MT3600BE | 4.9.1 | 2 | 2 | 21 Nov 04:39:51 to 04:40:09 |
+| GL-MT3600BE | 4.8.5 | 2 | 2 | 21 Nov 04:40:01 to 04:40:07 |
+| GL-MT6000 | 4.7.0 | 2 | 2 | 21 Nov 05:50:01 to 05:50:53 |
+| GL-MT6000 | 4.7.7 | 8 | 7 | 21 Nov 05:50:29 to 05:51:15 |
+| GL-MT6000 | 4.7.4 | 2 | 2 | 21 Nov 05:50:55 to 05:51:35 |
+| GL-MT2500 | 4.7.4 | 3 | 3 | 21 Nov 06:13:08 to 06:14:17 |
+| GL-MT2500 | 4.7.13 | 5 | 5 | 21 Nov 06:13:09 to 06:13:52 |
+| GL-MT3000 | 4.7.4 | 9 | 9 | 21 Nov 07:44:15 to 07:49:52 |
+| GL-MT3000 | 4.7.0 | 2 | 2 | 21 Nov 07:49:52 to 07:49:52 |
+| GL-AXT1800 | 4.7.0 | 2 | 2 | 21 Nov 08:04:42 to 08:04:42 |
+| GL-AX1800 | 4.7.0 | 1 | 0 | none |
+| GL-E5800 | 4.10.0 | 1 | 0 | none |
+| GL-MT3000 | 4.11.0 | 6 | 0 | none |
+| GL-MT3600BE | 4.8.7 | 1 | 0 | none |
+| GL-MT6000 | 4.11.0 | 3 | 0 | none |
+
+- **The attacker worked through the devices one model and firmware line at a time.** Each group was
+  reached within a minute or two, across unrelated owners. That is the same pattern, and the same
+  minutes, that we read from the routers themselves
+  ([attacker messages](attacker-messages.md#totals)).
+- **No device on 4.11.0 answered.** Nine devices on 4.11.0 (GL-MT3000 and GL-MT6000) were connected
+  in those days and none was called. The flaw is in 4.11.0
+  ([technical breakdown](technical-breakdown.md)); the attacker did not use it there. We do not
+  know why.
+- **Of the 195 devices whose firmware the log gives, 169 answered.** Leaving out the groups that
+  were not called at all, nearly every device in a group that was called answered.
+
 ## 19 November: the first calls
 
 Four replies on the morning of 19 November answer requests GoodCloud did not log:

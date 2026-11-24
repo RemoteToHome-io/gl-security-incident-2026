@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-24 09:41 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-24 16:27 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -366,7 +366,7 @@ The full account, command by command, with a decoder you can run on your own sam
   and `adxinsight.com` registered on 4 July 2025, eight minutes apart at two registrars;
   `openwrt-project.org` on 18 August 2025, with certificates for all three issued within eleven
   minutes the next morning; `adguardns.com` and `adguardns.org` on 8 December 2025, 25 minutes
-  apart. *Added 24 November:* we checked these dates in the registries ourselves, and
+  apart. *Added 24 November:* we checked these dates and the certificates in the public records ourselves, and
   `adsanalypro.com`, the name found only in our samples, was registered three seconds after
   `adxinsight.com` at the same registrar. Two of the names had belonged to someone else years before and were registered again
   after they lapsed. Our earliest file date is 15 September 2025 and our batches begin on

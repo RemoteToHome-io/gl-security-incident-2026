@@ -134,5 +134,17 @@ looked up by us in the registries' own records on 24 November 2026 (times UTC):
   before the attack of 20 November.
 - Every older-backdoor name sits behind Cloudflare's name servers, in three pairs. `gl-inet.top`
   uses its registrar's own. The records name no owner for any of them.
-- We read registration records only. We did not look the names up in DNS and did not contact any
-  of the servers.
+- **Certificates** (public certificate-transparency records, looked up 24 November 2026):
+  - On 19 August 2025, the morning after `openwrt-project.org` was registered, certificates for
+    `adxinsight.com`, `openwrt-project.org` and `lede-openproject.org` start between 05:50:31 and
+    06:01:11 UTC, as forum users reported. `adsanalypro.com` follows in the same run, at 06:03:37
+    and 06:05:27. That is a second record tying it to the others.
+  - `adxinsight.com` and `adsanalypro.com` each also have a certificate from the same authority
+    dated 5 July 2025, the day after the two were registered three seconds apart.
+  - Two names had earlier owners. `adguardns.com` has certificates from 2019 and 2020, and
+    `openwrt-project.org` from 2021, years before they were registered again in 2025.
+  - No certificate is recorded for `gl-inet.top`. The KVM implant reaches it over plain HTTP.
+  - The times are each certificate's validity start, which an authority may set a little before
+    the moment of issue.
+- We read registration and certificate records only. We did not look the names up in DNS and did
+  not contact any of the servers.
