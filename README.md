@@ -61,7 +61,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-24 04:39 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-24 04:42 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -546,6 +546,16 @@ What we can say about these checks:
 For KVM firmware see [docs/kvm-firmware.md](docs/kvm-firmware.md).
 
 ## If you find something
+
+> **Start with the community check.** Admon's triage script and its step-by-step guide are the
+> first layer: they check a router or KVM for the known signs, save the evidence, and can remove
+> the known traces of the 20 November malware.
+> Guide: <https://gl-i.net/security/csa-2026-01/fix/> ·
+> Script: <https://github.com/admonstrator/glinet-csa-2026-01>
+>
+> Run it **before** you restart, reset or update the device; some traces last only until the next
+> restart. It does not replace the steps below: its `--fix` does not remove the older backdoor,
+> and no clean-up takes back a key that was copied.
 
 **A compromised router is not the only thing that is compromised. Everything it held a key for is
 too.** The attacker had a root shell, so every key, password and profile stored on the device
