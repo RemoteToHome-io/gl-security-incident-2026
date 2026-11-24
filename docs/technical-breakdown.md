@@ -409,10 +409,23 @@ On 20 December 2025 it reached 11 routers on 11 different networks, six of them 
 minutes. On two GL-MT3000 4.7.4 routers of unrelated owners the files are 35 seconds apart, at
 10:34:02 and 10:34:37 that day. These are the routers' own clocks.
 
+*Corrected 24 November 2026.* The paragraph above used each file's change time, which was unusable
+on 9 routers: a later upgrade that kept settings had restored the files before the clock was set,
+so their change time reads January 1970. The files' modification time survived that, and it gives
+a date for all 49. By modification time the installs fall on 15 and 27 September 2025; 12 and 13
+October 2025; 7, 9, 12, 14, 16, 17, 19, 20, 21 and 29 December 2025; 1 January 2026; 6, 7 and 27
+February 2026; 1, 28 and 29 March 2026; 21, 23 and 24 May 2026. Thirty of the 49 are in December
+2025. On 20 December 2025 it reached 13 routers on 12 different networks, not 11 on 11; six of
+them within 14 minutes still holds. On all 49 the start-up script's time is within 60 seconds of
+the loader's. That those 9 routers kept the backdoor through an upgrade is itself a record of its
+keep-list line working.
+
 **Where the routers were.** 44 of the 49 have no public address on their WAN port, so they are not
 directly reachable from the internet. Each of the 38 we could check was bound to GoodCloud before
 its install date, and each runs a build of the cloud package later than the one in which the
-handler first appears (finding R-18).
+handler first appears (finding R-18). *Corrected 24 November 2026:* with a date for all 49 (see
+above), 48 of the 49 were bound to GoodCloud before the install; the last one has no bind time
+on record.
 
 **The VPN server configuration.** On 27 of 30 backdoor routers with a dated install,
 `/etc/config/wireguard_server` was changed 9 to 12 seconds after the backdoor files were written;

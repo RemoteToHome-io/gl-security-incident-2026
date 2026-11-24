@@ -60,7 +60,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-23 23:26 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-24 00:32 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -344,7 +344,8 @@ The full account, command by command, with a decoder you can run on your own sam
   minutes the next morning; `adguardns.com` and `adguardns.org` on 8 December 2025, 25 minutes
   apart. Two of the names had belonged to someone else years before and were registered again
   after they lapsed. Our earliest file date is 15 September 2025 and our batches begin on
-  7 December 2025.
+  7 December 2025. *Added 24 November:* by the files' modification time, which gives a date for
+  all 49 routers, 30 of our 49 installs are in December 2025.
 - **Not every router gets the second stage** (Reported). One owner found the loader running and
   no `ujaild` ([post 14](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/14)). On ours it was running on all 49.
 - **Models reported by others** beyond ours: GL-X2000 and GL-XE3000 ([post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2),
