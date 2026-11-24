@@ -130,6 +130,81 @@ The same logs: any message in the attacker's form to these routers before 20 Nov
 
 ---
 
+## Inference 3. The attacker tried the flaw on a few devices on 19 November, before the main wave
+
+*Added 24 November 2026.*
+
+**In one sentence:** four calls on the morning of 19 November look like a trial run, about 36 hours
+before the attack began in earnest.
+
+### The facts it rests on
+
+From GoodCloud's own Device Logs in our account
+([the attack in GoodCloud's own log](goodcloud-device-log.md), findings R-37 and R-38), and from the
+routers.
+
+**1. Four devices answered `astrowarp` requests that GoodCloud did not send.**
+
+| Time (UTC, 19 November) | Reply | `id` in the reply |
+|---|---|---|
+| 08:48:57 | empty `astrowarp` list | a long quoted string, the ordinary form |
+| 08:49:05 | `virtual_ip_info` | a long quoted string |
+| 08:49:12 | empty `astrowarp` list | a long quoted string |
+| 09:33:36 | empty `astrowarp` list | the number `1`, the attacker's form |
+
+**2. Nothing else like them exists in four days of log.** Of 1,035 `astrowarp` replies with an
+ordinary `id` between 18 and 21 November, 1,032 have the request that caused them in the log.
+These are the other three. In the three minutes either side of each of the four, the log holds
+nothing for that device but its routine reports.
+
+**3. Then nothing for 34 hours.** The next reply in the attacker's form, or without a logged
+request, is at 20:06:29 on 20 November, the start of the main wave, after which 210 devices
+answered in the attacker's form. The only such replies in between are four of GoodCloud's own on
+20 November, each with its request in the log.
+
+**4. The routers agree.** On three of the four devices the handler's state file was first written
+in the same second as the reply. The fourth is a device we have not examined.
+
+**5. What we know of the three we examined.** They are three different models. Two run 4.7.0, the
+oldest firmware line that has the flaw, and carry the older backdoor. The third is the one router
+that was later sent a call to the KVM implant's server
+([attacker messages, C8](attacker-messages.md)).
+
+**6. The KVM side moved the same day** (Reported). The compromised KVM whose logs were published
+downloaded the implant's installer on 19 November
+([attacker infrastructure](attacker-infrastructure.md)).
+
+### What this makes more likely
+
+That someone with the same access the attacker used on 20 November tried the handler on a handful
+of devices a day and a half earlier: three calls within fifteen seconds whose `id` was made to
+look like GoodCloud's own, then one call 44 minutes later with the plain `1` that every message of
+the main wave carries. A trial, and a change of method between the first try and the second.
+
+It also suggests the published start date is the date the attack was noticed, not the date it
+began.
+
+### What fits the opposite
+
+- **The first three could be GoodCloud's own.** GoodCloud does send `virtual_ip_info` itself, and
+  those three replies carry an ordinary `id`. Against that: every other such reply in the log has
+  its request beside it, and these three have none.
+- **A different party.** Nothing in the log names the sender. The three early calls and the fourth
+  could come from different hands.
+- **Not the first.** Our reading starts on 18 November. An earlier trial would not be in it.
+
+### What it does not tell us
+
+What was sent. The log holds the reply, not the request, and nothing from 19 November was left in
+the routers' memory. And why those four devices: we see no common owner or network.
+
+### What would settle it
+
+GL.iNet's broker logs: who published to these four devices in those four minutes, from what
+address, and whether the same publisher appears before 19 November.
+
+---
+
 ## How this page is kept
 
 An inference is removed or rewritten when a fact settles it, with a dated note saying which fact.
