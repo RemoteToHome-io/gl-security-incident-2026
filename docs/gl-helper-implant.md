@@ -198,6 +198,22 @@ Reported by rdizzie
   - With `--rtty-keep`: install `rtty_keep.sh` to run every 5 minutes and force `/etc/rtty_conf` back
     to the attacker's server with TLS turned off.
 
+  *Added 24 November 2026.* The two developer comments on the default mode, as they appear in the
+  part of `ni.sh` (function `p_rk`) pictured in
+  [BleepingComputer's report of 22 November 2026](https://www.bleepingcomputer.com/news/security/hackers-exploit-glinet-cloud-flaw-to-infect-routers-kvm-devices/),
+  with our translation:
+
+  | Comment in the script | In English |
+  |---|---|
+  | `# 默认不维持 rtty 长连接：装完撒手，GL 云端会自己把配置推回官方` | By default, do not keep the rtty connection open: install and let go. The GL cloud will push the configuration back to the official one by itself. |
+  | `# 一次性收尾：等官方配置出现后重启 rtty，让设备离开我们（跑完即退出）` | One-off clean-up: once the official configuration appears, restart rtty so the device leaves us (exit when done). |
+
+  **Reported** (the script text, read from the published picture); the translation is ours and has
+  not been checked by a second reader. What the comments show is that the author knew GoodCloud
+  sends a device its remote-terminal settings again by itself, and built the default mode around
+  that: use the device, then let the cloud put its settings back so nothing looks changed. That
+  can be learned by watching a device one owns. It says nothing about who the author is.
+
 ### Evasion
 
 Reported by rdizzie
