@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-24 06:47 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-24 08:32 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -25,6 +25,20 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
 [what GL.iNet has said](#what-glinet-has-said) ·
 [the short version](#the-short-version) ·
 [all findings](docs/findings.md)
+
+> **New, 24 November 2026: the attacker was already testing on 19 November, a day and a half
+> before the attack. It is in GoodCloud's own log.**
+>
+> - **The first calls were on the morning of 19 November.** Four devices answered requests that
+>   GoodCloud itself did not send: three at 08:48 to 08:49 UTC, with messages made to look
+>   ordinary, and one at 09:33:36 UTC in the form used for the whole attack. Then nothing until
+>   the main wave began at 20:06 UTC on 20 November. It reads as a trial run on a handful of
+>   devices. GL.iNet's notice dates the incident to 20 November.
+> - **GoodCloud keeps a log of what each device sent to the cloud, and an owner can read it.**
+>   In our own account, in a cross-section of 260 devices read so far, 210 answered the attacker.
+> - **Any owner can check a device there without SSH,** also after it has been reset.
+>
+> See [docs/goodcloud-device-log.md](docs/goodcloud-device-log.md).
 
 > **New, 23 November 2026: what our own samples show.** We have now taken apart the malware and
 > the memory images we saved from the routers we manage. Nothing was run; everything was read.
@@ -452,6 +466,21 @@ Three ways: the community script, by hand, or GL.iNet's own checks. The first tw
 table in [The signs, and what each one means](#the-signs-and-what-each-one-means). GL.iNet's
 checks look for one sign only and are listed last.
 
+### In your GoodCloud account
+
+*Added 24 November 2026.* If the device is or was bound to GoodCloud, the account's own log shows
+whether it answered the attacker. No SSH is needed, and it works after the device has been reset.
+
+1. Sign in at <https://www.goodcloud.xyz/>, open **Logs**, then **Device Logs**.
+2. Set the range to 19 November 2026 08:00 to 21 November 2026 09:00 UTC (the page shows your
+   local time) and enter the device's MAC.
+3. Open **Details** on the rows and look for a message with **`"id":1`**, the number, such as
+   `{"id":1,"astrowarp":[],"code":0,"time":...}`. Ordinary messages have a long quoted `id`.
+
+A match means the attacker's command ran on that device. No match is not proof of anything. What
+the log holds, what ours shows and the limits are in
+[docs/goodcloud-device-log.md](docs/goodcloud-device-log.md).
+
 ### With the script
 
 The most complete check is the community triage script by Admon. It looks for every sign in that
@@ -814,6 +843,9 @@ not cover, mainly devices that are far away:
   line, how it was read, its history back to December 2024, what was sent through it, the older
   backdoor in detail, and the fix
 - [docs/findings.md](docs/findings.md): every finding, its source, and how it was checked
+- [docs/goodcloud-device-log.md](docs/goodcloud-device-log.md): the attack as GoodCloud's own
+  Device Logs record it, the first calls on 19 November, and how an owner can check a device
+  there without SSH
 - [docs/inferences.md](docs/inferences.md): what the data suggests where no fact settles it:
   whether the two operations are linked, and what the attacker's most common command was for.
   Reasoning, kept apart from the findings and labelled as such

@@ -352,6 +352,11 @@ main set; the searches below cover all of them):
   in the material first published; plus the two device replies (R1, R2).
 - Activity window: the device replies that bracket these calls carry timestamps from **20 November
   2026 20:06:35 UTC to 21 November 2026 08:04:42 UTC**.
+  *Added 24 November 2026:* GoodCloud's own Device Logs for the same devices show the main wave
+  from 20:06:29 to 08:04:42, and a first reply in the attacker's form on **19 November at
+  09:33:36 UTC**, with three more unlogged calls at 08:48 to 08:49 that morning
+  ([the attack in GoodCloud's own log](goodcloud-device-log.md)). Nothing from 19 November was
+  left in the routers' memory.
 
 **How the times are known:** Verified on our samples. Each device reply carries its own
 millisecond timestamp (UTC); the window above is the range of those timestamps. The calls arrived in
