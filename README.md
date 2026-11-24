@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-24 09:31 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-24 09:41 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -216,7 +216,7 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 | That backdoor's loader was built once per router, reports the router's serial number, addresses, model and firmware to its servers every three days, and fetches a second stage that can run any command, write any file and open a proxy into the network behind the router. On 47 routers the second stage had been checking in for up to six months and no task was in its memory when we captured it | Verified by us from 49 copies of each and 47 memory images of each; see [the loader](docs/older-backdoor-loader.md) and [the second stage](docs/older-backdoor-second-stage.md) |
 | The fixed firmware's clean-up removes the two start-up routes it names and nothing else: on a test router, other start-up entries placed in kept settings survived an upgrade with settings kept and ran | Verified by us on a GL-MT3000; see [Fixed firmware](#fixed-firmware) |
 | GL.iNet's published indicator, a `crond -i /tmp/.log` process, was not running on any router we checked, including all of the above | Verified by us |
-| The shells connected to `170.39.226.219`, a rented server at a US hosting provider with no named customer in the registry. We reported it to the provider on 21 November 2026; the provider replied the same day that it has suspended the server, notified its customer and preserved the data. On 22 November the address did not answer from any of 20 outside test points | Verified by us from public registries; see [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md) |
+| The shells connected to `170.39.226.219`, a rented server in a range registered to a US hosting company, which the registry places at a site in New Jersey; no customer is named in the registry. We reported it to the provider on 21 November 2026; the provider replied the same day that it has suspended the server, notified its customer and preserved the data. On 22 November the address did not answer from any of 20 outside test points | Verified by us from public registries; see [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md) |
 | The shell leaves one file behind, an empty `/etc/mp_ip_mapping_info`; the shell, its named pipe `/tmp/f` and the firewall rule are gone after a reboot | Verified by us |
 | KVM firmware 1.10.3 removes an implant called "gl-helper" at boot on all six models we read. In 1.10.2 the RM1PE did and the RM1 did not. It keeps no copy, so upgrading an infected KVM removes the evidence | Verified by us from the official images; see [docs/kvm-firmware.md](docs/kvm-firmware.md) |
 | A KVM upgrade to 1.10.3 that keeps the configuration also keeps a boot script and an added SSH key, and the script runs on the new firmware. SSH is on at every boot in 1.10.3 | Verified by us on a test RM1 with harmless stand-ins; see [docs/kvm-firmware.md](docs/kvm-firmware.md) |
@@ -366,7 +366,9 @@ The full account, command by command, with a decoder you can run on your own sam
   and `adxinsight.com` registered on 4 July 2025, eight minutes apart at two registrars;
   `openwrt-project.org` on 18 August 2025, with certificates for all three issued within eleven
   minutes the next morning; `adguardns.com` and `adguardns.org` on 8 December 2025, 25 minutes
-  apart. Two of the names had belonged to someone else years before and were registered again
+  apart. *Added 24 November:* we checked these dates in the registries ourselves, and
+  `adsanalypro.com`, the name found only in our samples, was registered three seconds after
+  `adxinsight.com` at the same registrar. Two of the names had belonged to someone else years before and were registered again
   after they lapsed. Our earliest file date is 15 September 2025 and our batches begin on
   7 December 2025. *Added 24 November:* by the files' modification time, which gives a date for
   all 49 routers, 30 of our 49 installs are in December 2025.

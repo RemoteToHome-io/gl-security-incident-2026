@@ -380,7 +380,9 @@ The same researcher states, in
 [issue 23](https://github.com/admonstrator/glinet-csa-2026-01/issues/23), that both of the implant's
 addresses belong to one hosting company's network (`66.245.219.252` in `66.245.216.0/21` and
 `65.20.71.131` in `65.20.64.0/19`, both AS20473, Vultr), and names four ports for it: 8000, 8899,
-5912 and 5913. **Reported**; we have not checked the network ownership. Ports 8000 and 8899 match
+5912 and 5913. **Reported** for the ports. *Updated 24 November 2026:* we looked the two ranges up
+ourselves. Both are Vultr's, and the registries record them under Japan and India, not the United
+States ([attacker infrastructure](attacker-infrastructure.md#other-addresses-reported)). Ports 8000 and 8899 match
 what is recorded above.
 
 What follows from this for an owner: the folder names, the default process name and the three
