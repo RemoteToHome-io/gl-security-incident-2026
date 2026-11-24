@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-24 06:27 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-24 06:47 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -814,6 +814,9 @@ not cover, mainly devices that are far away:
   line, how it was read, its history back to December 2024, what was sent through it, the older
   backdoor in detail, and the fix
 - [docs/findings.md](docs/findings.md): every finding, its source, and how it was checked
+- [docs/inferences.md](docs/inferences.md): what the data suggests where no fact settles it:
+  whether the two operations are linked, and what the attacker's most common command was for.
+  Reasoning, kept apart from the findings and labelled as such
 - [docs/field-survey.md](docs/field-survey.md): devices checked so far, by model and firmware
 - [docs/router-reverse-shell.md](docs/router-reverse-shell.md): the remote shell, the cloud command behind it and which routers have that code
 - [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md): what is known about the address the shells
