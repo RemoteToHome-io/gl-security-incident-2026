@@ -25,9 +25,23 @@ and passwords. The attacker's address and port are fine to post.
 
 ## What will not be merged
 
-Working instructions for attacking a device: the cloud message that triggers the router-side
-weakness, proof-of-concept payloads, or scans of other people's devices. Send those to
-security@gl-inet.com. Reports that contain them will be edited.
+*Changed 24 November 2026.* GL.iNet has released fixed firmware and published the cause, so this
+page now carries full technical detail: the attacker's messages word for word, the malware taken
+apart, and the weaknesses the fix leaves open. Findings of that kind are welcome, including
+commands and messages recovered from your own device.
+
+Three things are still not merged:
+
+- **The one weakness we are withholding.** A further weakness in the cloud client is not
+  addressed by the fixed firmware. We reported it to GL.iNet and said we would hold it back until
+  it is fixed (see [What is deliberately not published here](README.md#what-is-deliberately-not-published-here)).
+  If your report touches it, we will tell you and take that part out before merging. Please send
+  it to GL.iNet as well.
+- **Anything that identifies an owner or a device,** yours or anyone else's: see the list above.
+- **Scans of, or access to, devices that are not yours.**
+
+Malware files themselves do not go in the repository. Post the SHA-256 and where you found the
+file, and say that you hold a copy; a researcher who needs it can ask you.
 
 ## How
 
