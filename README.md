@@ -1,5 +1,30 @@
 # GL.iNet cloud incident, November 2026: what is known, how to check, how to recover
 
+**What this page is.** A place to coordinate findings on the GL.iNet cloud remote-management
+incident of 20 November 2026, kept by [RemoteToHome Consulting](https://remotetohome.io), an
+independent networking and VPN consultancy. GL.iNet's information is spread over
+forum threads that change and get buried; this page collects what is known in one place and is
+updated as findings come in.
+
+We manage a large and varied set of GL.iNet routers and are checking them model by model. The
+results go into [docs/field-survey.md](docs/field-survey.md) as counts by model and firmware, with
+nothing that identifies an owner, a network or a device. Every statement here says where it comes
+from and how it was checked. Corrections and findings from anyone are welcome: see
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+**Last reviewed: 2026-11-24 05:04 UTC.** GL.iNet's notice changes; read
+[the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
+as well.
+
+This is not an official GL.iNet page and GL.iNet has not reviewed it.
+
+**Start here:** [check a device](#check-a-device) ·
+[if you find something](#if-you-find-something) ·
+[fixed firmware](#fixed-firmware) ·
+[what GL.iNet has said](#what-glinet-has-said) ·
+[the short version](#the-short-version) ·
+[all findings](docs/findings.md)
+
 > **New, 23 November 2026: what our own samples show.** We have now taken apart the malware and
 > the memory images we saved from the routers we manage. Nothing was run; everything was read.
 > The main results, each with its own page:
@@ -49,23 +74,6 @@
 >
 > One further weakness is not addressed by the fixed firmware we read. We reported it to GL.iNet
 > on 22 November and are withholding it until it is fixed.
-
-A place to coordinate findings on the GL.iNet cloud remote-management incident of 20 November 2026,
-kept by [RemoteToHome Consulting](https://remotetohome.io). GL.iNet's information is spread over
-forum threads that change and get buried; this page collects what is known in one place and is
-updated as findings come in.
-
-We manage a large and varied set of GL.iNet routers and are checking them model by model. The
-results go into [docs/field-survey.md](docs/field-survey.md) as counts by model and firmware, with
-nothing that identifies an owner, a network or a device. Every statement here says where it comes
-from and how it was checked. Corrections and findings from anyone are welcome: see
-[CONTRIBUTING.md](CONTRIBUTING.md).
-
-**Last reviewed: 2026-11-24 04:42 UTC.** GL.iNet's notice changes; read
-[the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
-as well.
-
-This is not an official GL.iNet page and GL.iNet has not reviewed it.
 
 ## The short version
 
