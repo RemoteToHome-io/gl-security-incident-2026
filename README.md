@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-25 01:34 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-25 02:24 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -425,7 +425,8 @@ resolver keeps a query log, search it for these names.
 - An upgrade with settings kept: its two keep-list lines carry `/bin/ulogd` and the changed
   start-up script into the new firmware. GL.iNet's fixed firmware puts the start-up script
   back, so it is no longer started that way, and leaves `/bin/ulogd` on the router (see
-  [Fixed firmware](#fixed-firmware)).
+  [Fixed firmware](#fixed-firmware)). *Updated 25 November:* that describes the firmware of 22 and
+  23 November. The builds of 24 November also delete `/bin/ulogd` and restore the keep list.
 - By hand, as we did on the 49 after saving the evidence: end the `monitord` and `ujaild`
   processes, put `/etc/init.d/urandom_seed` and `/lib/upgrade/keep.d/netifd` back from the
   copies under `/rom`, delete `/bin/ulogd` and `/usr/bin/monitord`. That stops it. It is not a
@@ -686,6 +687,44 @@ that access at the other end.
 8. Check the computers behind the device. For a KVM, check the computer it was attached to.
 
 ## Fixed firmware
+
+> **Update, 25 November 2026: a second round of firmware, and its clean-up now covers the older
+> backdoor.** GL.iNet released new stable builds on 24 November for the same eighteen models:
+> GL-MG1300, GL-MT3000 and GL-MT6000 (4.11.2), GL-E5800 (4.10.4), GL-BE3600 and GL-BE9300
+> (4.10.3), GL-BE14000 (4.9.4), GL-BE6500, GL-MT3600BE and GL-MT5000 (4.9.2), GL-BE10000 (4.8.8),
+> GL-AX1800, GL-AXT1800, GL-SFT1200, GL-X3000 and GL-XE3000 (4.8.5), GL-MT2500 and GL-X2000
+> (4.7.15). Builds dated 23 and 24 November are also listed for fourteen older models (4.3.31 and
+> 4.5.24), which we have not opened. That is the list as our mirror held it at 01:24 UTC on
+> 25 November.
+>
+> We unpacked two of the new builds, GL-MT3000 4.11.2 and GL-AXT1800 4.8.5, and read the clean-up
+> script in each. It is the same file in both, and it is a new one: 76 lines where the first had
+> 46 (package `gl-sdk4-system-check`, build git-2026.327; SHA-256 beginning `7fb65a4cb42c15c6`).
+> What it adds:
+>
+> - **It now removes the older backdoor.** It stops the `monitord` and `ujaild` processes, puts
+>   `/etc/init.d/urandom_seed` and `/lib/upgrade/keep.d/netifd` back from the firmware's own
+>   copies, and deletes `/bin/ulogd`, `/usr/bin/monitord`, `/usr/sbin/ujaild` and the copy under
+>   `/var/run`. The first round restored the start-up file only and left `/bin/ulogd` in place.
+> - **It removes the KVM-style implant's folders whether or not the first one exists,** adds
+>   `/etc/gl_nas/.cache` to them, and removes a third scheduled-task line.
+>
+> What has not changed, as far as the script shows:
+>
+> - **It is still a list of known names.** It does not look at anything else in the settings an
+>   upgrade keeps: other lines in `rc.local`, other scheduled tasks, scripts in
+>   `/etc/udhcpc.user.d`, added SSH keys or accounts, or `/etc/config/wireguard_server`.
+> - **It cannot take back what was read.** Everything below about replacing keys and passwords,
+>   and about not keeping settings on a device that was hit, stands.
+>
+> **Not tested on a device.** This is from reading the script in the two images. We have not
+> repeated the upgrade test below on the new build, and we have not compared the rest of the
+> firmware. In the GL-MT3000 build the cloud client's package is the same build as in 4.11.1.
+>
+> **Everything from here to the end of this section describes the first round,** the builds of
+> 22 and 23 November, and is kept as it was written. Where it says the firmware leaves
+> `/bin/ulogd` or does not look for the older backdoor's files, that is true of those builds and
+> no longer true of the builds of 24 November.
 
 GL.iNet's listing holds stable firmware dated 22 and 23 November 2026 for eighteen router
 models: GL-MG1300, GL-MT3000 and GL-MT6000 (4.11.1), GL-E5800 (4.10.3), GL-BE3600 and GL-BE9300
