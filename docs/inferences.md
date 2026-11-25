@@ -206,6 +206,78 @@ address, and whether the same publisher appears before 19 November.
 
 ---
 
+## Inference 4. The older backdoor was a planned operation, and its operator had a way onto GoodCloud-bound routers more than a year before the attack
+
+*Added 25 November 2026.*
+
+**In one sentence:** the records show someone building and maintaining this over sixteen months,
+which means someone had a working way in long before anyone else knew there was one.
+
+### The facts it rests on
+
+Registration and certificate records looked up by us (findings A-10, A-11), our own samples and
+routers (R-18, R-28 to R-30), and the firmware history (R-5). Forum user rdizzie set out the
+registration pattern first
+([post 50](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/50));
+the dates below are from our own lookups and match theirs.
+
+| Date | What happened | How we know |
+|---|---|---|
+| 5 December 2024 | The flaw first ships, in GL-MT3000 4.7.0 | Verified, R-5 |
+| 4 July 2025 | Three names registered within eight minutes at two registrars; certificates the next day | Verified, A-10, A-11 |
+| 18 and 19 August 2025 | A fourth name registered; fresh certificates for all four within fifteen minutes the next morning | Verified, A-10, A-11 |
+| 15 September 2025 | The first install we hold, with the loader that uses those names | Verified, R-18 |
+| 15 September to 7 December 2025 | Seven installs with that loader | Verified, from the routers |
+| 8 December 2025 | Two more names registered 25 minutes apart. The second stage that uses them carries the build stamp `25120821`, which reads as 8 December 2025 | Verified for the registration and the stamp; the reading of the stamp as a date is ours |
+| 9 December 2025 | The first install with the loader that uses the new names, a day later | Verified, from the routers |
+| 9 December 2025 to 24 May 2026 | Forty-two installs with that loader, thirty of them in December | Verified, from the routers |
+| 27 June and 12 August 2026 | The names' registration records are updated again, in pairs and on shared dates | Verified, A-10 lookups |
+| Up to 22 November 2026 | The second stage is still checking in on every router we examined | Verified, R-30 |
+
+Two more facts about where it landed: 48 of the 49 routers were bound to GoodCloud before their
+install date, and most have no public address on the WAN side (R-18).
+
+### What this makes more likely
+
+- **It was planned and kept up.** Names bought in sets, split across three registrars and three
+  pairs of name servers, renewed a year later, a second build prepared the day the new names
+  were registered, and installs starting the day after. This is an operation with a schedule,
+  not something opportunistic.
+- **Its operator had a way in by September 2025 at the latest.** Routers with no public address,
+  on unrelated networks, were reached in batches of minutes. Whatever the way in was, it worked
+  from outside, at scale, fourteen months before the attack of November 2026.
+- **The names were ready ten weeks before the first install.** That is preparation ahead of use.
+- **So the weakness that made this possible was known to someone from mid-2025.** If the way in
+  was GoodCloud, as the binding dates suggest, then the flaw GL.iNet fixed on 22 November 2026 had
+  been in use, quietly, for over a year.
+
+### What fits the opposite
+
+- **We have not shown the way in.** The binding dates and the missing public addresses point at
+  GoodCloud. They do not prove it. Another route common to these routers would give the same
+  picture, and GL.iNet's notice says the entry path is not established.
+- **"Planned" does not mean "planned around this flaw".** The names and the builds show
+  preparation of the backdoor's own servers. They say nothing directly about which weakness was
+  to be used.
+- **Our 49 are what we found, not the campaign.** Other owners report installs with other dates.
+  The first install anywhere may be earlier than ours.
+
+### How it sits with inference 1
+
+Inference 1 says the attack of 20 November and this backdoor look like two operations that did
+not share information. This inference does not change that. It says the older one was patient
+and well prepared; the November attack was loud, used two fixed addresses and a look-alike name
+registered four days earlier, and was noticed within a day. If both used the same flaw, then two
+different parties found it, a year apart.
+
+### What would settle it
+
+GL.iNet's logs for the install windows. We have sent the 49 devices and times. If GoodCloud's
+logs no longer reach back that far, the cloud's own account and credential records for
+mid-2025 may: when the access that made outside publishing possible first existed.
+
+---
+
 ## How this page is kept
 
 An inference is removed or rewritten when a fact settles it, with a dated note saying which fact.
