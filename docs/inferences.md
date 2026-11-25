@@ -159,11 +159,17 @@ nothing for that device but its routine reports.
 
 **3. Then nothing for 34 hours.** The next reply in the attacker's form, or without a logged
 request, is at 20:06:29 on 20 November, the start of the main wave, after which 210 devices
-answered in the attacker's form. The only such replies in between are four of GoodCloud's own on
-20 November, each with its request in the log.
+answered in the attacker's form. In between, the log holds four replies of the same two shapes
+(an empty `astrowarp` list, or `virtual_ip_info`), all on 20 November between 04:00 and 06:00.
+Each has an ordinary `id` and its request beside it in the log, so they are GoodCloud's own
+traffic: two answer the two `virtual_ip_info` messages GoodCloud itself sent in these four days
+([the log page](goodcloud-device-log.md#what-ours-shows)), and two answer its
+`connection_info` command. *Reworded 25 November 2026; the counts are unchanged.*
 
 **4. The routers agree.** On three of the four devices the handler's state file was first written
-in the same second as the reply. The fourth is a device we have not examined.
+within a second of the reply (the same second on two, one second earlier on the third). The fourth
+is a device we have not examined. *Corrected 25 November 2026: this said "the same second" for
+all three.*
 
 **5. What we know of the three we examined.** They are three different models. Two run 4.7.0, the
 oldest firmware line that has the flaw, and carry the older backdoor. The third is the one router
@@ -217,30 +223,42 @@ which means someone had a working way in long before anyone else knew there was 
 
 Registration and certificate records looked up by us (findings A-10, A-11), our own samples and
 routers (R-18, R-28 to R-30), and the firmware history (R-5). Forum user rdizzie set out the
-registration pattern first
-([post 50](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/50));
+registration pattern, in [post 18](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/18)
+and more fully in [post 50](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/50),
+after acs posted the first dates in [post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2);
 the dates below are from our own lookups and match theirs.
 
 | Date | What happened | How we know |
 |---|---|---|
 | 5 December 2024 | The flaw first ships, in GL-MT3000 4.7.0 | Verified, R-5 |
-| 4 July 2025 | Three names registered within eight minutes at two registrars; certificates the next day | Verified, A-10, A-11 |
+| 4 July 2025 | Three names registered in just over eight minutes at two registrars; certificates the next day | Verified, A-10, A-11 |
 | 18 and 19 August 2025 | A fourth name registered; fresh certificates for all four within fifteen minutes the next morning | Verified, A-10, A-11 |
 | 15 September 2025 | The first install we hold, with the loader that uses those names | Verified, R-18 |
 | 15 September to 7 December 2025 | Seven installs with that loader | Verified, from the routers |
 | 8 December 2025 | Two more names registered 25 minutes apart. The second stage that uses them carries the build stamp `25120821`, which reads as 8 December 2025 | Verified for the registration and the stamp; the reading of the stamp as a date is ours |
 | 9 December 2025 | The first install with the loader that uses the new names, a day later | Verified, from the routers |
-| 9 December 2025 to 24 May 2026 | Forty-two installs with that loader, thirty of them in December | Verified, from the routers |
-| 27 June and 12 August 2026 | The names' registration records are updated again, in pairs and on shared dates | Verified, A-10 lookups |
+| 9 December 2025 to 24 May 2026 | Forty-two installs with that loader, twenty-nine of them in December | Verified, from the routers |
+| 27 June and 12 August 2026 | The names' registration records are changed again: two names one second apart on 27 June, three more within eight hours on 12 August. The records do not say what changed | Verified, A-10 |
 | Up to 22 November 2026 | The second stage is still checking in on every router we examined | Verified, R-30 |
 
 Two more facts about where it landed: 48 of the 49 routers were bound to GoodCloud before their
 install date, and most have no public address on the WAN side (R-18).
 
+*Corrected 25 November 2026.* The table said thirty of the forty-two installs with the second
+loader were in December. Thirty is the December count for all 49 (R-18): twenty-nine with the
+second loader and one, on 7 December, with the first. The last row cited lookups that were not
+yet on the findings page; they are now in A-10. The first point below said "three pairs of name
+servers" as a sign of planning and "renewed a year later"; a name-server pair does not identify
+an account ([attacker infrastructure](attacker-infrastructure.md#servers-of-the-older-backdoor)),
+and the records show that five of the six were changed in June and August 2026, not what the
+change was. The first table row said "within eight minutes"; the three registrations run a
+second over that. The credit line above named post 50 as the first account of the pattern; it is
+the fuller, later one.
+
 ### What this makes more likely
 
-- **It was planned and kept up.** Names bought in sets, split across three registrars and three
-  pairs of name servers, renewed a year later, a second build prepared the day the new names
+- **It was planned and kept up.** Names bought in sets at three registrars, their records
+  changed again in sets in June and August 2026, a second build prepared the day the new names
   were registered, and installs starting the day after. This is an operation with a schedule,
   not something opportunistic.
 - **Its operator had a way in by September 2025 at the latest.** Routers with no public address,

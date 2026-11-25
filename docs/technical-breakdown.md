@@ -10,7 +10,8 @@ instruction by instruction. "Read in strings" means we only found the text in th
 means we saw it on routers we manage or own. "Reported" means someone else saw it and we did not
 check it.
 
-Last updated: 2026-11-22.
+Last updated: 2026-11-25. Written on 22 November 2026; later additions and corrections are dated
+where they stand.
 
 ## Summary
 
@@ -28,6 +29,10 @@ Last updated: 2026-11-22.
   an upgrade with settings kept removed the start-up routes that script names; other start-up
   entries placed in kept settings survived and ran. One further weakness in the cloud client is
   not addressed and is withheld.
+- *Added 25 November 2026:* a second round of fixed firmware was released on 24 November. In
+  the two builds of it that we read, the clean-up script is longer and also removes the older
+  backdoor's files and restores the keep list (finding R-40). We have not tested it on a device. What this page
+  says about the clean-up describes the first round.
 
 ## The component
 
@@ -213,6 +218,11 @@ Limits:
 
 ## What was sent through it on 20 and 21 November
 
+*Updated 25 November 2026: three kinds were known when this section was written on 22 November.
+Reading the saved memory images on 23 November gave eight distinct messages; the full list is in
+[attacker-messages.md](attacker-messages.md) (finding R-26). The three below are as first
+described.*
+
 Three kinds of message are known from routers we manage or own. All three used this handler the
 same way: empty `mac`, `virtualIp` set to `127.0.0.1`, and a command appended to `ip` (read in the
 recovered messages, and in the shell's command line where the message was gone). That is why the
@@ -247,7 +257,8 @@ from a device identifier. What the appended command does: it lists the folders `
 and `/etc/glinet/.cache`, which belong to the KVM implant called "gl-helper"
 ([kvm-firmware.md](kvm-firmware.md)), tags the listing with the device identifier and sends it
 to `170.39.226.219`. It installs nothing. Another owner recovered the same message from a
-GL-BE9300 (Reported).
+GL-BE9300 (Reported). *Updated 25 November 2026: seven was the count on 22 November. The same
+message was later found in the memory of 98 routers of eleven models (below).*
 
 The message, exactly as recovered (401 bytes). `<id>` stands for the router's own identifier,
 twelve hexadecimal characters in the form of a hardware address without separators; it is the
@@ -297,6 +308,12 @@ call, 22:14:38 on 20 November. The last calls on two other GL-AXT1800 routers fa
 and 22:15:18; we do not know whether those carried the same message. **Who sent it is not known.**
 The messages that opened the shells were no longer in that router's memory.
 
+*Updated 25 November 2026: on 23 November we found this message in the saved memory of 19
+GL-AXT1800 routers ([attacker-messages.md](attacker-messages.md), C5; finding R-26). It came
+through the same handler, in the same form and with the same `"id": 1` as the other messages of
+those two days, so that page lists it with them. None of the messages, as recovered, carries a field that names
+its sender.*
+
 **Timing by model.** The first call on each router is the creation time of
 `/etc/mp_ip_mapping_info`. The router's writable layer is mounted `noatime`, so the file's access
 time stays at its creation; we cross-checked it against the change time of `/etc`. The last call
@@ -334,6 +351,9 @@ Described in the README under
   restart.
 - **The cloud log entry**, kept on GL.iNet's side: a reply with the id `1` for each call. Reported
   by one owner; we have not checked it. The reply shape matches what the code sends (above).
+  *Updated 25 November 2026: three owners have now reported it (finding R-31), and on
+  24 November we read the same replies in our own GoodCloud account
+  ([goodcloud-device-log.md](goodcloud-device-log.md), finding R-37).*
 
 ## The older backdoor
 
@@ -399,7 +419,9 @@ Its parts, as measured on those routers:
   with `200 OK`, on hosts named `cdn.adguardns.com`, `cdn.adguardns.org`, `up.adguardns.com` and
   `up.adguardns.org`. So its servers were answering on 21 November 2026. The names imitate
   AdGuard; we have nothing that links them to AdGuard. Forum users decoded the same names
-  (Reported).
+  (Reported). *Updated 25 November 2026: on 23 November we decoded all 49 loaders and both
+  builds of the second stage ourselves: five loader names and three second-stage names
+  (findings R-28 and R-30).*
 
 **When it was installed.** On the 40 of the 49 routers whose clock gave a real date, the files
 are dated from 15 September 2025 to 24 May 2026. They fall on a small number of days (finding
@@ -429,8 +451,9 @@ on record.
 
 **The VPN server configuration.** On 27 of 30 backdoor routers with a dated install,
 `/etc/config/wireguard_server` was changed 9 to 12 seconds after the backdoor files were written;
-on the other three it was changed much later. We had saved only its change time, so what changed
-is not known. Three explanations are ruled out:
+on the other three it was changed much later. (*Note, 25 November 2026:* counted on the morning
+of 22 November over the 30 backdoored routers checked by then that gave a dated install, not
+over all 49.) We had saved only its change time, so what changed is not known. Three explanations are ruled out:
 
 - No WireGuard peer public key appears on more than one network (0 over 157 routers with the
   configuration read, 37 of them backdoor routers), so the installer did not add one shared peer.
@@ -492,6 +515,13 @@ all 46 lines (finding R-20).
 - It does not remove `/bin/ulogd`, `/usr/bin/monitord`, the keep-list line or
   `/etc/glinet/.cache` itself. Restoring the start-up script removes the lines that start the
   backdoor at boot; we have not tested what still runs after the update.
+
+*Updated 25 November 2026.* We tested it on 23 November (finding R-24, and the README under
+[Fixed firmware](../README.md#fixed-firmware)). And this is the script of the builds of 22 and
+23 November. The two builds of 24 November that we read carry a new one of 76 lines: it also ends the `monitord`
+and `ujaild` processes, deletes `/bin/ulogd`, `/usr/bin/monitord` and `/usr/sbin/ujaild`, restores
+the keep-list file, and removes `/etc/config/.gl`, `/etc/glinet/.cache` and `/etc/gl_nas/.cache`
+without the condition (finding R-40; not tested on a device).
 
 **The same script in every build (finding R-23).** On 23 November we took the fixed build of
 each of the eighteen models from the mirror, each matching its published SHA-256, and unpacked
@@ -568,9 +598,11 @@ the first boot (finding K-12, [kvm-firmware.md](kvm-firmware.md)).
 4. **Whether devices with the cloud service on but not bound to an account were reachable.**
 5. **Whether the fixed firmware of every model carries the same handler fix.** We have read it
    in one. The clean-up script is the same in the seventeen builds we unpacked; the GL-E5800
-   build is unread.
+   build is unread. (*25 November 2026:* that is the first round's script; the second round's is
+   finding R-40, read in two builds.)
 6. **Who sent the message that tried to end the shells**, and whether routers that reported the
-   implant folders were sent anything further.
+   implant folders were sent anything further. (*25 November 2026:* see the update under that
+   message above.)
 
 ## Method and limits
 
@@ -597,5 +629,8 @@ Limits, in one place:
 - A router restarted since 20 November keeps only the state file and the older backdoor; a clean
   result on it says little.
 - File dates on the older backdoor are the routers' own clocks; only 40 of the 49 gave a real date.
+  *Corrected 25 November 2026: that is by the files' change time. By modification time all 49
+  give a date (the correction of 24 November above, and finding R-18).*
 - The fix was read in GL-MT3000 4.11.1 only, and not tested against the attack message.
-- The cloud log entry is Reported, not checked by us.
+- The cloud log entry is Reported, not checked by us. *Updated 25 November 2026: checked by us in
+  our own GoodCloud account on 24 November (finding R-37).*

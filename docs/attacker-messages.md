@@ -303,8 +303,12 @@ and its `cat /tmp/f`, `/bin/sh -i` and `nc` children. **106** of those process i
 
 **Ports.** Each router's reverse shell used its own port to `170.39.226.219`, in the range
 30000–45000; across all routers there were **23 distinct ports** (one per router), plus port
-**50000**, which is the reconnaissance exfiltration port (C1–C3), not a shell. We do not publish
-which router used which port.
+**50000**, which is the reconnaissance exfiltration port (C1–C3), not a shell. The ports of
+three shells on routers of ours are given in
+[router-reverse-shell.md](router-reverse-shell.md#the-reports-line-up), beside two that other
+owners posted, each against a model and firmware only. No other port is on these pages.
+*Corrected 25 November 2026: this said we do not publish which router used which port; that page
+has listed those three since 22 November, with nothing that identifies a router or an owner.*
 
 **What was typed in.** The only attacker input found in any shell is a folder survey, typed by hand
 into the interactive shell. It is the C1 idea in interactive form (the `===S===`/`===L===`/`===E===`

@@ -46,7 +46,9 @@ TLS with a fixed authority, finding K-4) fits a fix for these. See
 [GL.iNet's published vulnerability reports](gl-statements.md#glinets-published-vulnerability-reports)
 (finding G-17).
 
-The rest of this page describes 1.10.2, which is what we tested on a device.
+The rest of this page describes 1.10.2, which is what we tested on a device. (*25 November 2026:*
+the upgrade to 1.10.3 was also tested on a device, on 23 November; that test is at the top of
+this page and in finding K-12.)
 
 Findings K-1 to K-7 in [findings.md](findings.md). Read from GL.iNet's official images for RM1PE
 (1.10.1 and 1.10.2) and RM1 (1.10.2), and tested on an RM1 upgraded from 1.10.1 to 1.10.2 with

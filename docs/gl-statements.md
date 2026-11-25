@@ -84,7 +84,9 @@ reads "Last updated November 21, 2026 (UTC)". This version was rewritten through
 ## Version edited 23 November 2026, 01:53 UTC
 
 Saved by us at 02:38 UTC that day. The header reads "Last updated November 23, 2026 (UTC)".
-This is the version summarised in the README under "What GL.iNet has said".
+This is the version summarised in the README under "What GL.iNet has said". *Updated 25 November
+2026: it was, until the README was changed on 23 November to summarise the site notice of that
+day, described further down this page.*
 
 - New section: install the latest stable security firmware for your exact model, even if the
   checks find nothing.
@@ -300,7 +302,8 @@ Where a later staff post changes or contradicts an earlier one:
   [73057/13](https://forum.gl-inet.com/t/regarding-the-security-notice/73057/13)) to charles2 telling
   a Mudi 7 owner "a factory reset should be sufficient"
   ([73070/99](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/99)),
-  while bruce's current notice says the security firmware removes the malware with settings kept and
+  while bruce's current notice (*25 November 2026:* current when this was written, that is the
+  forum text of 23 November 01:53 UTC; the site notice has changed since) says the security firmware removes the malware with settings kept and
   no reset ([73056/1](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/1)).
 - **Unbinding from GoodCloud.** robotluo noted upgrading without keeping the configuration unbinds the
   account ([73069/9](https://forum.gl-inet.com/t/quickly-check-if-your-kvm-is-under-attack/73069/9)),

@@ -89,6 +89,7 @@ data, which it reports at check-in as `BuildVersion`:
 `25101510` is 15 October 2025 (hour 10). This reading is supported by a forum user who reported in
 [post 18](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/18)
 that the `adguardns` names were registered on 8 December 2025 — the same date as build A's stamp.
+(*Added 25 November 2026:* we have since read that date in the registries ourselves, finding A-10.)
 Treat it as a reading, not a fact: what is certain is that build A's stamp is the higher of the two.
 
 Note that the stamp order does not match what the memory shows: build A (higher stamp) has the
@@ -290,8 +291,9 @@ them with `yara` itself before relying on them.
 
 - Static analysis only: nothing was executed, and nothing in the malware was contacted.
 - The Go toolchain version, the meaning of the build stamps, the derivation of the two unique
-  identifiers, and the command numbers used for each task are Not determined (no task was ever
-  issued on the routers we examined, so no command number was observed).
+  identifiers, and the command numbers used for each task are Not determined (no task was in
+  memory on the routers we examined, so no command number was observed). *Corrected 25 November
+  2026: this said "no task was ever issued". We cannot show that; see the next point.*
 - The memory limit above: absence of tasking in memory is not proof none was ever sent.
 
 ## Credits

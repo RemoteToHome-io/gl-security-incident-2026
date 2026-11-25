@@ -1,7 +1,7 @@
 # The remote shell on routers, and the cloud command behind it
 
 First posted in the GL.iNet forum on 21 November 2026 ([post 34](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/34)).
-Findings R-1 to R-9 and R-13 to R-17 in [findings.md](findings.md). Times are UTC. Last updated 22 November 2026.
+Findings R-1 to R-9 and R-13 to R-17 in [findings.md](findings.md). Times are UTC. Written 22 November 2026; later changes are dated where they stand, the latest on 25 November 2026.
 
 ## Which routers
 
@@ -19,6 +19,10 @@ code that let it in is in other models too, and so, by now, is the shell.
   4.9.0, show the firewall rule this command leaves. On seven of them we recovered the command
   itself: it ran as root, looked for the folders of the KVM implant and sent the result to the
   attacker's server. See findings R-15 and R-17.
+  *Updated 25 November 2026: those were the counts on 22 November. The attacker's message has
+  since been found in the memory of routers of eleven models (the seven above and GL-BE3600,
+  GL-BE6500, GL-BE9300 and GL-BE10000), on firmware from 4.7.0 to 4.9.1, and the folder check on
+  98 routers. See [attacker-messages.md](attacker-messages.md) and finding R-26.*
 - **The interactive shell described below** was first found on GL-AXT1800. We have now found it on
   GL-AXT1800 (firmware 4.8.2 and 4.8.3) and GL-MT6000 (firmware 4.9.1).
 
@@ -53,7 +57,7 @@ So this came down the cloud management channel as a crafted address. Two things 
 - AstroWarp is not in use on this router (`mptun.global.enable='0'`, no AstroWarp tunnel running). The handler does not check that, so having the feature off did not help.
 - The same handler is also in 4.8.4 (a build dated November 11, 2026). We compared the two and they are identical.
 
-The cloud command is `virtual_ip_info`. Its message carries two address fields, and the second one is where the attacker's command sat. GL.iNet's fixed firmware, released on 22 and 23 November, changes this handler: in the GL-MT3000 4.11.1 build we read, the handler now checks both fields as IPv4 addresses before it builds any command, and returns without acting when the check fails. That is the vendor's confirmation, in code, of where the attack came in. Details and limits in the README under [Fixed firmware](../README.md#fixed-firmware) and in findings R-19 to R-21.
+The cloud command is `virtual_ip_info`. Its message carries two address fields, and the second one is where the attacker's command sat. GL.iNet's fixed firmware, released on 22 and 23 November, changes this handler: in the GL-MT3000 4.11.1 build we read, the handler now checks both fields as IPv4 addresses before it builds any command, and returns without acting when the check fails. That is the vendor's confirmation, in code, of where the attack came in. Details and limits in the README under [Fixed firmware](../README.md#fixed-firmware) and in findings R-19 to R-21. *Added 25 November 2026: a second round of firmware followed on 24 November (finding R-40); in the GL-MT3000 build the cloud client's package is the same as in 4.11.1.*
 
 ## Timeline on our router (UTC, November 20)
 
@@ -65,7 +69,7 @@ The cloud command is `virtual_ip_info`. Its message carries two address fields, 
 
 ## It is not the indicator GL published
 
-There was no `crond -i /tmp/.log` process on this router. `ps | grep tmp` does list the shell, on ours as a `cat /tmp/f` line, but only because its FIFO happens to be in `/tmp`, and the instructions say anything other than `crond -i /tmp/.log` means "healthy and secure".
+There was no `crond -i /tmp/.log` process on this router. `ps | grep tmp` does list the shell, on ours as a `cat /tmp/f` line, but only because its FIFO happens to be in `/tmp`, and the instructions say anything other than `crond -i /tmp/.log` means "healthy and secure". *Updated 25 November 2026: that was the wording of GL.iNet's router check instructions in the forum on 21 November. Its site notice has not carried the router check since 23 November ([GL.iNet's statements over time](gl-statements.md), finding G-15).*
 
 ## What it left behind
 
@@ -80,8 +84,19 @@ ps w | grep -E 'crond -i|mkfifo|nc [0-9]|sh -i' | grep -v grep
 ```
 
 ```
-netstat -nt | grep '170.39.226.'
+/rom/bin/netstat -nt | grep '170.39.226.'
 ```
+
+*Changed 25 November 2026.* This step used to be `netstat -nt | grep '170.39.226.'`. GL.iNet staff
+warn that `netstat` may have been replaced on an infected device and that running the replacement
+starts the malware (findings G-5 and G-6). `/rom/bin/netstat` is the copy in the firmware's
+read-only image, which a change to the writable layer does not touch. GL.iNet's own clean-up
+script calls its tools from `/rom` in the same way. What we have checked: on the eight routers where we
+recorded it (GL-MT3000, GL-MT3600BE and GL-MT5000, all on 4.9.0) and in the GL-MT3000 4.11.1 and
+4.11.2 images, `/rom/bin/netstat` is a link to `busybox`, the same as `/bin/netstat` on an
+unchanged router. What we have not: we have not run the line in this form on a router, and we have
+not looked for `/rom/bin/netstat` on a GL-AXT1800. If it is not there, look before you use the
+ordinary one: `ls -l /bin/netstat` should show a link to `busybox`.
 
 ```
 ls -la /tmp/f

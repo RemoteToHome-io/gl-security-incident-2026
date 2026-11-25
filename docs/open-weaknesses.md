@@ -5,6 +5,12 @@ used: the unchecked values in the `virtual_ip_info` handler. This page lists wha
 around it that is still there. Some of it is by design, some of it is a flaw, and some of it is a
 lead we have read but not tested. Each item says which.
 
+*Added 25 November 2026:* a second round of firmware followed on 24 November. In the two builds
+of it that we read, the clean-up script is longer (finding R-40). In the GL-MT3000 build all 51
+files of the cloud client's package are the same as in 4.11.1, so what this page says about the
+GL-MT3000 4.11.1 cloud client holds for 4.11.2 as well. We have not re-read anything else on this
+page in the new builds.
+
 One further weakness is not on this page. We reported it to GL.iNet on 22 November 2026 and told
 them we would withhold it until it is fixed. Everything else we know is here.
 
@@ -193,6 +199,8 @@ Covered on the main page, listed here so this page is complete:
 
 - The fixed firmware's clean-up removes the start-up routes it names and nothing else. Other
   start-up entries placed in kept settings survive an upgrade and run (*tested*, finding R-24).
+  *25 November 2026:* the second round's script names more (the older backdoor's files, finding
+  R-40). It is still a list of names; the test has not been repeated on it.
 - An upgrade keeps all of `/etc/config`, the scheduled-task tables, `/etc/rc.local`, the SSH
   server's authorised keys, the account and password files and `/etc/udhcpc.user.d` (*read*).
 - A reinstall does not rewrite the boot loader partitions or the device-data partition

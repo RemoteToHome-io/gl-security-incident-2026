@@ -7,8 +7,9 @@ table of router models), and the attack on routers searched for its folders, but
 report of its files on a router. Forum users recovered the installer script and the helper binaries
 from infected devices and took them apart in public. This page collects what they found, with a link
 to each post. **How it is known:** unless a line says otherwise, every fact here is **Reported** by
-the named forum user; RemoteToHome has not run or recovered these samples itself. The one item we
-checked ourselves is marked **Verified by us** in the last section.
+the named forum user; RemoteToHome has not run or recovered these samples itself. What we
+checked ourselves is marked as ours where it stands. *Corrected 25 November 2026: this said one
+item, in the last section; our own lookups and tests are now in several places on the page.*
 
 The analysis is of an installer named `ni.sh` and of three downloaded files: `gl-helper` (the main
 implant), a helper tool called `gb`, and a small downloader. It was done by reading the files as
@@ -480,6 +481,13 @@ GL.iNet's fixed firmware carries a clean-up for this implant. We read those clea
 ([kvm-firmware.md](kvm-firmware.md), findings K-1, K-10 and R-20); the implant's behaviour is as
 reported above. Putting the two side by side (**Inferred** from the two; not tested on an infected
 device):
+
+*Updated 25 November 2026.* The router column describes the clean-up in the builds of 22 and
+23 November. The two builds of 24 November that we read carry a new script (finding R-40; not
+tested). It removes `/etc/config/.gl`, `/etc/glinet/.cache` and `/etc/gl_nas/.cache`
+whether or not the first exists, with the `rc.local` line and the three cron lines. It still does
+not look at `/userdata/.gl` or `/overlay/.gl`, at cron lines that point into a fallback folder, at
+`/bin/netstat`, at SSH keys or at `/etc/rtty_conf`.
 
 | What the installer leaves (Reported) | KVM firmware 1.10.3 clean-up (read by us) | Router fixed firmware clean-up (read by us) |
 |---|---|---|

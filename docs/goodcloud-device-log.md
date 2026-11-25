@@ -174,8 +174,9 @@ Four replies on the morning of 19 November answer requests GoodCloud did not log
   nothing for that device but its routine reports: no reconnection, and nothing published to it.
 - In four days and 42,085 rows these are the only replies of this kind before the main wave.
 - On three of the four routers the handler's state file, `/etc/mp_ip_mapping_info`, was first
-  written at the same second as the reply (08:48:57, 08:49:11 and 09:33:36). The fourth is a device
-  we have not examined.
+  written within a second of the reply: at 08:48:57 and 09:33:36, the same second as the logged
+  reply, and at 08:49:11, one second before the reply logged at 08:49:12. The fourth is a device
+  we have not examined. *Corrected 25 November 2026: this said "the same second" for all three.*
 
 **What this makes likely:** that the attacker tried the handler on a few devices about 36 hours
 before the main wave, at first with an `id` made to look ordinary and then with the `1` it used

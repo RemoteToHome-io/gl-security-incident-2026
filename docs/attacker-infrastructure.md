@@ -127,13 +127,39 @@ looked up by us in the registries' own records on 24 November 2026 (times UTC):
 
 - **`adsanalypro.com` was registered three seconds after `adxinsight.com`, at the same registrar,**
   and uses the same pair of name servers as it and as `lede-openproject.org`. We found
-  `up.adsanalypro.com` only in our own samples; the registration record ties it to the same
-  hands as the names forum users had already found.
+  `up.adsanalypro.com` only in our own samples. The record shows the same registrar, three
+  seconds apart and the same name servers. It names no registrant, so it does not show who
+  registered either name; what the timing suggests is under inference 4 on the
+  [inferences page](inferences.md). *Corrected 25 November 2026: this said the record "ties it to
+  the same hands as the names forum users had already found".*
 - The dates agree with what forum users reported: three names on 4 July 2025 within eight minutes,
   one on 18 August 2025, two on 8 December 2025 within 25 minutes, and `gl-inet.top` four days
-  before the attack of 20 November.
+  before the attack of 20 November. (*Note, 25 November 2026:* when this was written forum users had reported two
+  of the 4 July names: acs in [post 2](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/2)
+  on 21 November, and rdizzie with the times in [post 18](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/18)
+  on 22 November. The third, `adsanalypro.com`, is in rdizzie's later account,
+  [post 50](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/50)
+  of 24 November, written after we published the name. From first to last the three
+  registrations run from 07:25:38 to 07:33:39, a second over eight minutes.)
 - Every older-backdoor name sits behind Cloudflare's name servers, in three pairs. `gl-inet.top`
   uses its registrar's own. The records name no owner for any of them.
+- **A pair of name servers is not an account.** *Added 25 November 2026.* Forum posts 18 and
+  50 (linked above) read the three pairs as three separate Cloudflare accounts. The pairs do not
+  show that. Cloudflare's documentation says it favours the same name-server names for all zones
+  in an account, and also that zones in the same account can be given different names when
+  there is a conflict
+  ([Cloudflare, nameserver options](https://developers.cloudflare.com/dns/nameservers/nameserver-options/),
+  read 25 November 2026). So three pairs fit three accounts and also fit one. That page does not
+  say whether two different accounts can be given the same pair, so we do not read a shared pair
+  as proof of one account either.
+- **When the records were last changed** (the same lookups, 24 November 2026): `adxinsight.com`
+  and `adsanalypro.com` on 27 June 2026 at 03:22:34 and 03:22:35 UTC; `lede-openproject.org`,
+  `openwrt-project.org` and `adguardns.org` on 12 August 2026 at 01:10:51, 03:47:46 and 08:30:51
+  UTC; `adguardns.com` on 8 December 2025, its registration day. The records give a time, not
+  what was changed. Two of the names now expire in 2028 and four in 2027. The two changed on
+  27 June are `.com` names at one registrar; the three changed on 12 August are the three `.org`
+  names, at three registrars. Forum post 50 reads these changes as renewals; the records we saved
+  do not say.
 - **Certificates** (public certificate-transparency records, looked up 24 November 2026):
   - On 19 August 2025, the morning after `openwrt-project.org` was registered, certificates for
     `adxinsight.com`, `openwrt-project.org` and `lede-openproject.org` start between 05:50:31 and
