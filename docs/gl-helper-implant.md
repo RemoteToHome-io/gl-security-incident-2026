@@ -390,6 +390,44 @@ known addresses are the operator's defaults. A device set up with other options 
 of them. That is one more reason to reinstall without keeping settings and not to rely on a
 check that found nothing.
 
+### What an infected KVM does on the network: one owner's capture
+
+*Added 25 November 2026.* **Reported** by forum user dja, from their own GL-RM1, recorded by
+their firewall's monitoring tools ([notice thread, post 79](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/79), 21 November 2026). We have
+not seen this traffic ourselves. Times are UTC, 19 November 2026:
+
+| Time | What the KVM did |
+|---|---|
+| 02:35:56 | Opened a connection to `65.20.71.131` port 5912, by address, with no name lookup first, and sent about 28 KB. The first sign of anything wrong |
+| 02:36:57 to 02:37:00 | Fetched `/ni.sh` (about 30 KB) and `/n5` (about 110 KB, then about 507 KB) from `66.245.219.252` port 8000, over plain HTTP |
+| 02:37:01 | Sent its name lookups straight to 1.1.1.1 and 8.8.8.8, past the network's own resolver |
+| 02:37:04 | First connection to **`api.trongrid.io`**, a public service for the TRON blockchain. About 1,000 more followed in the next 36 hours |
+| 02:37:04 onward | Began exchanging traffic with other addresses, about 1,450 that day and about 1,800 the next, against about 20 a day before. Mostly home internet connections in many countries |
+| 02:37:45 | Looked up `gl-inet.top`, which answered with `66.245.219.252`, and tried that address on port 8899 |
+| 03:02 | Tried 32 private addresses in ten minutes, none of them on the owner's network; about 3,700 such attempts a day |
+| 20 November 03:03 | Last connection to `65.20.71.131` port 5912, 58 in all |
+
+What the owner concludes, and what is their reading:
+
+- **A peer-to-peer network.** The pattern to other addresses was the same each time: a 12-byte
+  UDP probe, a 2-byte answer, then a TCP session of about 2,132 bytes on a random high port.
+- **The TRON lookups.** The owner's interpretation is that the implant reads its current server
+  address from the blockchain, where it cannot be taken down. They did not capture the content,
+  so this is not shown.
+- **No spread to other devices** on that network was found.
+- **How it got in:** the owner found no login through any other route and names GL.iNet's cloud
+  and its remote terminal as the likely one, and says they cannot prove it. A second GL-RM1 on
+  the same network was not affected.
+
+**A second owner reports the same lookups.** A Reddit user wrote, in a comment we read on
+25 November, that their KVM made hundreds or thousands of lookups for `api.trongrid.io`, all
+blocked by their DNS filter. **Reported**; we have not seen the logs.
+
+**What we can add from our own data:** `api.trongrid.io` appears nowhere in what we hold from
+routers: not in any malware sample, memory image or saved state. As far as anyone has reported it
+is the KVM implant's behaviour only. The two addresses' recorded locations, India and Japan, are
+the ones we found in the registries ([attacker infrastructure](attacker-infrastructure.md#other-addresses-reported)).
+
 ## What this means for an owner
 
 An owner who still has an infected device (not yet reset or reflashed) can look for the fixed signs
@@ -407,6 +445,7 @@ a device was never infected. All items are Reported, from the posts linked above
 | `netstat` | `/bin/netstat` is a 122-byte shell script beginning `#!/bin/sh` (not the normal link to BusyBox) |
 | SSH | an added key in `/root/.ssh/authorized_keys` or `/etc/dropbear/authorized_keys`, especially a line containing `gl-agent` |
 | Addresses | any traffic to `66.245.219.252`, `65.20.71.131`, or DNS for `gl-inet.top` |
+| DNS | lookups of `api.trongrid.io` from the KVM, in your resolver's or firewall's log. A KVM has no reason to ask for it. Two owners report hundreds of these a day (see above) |
 
 Note the `netstat` wrapper hides connections to `66.245.219.252`, so check the file itself, and use
 the firmware's own `/bin/busybox netstat` rather than `netstat` when looking at connections.

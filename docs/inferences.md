@@ -171,8 +171,9 @@ that was later sent a call to the KVM implant's server
 ([attacker messages, C8](attacker-messages.md)).
 
 **6. The KVM side moved the same day** (Reported). The compromised KVM whose logs were published
-downloaded the implant's installer on 19 November
-([attacker infrastructure](attacker-infrastructure.md)).
+made its first connection to the attacker at 02:35:56 UTC on 19 November and downloaded the
+implant's installer a minute later ([the KVM implant](gl-helper-implant.md), finding K-15). That is
+about six hours before the first router call above.
 
 ### What this makes more likely
 
