@@ -20,6 +20,32 @@ site version is recorded below as its own entry. The site shows no edit time, on
 November 23, 2026 (UTC)"; the reports it links were created between 13:51 and 14:31 UTC that
 day, so it was rewritten after that.
 
+**The forum post was later brought into line with the site.** *Added 26 November 2026.* The
+forum's data for the post shows version 10, last updated on 24 November 2026 at 04:04 UTC (read
+by us on 26 November at 06:38 UTC). We do not hold the two versions between the seventh and that
+one. Compared word by word on 26 November, ignoring formatting and links, the forum post and the
+site notice differ in one place: the forum post's table of router security firmware has two
+more rows. They give a minimum version of 4.5.24 for the GL-A1300 and GL-X300B, and of 4.3.31
+for the GL-AP1300, GL-AR300M (NAND), GL-AR300M16, GL-AR750, GL-AR750S-EXT, GL-B1300, GL-E750 /
+GL-E750V2, GL-MT1300, GL-MT300N-V2, GL-X750 and GL-XE300. The site notice still reads "Updated
+November 23, 2026 (UTC)", and its text is the same as in our copy of 23 November 19:07 UTC (read
+on 26 November at 06:23 UTC). One later passage on this page, on the network-storage report,
+says the GL-A1300 and GL-B3000 are not in the notice's firmware list. That was written against
+the text of 23 November: the GL-A1300 is now in the forum post's list, and the GL-B3000 is in
+neither copy.
+
+**Edited again on 27 November.** *Added 27 November 2026.* The forum's data shows version 11,
+last updated on 27 November 2026 at 02:05 UTC (read by us at 04:44 UTC; we hold version 10 from
+the day before). Compared line by line with version 10, one thing changed: the table of router
+firmware. Its column is now headed "Latest stable security version" where it said "Minimum
+security version", and the eight rows for the eighteen models give the second-round versions:
+4.11.2 (GL-MG1300, GL-MT3000, GL-MT6000), 4.10.4 (GL-E5800), 4.10.3 (GL-BE3600, GL-BE9300), 4.9.4
+(GL-BE14000), 4.9.2 (GL-BE6500, GL-MT3600BE, GL-MT5000), 4.8.8 (GL-BE10000), 4.8.5 (GL-AX1800,
+GL-AXT1800, GL-SFT1200, GL-X3000, GL-XE3000) and 4.7.15 (GL-MT2500 / GL-MT2500A, GL-X2000). The
+note telling GL-AXT1800 owners on 4.8.4 to contact support is gone. The two rows for older models
+are unchanged. The site notice was not changed with it: at 04:44 UTC its text was still the one
+of 23 November, with the first-round versions.
+
 ## At a glance
 
 | Subject | 21 Nov, 10:35 UTC | 21 Nov, 14:10 UTC | 21 Nov, 16:00 UTC | 23 Nov, 01:53 UTC | 23 Nov, site notice (read 19:07 UTC) |
@@ -185,7 +211,7 @@ Created on 23 November 2026, and linked from the site notice:
 
 | Report | Added (UTC) | What GL.iNet states |
 |---|---|---|
-| [EMQX authorization bypass leading to remote code execution](https://github.com/gl-inet/CVE-issues/blob/main/GoodCloud/EMQX%20Authorization%20Bypass%20Leading%20to%20Remote%20Code%20Execution.md) | 13:51, updated 14:08 | Through an EMQX misconfiguration, an attacker "who knows another device's MAC address" can send forged MQTT messages to that device's topics: push configuration, change device information, call the functions the device exposes to the cloud. Affected: GoodCloud v3.19.13; fixed in v3.19.14. Constraint: the attacker must control at least one GL.iNet device, and can only reach other devices that are connected to it |
+| [EMQX authorization bypass leading to remote code execution](https://github.com/gl-inet/CVE-issues/blob/main/GoodCloud/EMQX%20Authorization%20Bypass%20Leading%20to%20Remote%20Code%20Execution.md) | 13:51, updated 14:08 | Through an EMQX misconfiguration, an attacker "who knows another device's MAC address" can send forged MQTT messages to that device's topics: push configuration, change device information, call the functions the device exposes to the cloud. Affected: GoodCloud v3.19.13; fixed in v3.19.14. Constraint: the attacker must control at least one GL.iNet device, and can only reach other devices that are connected to it. *Clarified 26 November 2026: "it" is GoodCloud, not the attacker's device. GL.iNet's words: "An attacker can only launch attacks from a GL device connected to GoodCloud against other users' GL devices that are also connected to GoodCloud." The report also says device MAC addresses can be enumerated "in bulk".* |
 | [AstroWarp (SD-WAN) command injection via the `virtual_ip_info` field](https://github.com/gl-inet/CVE-issues/blob/main/4.0.0/AstroWarp(SDWAN)%20API%20Command%20Injection%20via%20thevirtual_ip_info%20Field%20Allows%20Arbitrary%20Command%20Execution%20as%20Root.md) | 14:31 | The function does not validate the IP field or check whether the feature is enabled; a malicious value is put into a shell command and run as root, also when the feature is disabled. Eighteen router models, one affected version each (for example GL-MT3000 4.11.0, GL-AXT1800 4.8.3), with the "expected fix" version |
 | [Root access via rtty configuration modification and TLS certificate verification bypass](https://github.com/gl-inet/CVE-issues/blob/main/common/Root%20Access%20via%20Rtty%20Configuration%20Modification%20and%20TLS%20Certificate%20Verification%20Bypass.md) | 14:20 | Certificate checking in the remote-terminal client can be bypassed by changing the arguments of its start command, so a device can be made to connect to a hostile terminal server, which gets root. All seven KVM models (fixed in 1.10.3 and 1.8.7) and 31 router models, including older ones on the 4.3 and 4.5 firmware lines, most with an "expected fix" version |
 
@@ -237,6 +263,13 @@ forum posts are included; nothing from private messages or support emails. "Staf
 the forum group `GL.iNet_Staff`: **AdamK, alzhao, bruce, charles2, robotluo, snowisland, Thalia,
 will.qiu**. Summaries are neutral; short quoted phrases (under 15 words) are in quotation marks.
 Times are UTC.
+
+*Added 26 November 2026.* "Staff" here is the forum's own label, not our inference. Each of the
+eight accounts carries the forum's title "GL.iNet Staff" and has `GL.iNet_Staff` as its primary
+group in its public profile data (`https://forum.gl-inet.com/u/<username>.json`, fields `title`
+and `primary_group_name`; we read all eight on 26 November 2026 at 06:31 UTC). The account
+**admon** carries neither. In this section people are named only by their public forum
+usernames.
 
 AdamK is in the staff group; some of his posts go further than the official notice. They are
 listed as posted. The community researcher who posts as **admon** is a volunteer moderator, not

@@ -582,6 +582,13 @@ loader partitions or the partition that holds the device's own data (serial numb
 address, DDNS id, country code); a factory reset clears only the writable layer. No
 before-and-after comparison of those partitions was made.
 
+*Corrected 27 November 2026.* Two points above have been measured since, on a GL-MT3000 of our
+own (findings R-45 and R-46). A factory reset does not clear the whole writable layer: it removes
+what is visible there and keeps every hidden folder with its files. And the comparison has been
+made: the boot loader partitions, the boot loader's settings and the partition with the device's
+own data had the same checksums before and after an upgrade with settings kept, a factory reset
+and an upgrade without settings.
+
 **KVMs.** The same test on an RM1, upgraded from 1.10.2 to 1.10.3 through its web interface with
 the configuration kept: a boot script and an added SSH key both survived, and the script ran at
 the first boot (finding K-12, [kvm-firmware.md](kvm-firmware.md)).

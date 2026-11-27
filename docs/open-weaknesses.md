@@ -48,6 +48,14 @@ device's own remote-access switches before a command is dispatched. A message ma
 accepted as it is. In the 4.8.3 build an input check was applied to attribute changes only, not to
 commands; the 4.8.4 beta and 4.11.0 builds had no such check at all before the fix.
 
+*Clarified 27 November 2026.* "Before the fix" above should not be read as "the fix added that
+check". It did not, on the model we compared. On the GL-MT3000 the three steps a cloud message
+passes through (reading it, decoding it, handing it to the command or setting it names) are the
+same in 4.11.0 and in 4.11.2, the second fixed build. What changed is inside the one command the
+attack abused, which now checks its input. Every other command and setting is handed on as
+before, with no signature, binding or switch checked first. One model, read as a listing of the
+compiled program's instructions; not a test.
+
 So the router relies on one thing: that nobody but GL.iNet can publish to its topic. On
 20 November someone else could.
 
@@ -59,8 +67,8 @@ What the same channel offers besides the abused command, in that build:
 | command `base.rpc`, `base.cmd` | Calls any function of the router's local management interface (`http://localhost/rpc`) with an internal header and no login |
 | command `base.reboot` | Restarts the router |
 | command `base.reset` | Resets the firmware to factory state |
-| `ota` module | Starts a firmware upgrade from an address given in the message (*names only; body not read*) |
-| `security` module | Adds or removes firewall rules that accept traffic from the internet side (*names only; body not read*) |
+| `ota` module | Starts a firmware upgrade from an address given in the message (*names only; body not read*). *27 November 2026: now read in the GL-MT3000 4.11.2 build.* The command takes an address, a checksum and a size from the message and passes them to the router's own online-upgrade function, with settings and packages kept. This module does not check the address; what the upgrade function itself then verifies we have not read |
+| `security` module | Adds or removes firewall rules that accept traffic from the internet side (*names only; body not read*). *27 November 2026: now read in the GL-MT3000 4.11.2 build.* It is a setting, not a command. Writing it removes every rule in the list that the router's own firewall function manages and adds one rule for each entry in the message, each set to accept traffic coming from the internet side |
 | `rtty_run` (item 2) | Opens a remote terminal session to a host named in the message |
 
 The fix validates the fields of `virtual_ip_info` and two neighbouring commands. It does not

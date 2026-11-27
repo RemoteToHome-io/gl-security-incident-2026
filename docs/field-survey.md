@@ -4,7 +4,7 @@ Routers we manage or own, checked since 21 November 2026, by model and firmware.
 owner, network or device is identified. The check is still running; this page is updated as
 batches finish.
 
-Last updated: 2026-11-23 08:39 UTC.
+Last updated: 2026-11-23 08:39 UTC (first sweep); second sweep added 2026-11-27.
 
 ## The result so far
 
@@ -62,6 +62,53 @@ switched on, and only those that were online when we checked.
 | GL-MT6000 | 4.11.0 | 1 | 0 | 0 | 0 | 1 | 0 |
 | **All routers** | | **199** | **24** | **49** | **93** | **18** | **15** |
 | GL-RM1 (KVM) | 1.10.1 | 1 | 0 | 0 | 0 | 0 | 1 |
+
+## Second sweep, 26 November 2026
+
+*Added 27 November 2026.* We went through the same routers again on 26 November. The table
+above is the first sweep and is left as it was.
+
+**202 routers answered. 185 of them had been checked before; 17 had not.**
+
+What the 17 newly reached routers showed:
+
+| State on 26 November | Routers |
+|---|---|
+| Older backdoor installed and running | 2 (a GL-AXT1800 on 4.7.0 and a GL-MT2500 on 4.7.13) |
+| Remote shell of 20 November still running | 1 (a GL-AXT1800 on 4.8.2) |
+| Attacker's command ran, nothing else found | 6 |
+| Nothing found | 8 |
+
+With the first sweep that makes **216 routers reached, 175 of them with the attack of
+20 November, the older backdoor, or both**: a remote shell on 25, the older backdoor on 51, the
+attacker's command and nothing else on 99.
+
+What the 185 rechecked routers showed:
+
+- **Nothing had come back.** Of the 49 routers from which we removed the older backdoor, 48
+  answered: its three places were as in the firmware and none of its processes was running on any
+  of them. No remote shell was running on any router where we had ended one. The vendor cloud had
+  not been switched on again on any router where we had switched it off.
+- **Almost nobody had upgraded.** 3 of the 185 were on a newer firmware than on 22 November, all
+  three on a second-round fixed build (two GL-MT6000 on 4.11.2, one GL-AXT1800 on 4.8.5). The
+  other 182 were on the same firmware as before.
+- **More than half had not been restarted since the attack:** 115 of the 202. A router that has
+  not been restarted or upgraded still holds whatever was started on it on 20 November.
+
+**The remote shell found on 26 November** was on a router that had not been restarted since
+September. Its loop had been started on 20 November 2026 at about 21:40 UTC and was still running
+six days later, retrying its connection to `170.39.226.219`; the attempt in the router's
+connection table was unanswered. We saved its memory, ended it and switched the vendor cloud off.
+
+**The two newly found backdoored routers** carry the same build as the other 49: the same two
+server names and settings in the loader, each with its own identifier. Their files are dated
+9 December 2025 and 28 February 2026. Both were removed after the evidence was saved.
+
+**Against GoodCloud's own log.** Of the 210 devices that answered the attacker in the
+[device log of our own account](goodcloud-device-log.md), the second sweep reached 162.
+
+Not reached on 26 November: the routers that were offline or whose network we could not join. A
+router we could not reach may be in any of the states above.
 
 ## What the columns mean
 

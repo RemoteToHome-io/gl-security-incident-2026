@@ -13,11 +13,12 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-25 18:08 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-27 04:46 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
-This is not an official GL.iNet page and GL.iNet has not reviewed it.
+This is not an official GL.iNet page. RemoteToHome (RTH) is an independent GL.iNet business
+partner.
 
 **Start here:** [check a device](#check-a-device) ·
 [if you find something](#if-you-find-something) ·
@@ -105,7 +106,10 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
    a root remote shell on 24 (GL-AXT1800 and GL-MT6000), an older backdoor installed and running
    on 49 (GL-MT2500, GL-MT3000, GL-MT6000, GL-AX1800 and GL-AXT1800), and on 93 more a command
    from the attacker that ran as root. That is not a random sample; see
-   [docs/field-survey.md](docs/field-survey.md).
+   [docs/field-survey.md](docs/field-survey.md). *Added 27 November:* a second sweep on
+   26 November reached 17 more routers: the older backdoor was running on 2 of them and a remote
+   shell from 20 November was still running on 1. Nothing had come back on the routers we had
+   cleaned. Totals: 216 reached, a remote shell on 25, the older backdoor on 51.
 3. **If your router or KVM had GL.iNet's cloud service switched on, check it now**, before you
    reboot or upgrade it. Some traces only exist until the next restart.
 4. **GL.iNet's published check looks for one process (`crond -i /tmp/.log`). We have not found
@@ -115,7 +119,11 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
 5. **Killing a process or reinstalling firmware does not undo a compromise.** If a device was hit,
    every key and password stored on it should be treated as read by someone else. That includes
    its VPN client profiles and SSH keys: access has to be removed on the server side as well. See
-   [If you find something](#if-you-find-something).
+   [If you find something](#if-you-find-something). *Added 27 November:* on a router of our own
+   we measured the three ways an owner can clean a router. Only one left nothing behind:
+   **installing the firmware again with "Keep Settings" switched off.** An upgrade that keeps
+   settings carries start-up changes across, and a factory reset leaves hidden folders in place.
+   If a router showed any sign at all, that reinstall is the step to take.
 6. **GL.iNet has released fixed firmware for most router models. Install it, but do not treat it
    as a clean-up.** Stable builds dated 22 and 23 November are in its listing for eighteen router
    models; see [Fixed firmware](#fixed-firmware). In the build we read, the handler that the
@@ -128,6 +136,42 @@ This is not an official GL.iNet page and GL.iNet has not reviewed it.
    builds followed on 24 November. In the two of them we have read, the clean-up also removes
    the older backdoor's files; it is still a list of known names, and we have not tested it on a
    device.
+
+## Two separate events
+
+*Added 27 November 2026.* This page covers two different compromises of GL.iNet routers. They
+have separate timelines, separate tools and separate servers, and we have found nothing that
+links one to the other. What they share is the population they hit: routers connected to
+GoodCloud.
+
+| | The attack of 20 November 2026 | The older backdoor |
+|---|---|---|
+| What it is | Commands sent to routers and KVMs through GoodCloud in one wave: a check for the KVM implant on most routers, a root remote shell on some, an implant on KVMs | A loader and a second-stage program installed on routers one batch at a time and left running |
+| First trace we hold | 16 November 2026: a look-alike domain name is registered (A-7) | 4 July 2025: three of its server names are registered within eight minutes (A-10) |
+| First activity on a device | 19 November 2026, 08:48 UTC: the first of four early calls, seen in our GoodCloud log | 15 September 2025: the earliest install date on a router we manage (R-18) |
+| Main period | 20 November 2026, from about 20:00 UTC, into the next day | September 2025 to May 2026, in batches; most installs in December 2025 |
+| Still active | One remote shell was still running on 26 November, on a router not restarted since (R-42) | Installed and running on the routers where we found it, until we removed it; found running on two more routers on 26 November (R-41) |
+| Servers | `170.39.226.219`, and the KVM implant's `66.245.219.252` | Six domain names of its own, behind Cloudflare |
+| How it got in | Through GoodCloud's message service and a flaw in the router's cloud client (GL.iNet's statement and our own reading) | **Not shown.** See below |
+| Routers in our data | 25 with a remote shell; the attacker's command on most of the rest | 51 |
+
+**What the two timelines have in common is one date:** the flaw in the router's cloud client
+first shipped on 5 December 2024 (R-5). It was there for both. That the 20 November attack used
+it is established. That the older backdoor was installed through it is not: 48 of the first 49
+routers were bound to GoodCloud before their install date and most had no public address, which
+points at GoodCloud and does not prove it.
+
+**Why we treat them as separate.** These are measurements, not a judgement about who was behind
+either:
+
+- The attack's messages, the routers' replies and the text recovered from the remote shells
+  never mention any file, process or server of the older backdoor.
+- The attack was sent to routers the older backdoor already controlled, as if it were not there.
+- The files, the servers and the tools are different in every part we have read.
+
+What these facts make likely, what would fit the opposite, and what would settle it are on
+[docs/inferences.md](docs/inferences.md) (inferences 1 and 4). The record that would settle it is
+GL.iNet's: who published to these routers in the minutes the older backdoor's files were written.
 
 ## What GL.iNet has said
 
@@ -149,6 +193,10 @@ wording has moved. These are GL.iNet's statements, not our findings:
     4.10.2. GL-BE14000: 4.9.3. GL-BE6500, GL-MT3600BE, GL-MT5000: 4.9.1. GL-BE10000: 4.8.7.
     GL-AX1800, GL-AXT1800, GL-SFT1200, GL-X3000, GL-XE3000: 4.8.4. GL-MT2500 / GL-MT2500A,
     GL-X2000: 4.7.14.
+  - *Added 26 November 2026:* the forum copy of the notice lists two more groups of routers
+    that the site copy does not. GL-A1300, GL-X300B: 4.5.24. GL-AP1300, GL-AR300M (NAND),
+    GL-AR300M16, GL-AR750, GL-AR750S-EXT, GL-B1300, GL-E750 / GL-E750V2, GL-MT1300,
+    GL-MT300N-V2, GL-X750, GL-XE300: 4.3.31.
   - KVMs: RM1, RM1V2, RM10, RM10RC, RM1PE, RM4PE: 1.10.3. RMQ1: 1.8.7.
 - **If access is known or suspected:** "for the strongest standard recovery assurance", install
   the official security firmware **without keeping settings**, configure the device again by
@@ -189,6 +237,12 @@ versions we saved; three earlier edits on 21 November were made before our first
 | 21 November, 16:00 | Rewritten. One indicator, `crond -i /tmp/.log`. If found: KVM beta firmware, or a factory reset. If not found: no reset or cleanup needed. The sentence about corrective measures on affected devices was removed |
 | 23 November, 01:53 | The security firmware is said to remove the malware with settings kept; the factory reset option is gone, also when the indicator is found; the official checks "may not detect every affected device". The forum copy still showed this text at 19:06 UTC |
 | 23 November, after 14:31 (site only) | The current text above. Reinstall without keeping settings is the strongest recovery; keeping settings is a lesser option; replace passwords and keys; the router process check is gone; the cause and vulnerability reports are published |
+
+*Added 26 November 2026:* the forum post now carries the site notice's text as well. The forum's
+data shows its last update on 24 November at 04:04 UTC. The one difference we found between the
+two copies is the two extra groups of router models listed above. On 27 November at 02:05 UTC
+the forum post was edited again: its firmware table now gives the second-round versions (4.11.2
+and its counterparts); the site notice still listed the first-round versions at 04:44 UTC.
 
 **Where this stands against what we found.** The site notice now agrees with the main points on
 this page: do not keep settings on a device that may have been hit, replace what it stored, and
@@ -243,7 +297,7 @@ names.
 | **Remote shell** | Processes `nc 170.39.226.219 <port>`, `/bin/sh -i`, `cat /tmp/f`, and a parent whose command line starts `sh -c iptables -t nat -A SDWAN_IP_MAPPING` | No | Someone outside has, or had, an interactive root shell on the router. The parent keeps retrying, so it reconnects by itself if that server answers again |
 | **Shell pipe** | `/tmp/f`, a named pipe (the listing line starts with `p`) | No | The remote shell has run since the last boot, even if it has been stopped |
 | **Firewall rule** | `-A SDWAN_IP_MAPPING -d 127.0.0.1/32 -j DNAT --to-destination 127.0.0.1` in the NAT table | No. It is also gone once GoodCloud is switched off on the router, without a restart | The cloud client was sent the attacker's message and ran it as root. The rule itself is harmless; it is the wrapper the attacker's command arrived in |
-| **State file** | `/etc/mp_ip_mapping_info`, empty, dated 20 November 2026 or later, on a router that does not use AstroWarp | Yes | The same handler ran. It is the only trace left after a restart. It does not show what the message carried |
+| **State file** | `/etc/mp_ip_mapping_info`, empty, dated 20 November 2026 or later, on a router that does not use AstroWarp | Yes | The same handler ran. It is the only trace left after a restart. It does not show what the message carried. *Added 27 November 2026:* that is not a small gap. The command ran as root, and on some routers it opened a remote shell: from that moment the attacker had full control of the router without going through GoodCloud, and nothing on the router or in GL.iNet's cloud records what was done through it. After a restart you cannot tell whether your router received that command or the folder check. **Treat a router with this file as fully compromised.** The first calls we know of were on 19 November, so a file dated 19 November counts too ([GoodCloud log](docs/goodcloud-device-log.md)) |
 | **Cloud log entry** | In the device log exported from your GoodCloud account: command responses containing `"astrowarp"` with the id `1`, where ordinary commands carry a 32-character id | Yes, it is kept on GL.iNet's side | The `virtual_ip_info` command was sent to that device, with the time. Reported by three owners (finding R-31); we have not exported such a log ourselves, but the reply text matches what we recovered from routers' memory. *Updated 25 November:* on 24 November we read these entries on the Device Logs page of our own GoodCloud account, in a cross-section of 260 devices read so far ([docs/goodcloud-device-log.md](docs/goodcloud-device-log.md)) |
 | **Older backdoor** | Extra lines at the top of `/etc/init.d/urandom_seed`, a file `/bin/ulogd`, and an added line in `/lib/upgrade/keep.d/netifd`; when running, processes named `monitord` and `ujaild` | Yes; its keep-list line is there to carry it through upgrades that keep settings | A separate, earlier compromise, with file dates from September 2025 on. It starts at every boot, reports to its own servers and fetches a remote-control program that runs from memory. See [The older backdoor, step by step](#the-older-backdoor-step-by-step) |
 | **GL.iNet's indicator** | GL.iNet's check for a router is `ps \| grep tmp` over SSH (or search for `tmp/.log` in LuCI under Status → Processes); a hit is a line containing `crond -i /tmp/.log`. On a KVM it is `ps -aux \| grep tmp` (`ps -a \| grep tmp` on the RMQ1). All four are in [GL.iNet's own checks](#glinets-own-checks) | Not known to us | The one sign GL.iNet's notice tells owners to look for. It is reported to be a false name that the KVM implant's helper writes over its own process ([docs/gl-helper-implant.md](docs/gl-helper-implant.md)). We have not found it on any router |
@@ -516,7 +570,7 @@ command is ours and covers three signs at once; GL.iNet's own command for its in
 | Remote shell, older backdoor processes, GL.iNet's indicator | `ps w \| grep -E 'crond -i\|mkfifo\|nc [0-9]\|sh -i\|monitord\|ujaild' \| grep -v grep` | `nc` with an address, `/bin/sh -i` or `mkfifo`: the remote shell. `monitord` or `ujaild`: the older backdoor. `crond -i /tmp/.log`: GL.iNet's indicator |
 | Shell pipe | `ls -la /tmp/f /tmp/.log` | `/tmp/f` listed with a line that starts with `p` |
 | Firewall rule | `iptables -t nat -S SDWAN_IP_MAPPING` and, on firmware that answers "use 'nft' tool", `nft list ruleset \| grep -i sdwan` | A rule with `127.0.0.1` on both sides |
-| State file | `ls -la /etc/mp_ip_mapping_info` and `uci -q get mptun.global.enable` | The file exists, has size 0 and a date of 20 November 2026 or later (shown in the router's own time zone), and the second command prints `0` or nothing (AstroWarp is not in use) |
+| State file | `ls -la /etc/mp_ip_mapping_info` and `uci -q get mptun.global.enable` | The file exists, has size 0 and a date of 20 November 2026 or later (shown in the router's own time zone), and the second command prints `0` or nothing (AstroWarp is not in use). *Added 27 November 2026:* a file dated 19 November counts too. If you find this file, the attacker ran a command on the router with full rights, and on some routers that command opened a remote shell. After a restart nothing shows which it was, so treat the router as fully compromised |
 | Older backdoor, start-up script | `/rom/bin/busybox cmp /etc/init.d/urandom_seed /rom/etc/init.d/urandom_seed` | Any output. Nothing printed means the file is the firmware's own |
 | Older backdoor, added file | `ls -l /bin/ulogd` | The file exists |
 | Older backdoor, keep list | `/rom/bin/busybox cmp /lib/upgrade/keep.d/netifd /rom/lib/upgrade/keep.d/netifd` | Any output. No output does not clear the router: we found the backdoor without this change on some |
@@ -646,6 +700,25 @@ that access at the other end.
 7. **Reinstall the firmware with "Keep Settings" switched off, from an image you downloaded
    yourself** (see [Firmware downloads](#firmware-downloads)), then set the device up again from
    known-good information and the new keys.
+
+   **Measured, 26 November 2026.** We placed harmless markers on a GL-MT3000 of our own, at the
+   names and start routes seen in this incident and at others, and ran each method once (the
+   factory reset twice, on two firmware versions):
+
+   | Method | What was left afterwards |
+   |---|---|
+   | Upgrade to the fixed firmware, settings kept | The markers the firmware's clean-up names were removed. Everything else was carried over and ran on the new firmware: start-up, schedule, DHCP and firewall hooks, an added SSH key, an account, an extra VPN server peer |
+   | Factory reset (web interface) | Everything visible was removed. Every hidden folder stayed, with its files. On firmware without the clean-up that included folders at the three paths the implant uses |
+   | Install the firmware again, "Keep Settings" off | Nothing of ours was left, hidden folders included |
+
+   So for a router that showed any sign, **a reinstall with "Keep Settings" off is the only one
+   of the three that we can say starts clean.** A factory reset is not a substitute for it, and
+   neither is an upgrade that keeps settings, on fixed firmware or not. None of the three changed
+   the boot loader, its settings or the partition with the device's own data: their checksums
+   were the same before and after every run. Limits: one unit of one model, markers and not real
+   samples, upgrades run by the command-line tool. Details: findings R-43, R-45 and R-46 in
+   [docs/findings.md](docs/findings.md).
+
    - **Do not upgrade a suspect router with settings kept.** The firmware's own keep list carries
      `/etc/rc.local`, the root crontab, everything under `/etc/config`, `/etc/openvpn` and
      `/etc/udhcpc.user.d` into the new installation, and the router runs every script in that
@@ -664,7 +737,9 @@ that access at the other end.
      to look for, and someone careful would not have left that.
    - **A factory reset alone is not a recovery.** Use it only as a stop-gap when you cannot
      reinstall yet. It erases the writable layer, where everything we and the forum reports have
-     found lives, but leaves the installed firmware image as it is. On a
+     found lives, but leaves the installed firmware image as it is. *Corrected 27 November 2026:*
+     it does not erase all of the writable layer. In our test it removed what is visible there
+     and kept every hidden folder with its files (R-45). On a
      GL-AXT1800 (4.8.4) the flash partition that holds that image is writable from a root shell
      and the tools a firmware update uses are on the router, so an attacker with root was not
      prevented from changing the image (read from the device; we did not attempt a write, and we
@@ -677,7 +752,9 @@ that access at the other end.
      the writable layer. The boot loader and the partition that holds the device's own data
      (serial number, hardware address, DDNS id, country code) are left as they were, by a reset
      and by a reinstall alike (read in that firmware's upgrade scripts and partition table; we
-     have not compared them before and after an upgrade).
+     have not compared them before and after an upgrade). *Added 27 November 2026:* we have now.
+     On a GL-MT3000 their checksums were the same before and after an upgrade with settings, a
+     factory reset and an upgrade without settings (R-46).
    - **The boot loader.** We found no step in a reset or a reinstall that rewrites it (read in
      the GL-AXT1800 and GL-MT3600BE firmware). On the GL-AXT1800 that had the remote shell
      (firmware 4.8.3) the kernel marks the boot loader partition writable and let us open it
@@ -694,6 +771,30 @@ that access at the other end.
 8. Check the computers behind the device. For a KVM, check the computer it was attached to.
 
 ## Fixed firmware
+
+> **Update, 27 November 2026: the fix closes the hole that was used. It does not put a lock on
+> the router.**
+>
+> A router with GoodCloud switched on listens for commands from GL.iNet's cloud. Before the fix
+> and after it, the router carries out a command that arrives on that channel without checking
+> who sent it: there is no signature on a command, and no check that the router is linked to an
+> account. What keeps an outsider from sending commands is GL.iNet's servers refusing to pass
+> them on. That is the part that failed on 20 November, and GL.iNet says it has corrected it on
+> its side.
+>
+> What we read: on the GL-MT3000, the part of the cloud program that receives a command and hands
+> it on is the same in 4.11.0 (before the fix) and in 4.11.2 (after it). Of its 38 command
+> modules, 34 are unchanged; the fix is inside the one command the attack abused.
+>
+> So the channel can still do everything else it could do before, for anyone who is able to send
+> on it. In 4.11.2 that includes calling any function of the router's own management interface,
+> starting a firmware upgrade from an address given in the message, and replacing the router's
+> list of firewall rules with rules that let traffic in from the internet side.
+>
+> **What this means for you.** If you do not need GoodCloud, switch it off: that takes the router
+> off this channel. If you need it, your router's safety on this channel rests on GL.iNet's
+> servers. Limits: one model, and a reading of the compiled program, not a test. Details:
+> [docs/open-weaknesses.md](docs/open-weaknesses.md) and finding R-47.
 
 > **Update, 25 November 2026: a second round of firmware, and its clean-up now covers the older
 > backdoor.** GL.iNet released new stable builds on 24 November for the same eighteen models:
@@ -856,6 +957,50 @@ This is temporary hardening. It does not clean a device that was already hit; fo
   ```
 - On a KVM, switch the cloud service off in its settings if you do not need it. A forum user
   reports the switch is under "More Settings"; we have not checked where it is on each model.
+
+  *Added 27 November 2026: how to do it, and how to check that it worked.* Tested on a GL-RM1 on
+  firmware 1.10.3.
+
+  **The easy way** is the cloud switch in the KVM's own web page. On our test unit, switching it
+  off stopped the cloud service and it stayed off.
+
+  **To do it by hand, or to check the result,** open the KVM's terminal (web page: Toolbox →
+  Terminal → Access) and type these three lines. They turn the cloud setting off and stop the two
+  services that use it:
+
+  ```
+  jq '.enable = false' /etc/glinet/gl-cloud.conf > /tmp/gl-cloud.conf && cp /tmp/gl-cloud.conf /etc/glinet/gl-cloud.conf
+  /etc/init.d/S99gl-cloud stop
+  /etc/init.d/S99rtty stop
+  ```
+
+  Then check:
+
+  ```
+  jq '.enable' /etc/glinet/gl-cloud.conf
+  ps -ef | grep -E 'gl-cloud|check_cloud|rtty' | grep -v grep
+  ```
+
+  The first should print `false`. The second should print nothing at all. On our unit both were
+  still true after a restart. To undo it, use the cloud switch in the web page.
+
+  **A new or freshly reinstalled KVM has the cloud switched ON** (read in the GL-RM1 1.10.2
+  firmware image). It can connect as soon as it has internet, before you have opened its
+  settings. So do it in this order: keep the KVM off the
+  internet (block it at your router, or plug it into a network with no internet), install the
+  firmware from a file through the KVM's own web page, switch the cloud off, check, and only
+  then let it online.
+
+  **Blocking a list of addresses is not a safe substitute.** By our reading of its files, the KVM
+  first asks one GL.iNet server which other servers to use, so no fixed list of names covers
+  everything it may contact. We know
+  of no official list.
+
+  **Removing the KVM from your GoodCloud account does not switch this off.** A GL.iNet staff
+  member reported a removed device connecting again until the cloud was disabled on the device
+  itself ([GL.iNet's statements](docs/gl-statements.md)).
+
+  Limits: one unit, one model, one firmware version. The other KVM models were not tested.
 - Do not rely on "I never used AstroWarp" or "remote access was off": the affected code runs
   regardless.
 
