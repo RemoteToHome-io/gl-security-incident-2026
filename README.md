@@ -30,7 +30,7 @@ partner supporting our common customers.
 > **New, 27 November 2026: a second check of our routers, and what actually cleans one.**
 >
 > - **These are two separate attacks.** The attack of 20 November and the older backdoor have
->   different timelines, tools and servers, and we have found nothing that links them.  We haveSee
+>   different timelines, tools and servers, and we have found nothing that links them. See
 >   [Two separate events](#two-separate-events).
 > - **The latest firmware cannot guarantee a clean device when installed with "Keep Settings"
 >   enabled.** Below we demonstrated how implants can persist across firmware upgrades and still
