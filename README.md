@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-27 05:22 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-27 08:19 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -37,8 +37,8 @@ partner supporting our common customers.
 > - **Nothing came back** on the routers we had already cleaned.
 > - **Only one clean-up method starts clean: install the firmware again with "Keep Settings"
 >   switched off.** We tested the three ways on a router of our own. An upgrade that keeps
->   settings carried start-up changes across. A factory reset left hidden folders in place. See
->   [If you find something](#if-you-find-something).
+>   settings carried start-up changes across. A factory reset left hidden folders in place. The
+>   whole test, marker by marker, is in [docs/cleanup-test.md](docs/cleanup-test.md).
 > - **These are two separate events.** The attack of 20 November and the older backdoor have
 >   different timelines, tools and servers, and we have found nothing that links them. See
 >   [Two separate events](#two-separate-events).
@@ -742,8 +742,8 @@ that access at the other end.
    neither is an upgrade that keeps settings, on fixed firmware or not. None of the three changed
    the boot loader, its settings or the partition with the device's own data: their checksums
    were the same before and after every run. Limits: one unit of one model, markers and not real
-   samples, upgrades run by the command-line tool. Details: findings R-43, R-45 and R-46 in
-   [docs/findings.md](docs/findings.md).
+   samples, upgrades run by the command-line tool. **Every marker, where it was placed and what
+   happened to it under each method, is in [docs/cleanup-test.md](docs/cleanup-test.md).**
 
    - **Do not upgrade a suspect router with settings kept.** The firmware's own keep list carries
      `/etc/rc.local`, the root crontab, everything under `/etc/config`, `/etc/openvpn` and
@@ -1065,6 +1065,8 @@ again by hand):
 
 ## More detail
 
+- [docs/cleanup-test.md](docs/cleanup-test.md): what we planted on a test router and what was
+  still there after an upgrade with settings, a factory reset and a reinstall, marker by marker.
 - [docs/technical-breakdown.md](docs/technical-breakdown.md): the long version: the flaw line by
   line, how it was read, its history back to December 2024, what was sent through it, the older
   backdoor in detail, and the fix
