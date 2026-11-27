@@ -13,12 +13,12 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-27 04:46 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-27 05:22 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
 This is not an official GL.iNet page. RemoteToHome (RTH) is an independent GL.iNet business
-partner.
+partner supporting our common customers.
 
 **Start here:** [check a device](#check-a-device) ·
 [if you find something](#if-you-find-something) ·
@@ -26,6 +26,31 @@ partner.
 [what GL.iNet has said](#what-glinet-has-said) ·
 [the short version](#the-short-version) ·
 [all findings](docs/findings.md)
+
+> **New, 27 November 2026: a second check of our routers, and what actually cleans one.**
+>
+> - **216 routers checked so far. 175 show the attack of 20 November, the older backdoor, or
+>   both.** A root remote shell on 25, the older backdoor on 51, and a command from the attacker
+>   on 99 more. On 26 November we went through them again and reached 17 routers for the first
+>   time: the older backdoor was running on 2, and on 1 a remote shell from 20 November was still
+>   running six days later. See [docs/field-survey.md](docs/field-survey.md).
+> - **Nothing came back** on the routers we had already cleaned.
+> - **Only one clean-up method starts clean: install the firmware again with "Keep Settings"
+>   switched off.** We tested the three ways on a router of our own. An upgrade that keeps
+>   settings carried start-up changes across. A factory reset left hidden folders in place. See
+>   [If you find something](#if-you-find-something).
+> - **These are two separate events.** The attack of 20 November and the older backdoor have
+>   different timelines, tools and servers, and we have found nothing that links them. See
+>   [Two separate events](#two-separate-events).
+> - **The fixed firmware closes the hole that was used. It does not put a lock on the router:**
+>   the router still carries out a cloud command without checking who sent it. See
+>   [Fixed firmware](#fixed-firmware).
+> - **If `/etc/mp_ip_mapping_info` exists on a router that never used AstroWarp, treat the
+>   router as fully compromised.** The attacker ran a command on it with full rights, and on some
+>   routers that command opened a remote shell.
+> - **KVM owners:** how to switch the cloud service off, and why a new or reinstalled KVM should
+>   stay off the internet until you have. See
+>   [Reducing exposure](#reducing-exposure-until-fixed-firmware-is-installed).
 
 > **New, 24 November 2026: the attacker was already testing on 19 November, a day and a half
 > before the attack. It is in GoodCloud's own log.**
@@ -101,15 +126,16 @@ partner.
    when the cloud side became usable by an outsider. The client is shipped as compiled code and
    we have not found its source in GL.iNet's published repositories, so nobody outside the
    company was in a position to review it.
-2. **This is not limited to one model, and it is not rare on the routers we manage.** Of 199
-   routers we have reached so far, 166 show the attack of 20 November, an older backdoor, or both:
-   a root remote shell on 24 (GL-AXT1800 and GL-MT6000), an older backdoor installed and running
-   on 49 (GL-MT2500, GL-MT3000, GL-MT6000, GL-AX1800 and GL-AXT1800), and on 93 more a command
-   from the attacker that ran as root. That is not a random sample; see
-   [docs/field-survey.md](docs/field-survey.md). *Added 27 November:* a second sweep on
-   26 November reached 17 more routers: the older backdoor was running on 2 of them and a remote
-   shell from 20 November was still running on 1. Nothing had come back on the routers we had
-   cleaned. Totals: 216 reached, a remote shell on 25, the older backdoor on 51.
+2. **This is not limited to one model, and it is not rare on the routers we manage.** Of 216
+   routers we have reached so far, 175 show the attack of 20 November, an older backdoor, or both:
+   a root remote shell on 25 (GL-AXT1800 and GL-MT6000), an older backdoor installed and running
+   on 51 (GL-MT2500, GL-MT3000, GL-MT6000, GL-AX1800 and GL-AXT1800), and on 99 more a command
+   from the attacker that ran as root. *Updated 27 November 2026: these are the totals after the
+   second sweep. Until then this item gave the first sweep's figures: 199 reached, 166 with a
+   sign, a shell on 24, the backdoor on 49, the command on 93.* That is not a random sample; see
+   [docs/field-survey.md](docs/field-survey.md). On the 17 routers first reached on 26 November,
+   the older backdoor was running on 2 and a remote shell from 20 November was still running on
+   1. Nothing had come back on the routers we had cleaned.
 3. **If your router or KVM had GL.iNet's cloud service switched on, check it now**, before you
    reboot or upgrade it. Some traces only exist until the next restart.
 4. **GL.iNet's published check looks for one process (`crond -i /tmp/.log`). We have not found
@@ -269,7 +295,7 @@ Full list with sources and evidence in [docs/findings.md](docs/findings.md). The
 | On most routers it ran a single command as root and left only a firewall rule. We recovered that command from the memory of 98 routers: it looks for the folders of the KVM implant ("gl-helper") and sends the result to `170.39.226.219`. In all we recovered eight distinct messages: three forms of that check, the remote shell, three ways of ending the shell, and a call-back | Verified by us; another owner recovered the folder check independently |
 | The only thing we could recover that was typed into a remote shell is the same folder check, by hand, in 36 of 106 shell images; where the answer was still in memory the folder was not there | Verified by us |
 | The attack on routers and the KVM implant used the same server: one router was sent a command, through GL.iNet's cloud, that calls `http://66.245.219.252:8899/wake?m=KK_<id>`, the server, port and path of the KVM implant's own report | Verified by us on one router; the KVM side is reported by forum users; see [docs/gl-helper-implant.md](docs/gl-helper-implant.md) |
-| A separate, older backdoor is installed and running on 49 routers we manage (GL-MT2500, GL-MT3000, GL-MT6000, GL-AX1800 and GL-AXT1800; firmware 4.7.0 to 4.11.0), with file dates from September 2025 to May 2026. It was installed in batches on routers in unrelated networks, almost none of which has a public address. It starts at every boot and adds itself to the list of files kept across upgrades | Verified by us; first reported by forum users |
+| A separate, older backdoor is installed and running on 49 routers we manage (GL-MT2500, GL-MT3000, GL-MT6000, GL-AX1800 and GL-AXT1800; firmware 4.7.0 to 4.11.0), with file dates from September 2025 to May 2026. *Updated 27 November 2026: 51 routers, after two more were found running it on 26 November.* It was installed in batches on routers in unrelated networks, almost none of which has a public address. It starts at every boot and adds itself to the list of files kept across upgrades | Verified by us; first reported by forum users |
 | That backdoor's loader was built once per router, reports the router's serial number, addresses, model and firmware to its servers every three days, and fetches a second stage that can run any command, write any file and open a proxy into the network behind the router. On 47 routers the second stage had been checking in for up to six months and no task was in its memory when we captured it | Verified by us from 49 copies of each and 47 memory images of each; see [the loader](docs/older-backdoor-loader.md) and [the second stage](docs/older-backdoor-second-stage.md) |
 | The fixed firmware's clean-up removes the two start-up routes it names and nothing else: on a test router, other start-up entries placed in kept settings survived an upgrade with settings kept and ran. *Added 25 November:* tested on the first round (4.11.1); the second round's script removes more and has not been tested | Verified by us on a GL-MT3000; see [Fixed firmware](#fixed-firmware) |
 | GL.iNet's published indicator, a `crond -i /tmp/.log` process, was not running on any router we checked, including all of the above | Verified by us |

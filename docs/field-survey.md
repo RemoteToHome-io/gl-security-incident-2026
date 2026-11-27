@@ -8,9 +8,13 @@ Last updated: 2026-11-23 08:39 UTC (first sweep); second sweep added 2026-11-27.
 
 ## The result so far
 
-**Of 199 routers we have reached, 166 show the attack of 20 November, an older
-backdoor, or both. 33 show nothing.** GL.iNet's published indicator (a `crond -i /tmp/.log`
+**Of 216 routers we have reached, 175 show the attack of 20 November, an older
+backdoor, or both. 41 show nothing.** GL.iNet's published indicator (a `crond -i /tmp/.log`
 process) was not running on any of them.
+
+*Updated 27 November 2026: totals of both sweeps. After the first sweep this read: of 199
+routers, 166 with a sign and 33 with nothing. The table below is the first sweep; the second is
+in [its own section](#second-sweep-26-november-2026).*
 
 This is not a random sample. They are routers we manage or own, almost all with GoodCloud
 switched on, and only those that were online when we checked.
