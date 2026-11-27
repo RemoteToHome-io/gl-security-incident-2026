@@ -30,6 +30,210 @@ clean. It lists what we planted, where, and what was still there after each meth
   settings. 4.11.0 is the last firmware before the fix and has no clean-up script; 4.11.2 is
   the second fixed build.
 
+## Exactly what we placed
+
+Everything below was written by one script on the test router. Nothing here is from the
+incident's own files: where a name matches the incident's, only the name is copied.
+
+### The marker script
+
+Every `.sh` file in the lists below is this same five-line script, with its own label in place
+of `LABEL`. All it does is write one line to a log file and one to the system log:
+
+```
+#!/bin/sh
+# rth-standin (harmless)
+echo "LABEL ran $(date -u +%FT%TZ) up=$(cut -d" " -f1 /proc/uptime) arg=$1" >> /etc/rth-test-ran.log 2>/dev/null
+logger -t rth-standin "LABEL ran arg=$1" 2>/dev/null
+true
+```
+
+So "ran" in the tables means: a line with that marker's label appeared in
+`/etc/rth-test-ran.log` after the clean-up.
+
+### Hidden folders at the incident's own paths
+
+| Folder | Files placed in it | What each file is |
+|---|---|---|
+| `/etc/config/.gl` | `boot.sh`, `gl-helper` | `boot.sh` is the marker script; `gl-helper` is a text file holding the word `rth-standin` |
+| `/etc/glinet/.cache` | `gl-helper`, `watch.sh`, `wake.sh`, `rtty_keep.sh` | three marker scripts and the same text file |
+| `/etc/gl_nas/.cache` | `watch.sh` | the marker script |
+
+And lines that would start them, written in the form GL.iNet's clean-up looks for:
+
+```
+# appended to /etc/crontabs/root
+*/3 * * * * /bin/sh /etc/glinet/.cache/watch.sh
+*/3 * * * * /bin/sh /etc/glinet/.cache/wake.sh
+*/3 * * * * /bin/sh /etc/glinet/.cache/rtty_keep.sh
+
+# written to /etc/gl_crontabs/crontabs.d/rth-standin-a2
+*/3 * * * * /bin/sh /etc/glinet/.cache/watch.sh
+
+# inserted in /etc/rc.local before its "exit 0"
+[ -f /etc/config/.gl/boot.sh ] && /bin/sh /etc/config/.gl/boot.sh >/dev/null 2>&1 &
+```
+
+Three near misses, the same idea spelled so that the clean-up's patterns do not match:
+
+```
+# appended to /etc/crontabs/root
+*/3 * * * * sh /etc/glinet/.cache/watch.sh A3a # rth-standin A3a no /bin/ prefix
+*/3 * * * * /bin/sh /etc/gl_nas/.cache/watch.sh A3b # rth-standin A3b second folder
+
+# inserted in /etc/rc.local
+[ -f /etc/glinet/.cache/watch.sh ] && sh /etc/glinet/.cache/watch.sh A3c # rth-standin A3c
+```
+
+### Files and lines at the older backdoor's names
+
+| Path | What was placed |
+|---|---|
+| `/bin/ulogd` | the marker script |
+| `/usr/bin/monitord` | a copy of the router's own Lua interpreter, as the real backdoor makes |
+| `/usr/sbin/ujaild` | the marker script; nothing starts it |
+| `/etc/init.d/urandom_seed` | five lines inserted after its first line (below) |
+| `/lib/upgrade/keep.d/netifd` | two lines added: `/bin/ulogd` and `/etc/init.d/urandom_seed` |
+
+```
+# inserted in /etc/init.d/urandom_seed
+cp /usr/bin/lua /usr/bin/monitord 2>/dev/null
+cp /bin/ulogd /var/run/monitord.pid 2>/dev/null
+sh /var/run/monitord.pid from-urandom_seed >/dev/null 2>&1
+sleep 1
+rm -f /var/run/monitord.pid
+```
+
+Three more lines of our own went into that keep list (`/usr/sbin/ujaild`, `/etc/glinet/.cache/`,
+`/etc/gl_nas/.cache/`), so that an upgrade would carry those paths and the clean-up's lines for
+them would be put to the test. We do not know that any real implant wrote those three.
+
+### Hidden folders and a hidden file of our own
+
+| Path | Files placed in it | What each file is |
+|---|---|---|
+| `/etc/config/.rth-standin` | `fw-include.sh`, `dhcp-script.sh`, and six record files (`pre.sha256`, `pre.uci`, `pre.absent-dirs`, `d-configs`, `with-gl-dir`, `c7-pubkey`) | two marker scripts, started by the firewall and dnsmasq settings below; the record files are the test's own notes of the state before |
+| `/etc/.rth-standin-hidden-dir` | `marker` | a text file holding the word `rth-standin` |
+| `/etc/.rth-standin-hidden-file` | (a file, not a folder) | a text file holding the word `rth-standin` |
+
+### Start-up hooks the clean-up does not list
+
+Lines added to files that already exist on the router. Each writes its label to the log:
+
+```
+# inserted in /etc/rc.local before its "exit 0"
+echo "B1-rc.local ran $(date -u +%FT%TZ)" >> /etc/rth-test-ran.log 2>/dev/null; logger -t rth-standin "B1-rc.local ran" 2>/dev/null; true # rth-standin
+
+# appended to /etc/crontabs/root
+*/3 * * * * echo "B2-cron ran $(date -u +\%FT\%TZ)" >> /etc/rth-test-ran.log; logger -t rth-standin "B2-cron ran"
+
+# written to /etc/gl_crontabs/crontabs.d/rth-standin-b14
+*/3 * * * * echo "B14-gl_crontabs ran $(date -u +\%FT\%TZ)" >> /etc/rth-test-ran.log; logger -t rth-standin "B14-gl_crontabs ran"
+```
+
+The same one-line form, with its own label, was appended to `/etc/shinit`, `/etc/profile`,
+`/etc/firewall.user`, `/etc/udhcpc.user` and `/etc/openvpn.user`, and inserted before the final
+`exit 0` of the firmware's OpenVPN start script `/etc/openvpn/scripts/ovpnserver-up`.
+
+New files:
+
+| Path | What was placed |
+|---|---|
+| `/etc/udhcpc.user.d/rth-standin` | the marker script |
+| `/etc/profile.d/rth-standin.sh` | a comment and the one-line form |
+| `/etc/init.d/rthstandin` | a service whose start step writes its label to the log (below) |
+| `/etc/rc.d/S99rthstandin` | the link that starts that service at boot |
+| `/usr/bin/rth-standin-tool`, `/usr/bin/rth-standin-keepd` | the marker script; nothing starts them |
+| `/etc/uci-defaults/00-rth-standin` | a first-boot script: it writes its label, the uptime, and whether GL.iNet's clean-up script was still waiting to run |
+
+```
+# /etc/init.d/rthstandin
+#!/bin/sh /etc/rc.common
+# rth-standin (harmless)
+START=99
+boot() { start; }
+start() {
+	echo "B11-init.d ran $(date -u +%FT%TZ)" >> /etc/rth-test-ran.log 2>/dev/null
+	logger -t rth-standin "B11-init.d ran" 2>/dev/null
+	return 0
+}
+```
+
+Settings that point at the two scripts in our hidden folder:
+
+```
+firewall.rthstandin_inc=include
+firewall.rthstandin_inc.path='/etc/config/.rth-standin/fw-include.sh'
+firewall.rthstandin_inc.reload='1'
+
+dhcp.@dnsmasq[0].dhcpscript='/etc/config/.rth-standin/dhcp-script.sh'
+```
+
+Lines added to the upgrade's keep lists, so that the new files above are carried:
+
+```
+# appended to /etc/sysupgrade.conf
+/etc/init.d/rthstandin
+/etc/rc.d/S99rthstandin
+/usr/bin/rth-standin-tool
+/etc/uci-defaults/00-rth-standin
+
+# appended to /lib/upgrade/keep.d/dropbear
+/usr/bin/rth-standin-keepd
+```
+
+### Access and settings
+
+```
+# appended to /etc/dropbear/authorized_keys: one public key whose private half was deleted when it was made
+
+# appended to /etc/passwd, /etc/shadow, /etc/group: an account that cannot log in
+rthstandin:x:65000:65000:rth-standin:/nonexistent:/bin/false
+rthstandin:*:0:0:99999:7:::
+rthstandin:x:65000:
+
+# /etc/sudoers.d/rthstandin
+# rth-standin (comment only, no rule)
+
+# appended to /etc/hosts
+192.0.2.1 rth-standin.invalid
+
+# appended to /etc/dnsmasq.conf, /etc/sysctl.conf, /etc/opkg/customfeeds.conf; and the whole of /etc/dnsmasq.d/rth-standin.conf
+# rth-standin
+
+# a switched-off port forward in the firewall settings
+firewall.rthstandin_dnat=redirect
+firewall.rthstandin_dnat.name='rth-standin-disabled'
+firewall.rthstandin_dnat.enabled='0'
+firewall.rthstandin_dnat.src='wan'
+firewall.rthstandin_dnat.src_dport='65022'
+firewall.rthstandin_dnat.dest='lan'
+firewall.rthstandin_dnat.dest_ip='192.0.2.1'
+firewall.rthstandin_dnat.dest_port='22'
+firewall.rthstandin_dnat.proto='tcp'
+
+# an extra peer in the WireGuard server's settings
+wireguard_server.rthstandin_peer=peers
+wireguard_server.rthstandin_peer.public_key='<32 random bytes; no private key for it exists>'
+wireguard_server.rthstandin_peer.client_ip='<an unused address in the server's range>'
+
+# a settings file of our own, /etc/config/rthstandin
+config marker 'm'
+	option note 'rth-standin'
+
+# one section added to each settings file listed in table 3
+<file>.rthstandin=rthstandin
+<file>.rthstandin.note='rth-standin inert marker'
+```
+
+`192.0.2.1` is an address reserved for documentation; it is not anyone's.
+
+### What we did not place
+
+Nothing in the boot loader, the `Factory` partition or any flash partition; no working second
+login; no replaced system program; nothing in the web server's settings; nothing in
+`/etc/inittab`.
+
 In the tables, **kept** means the marker was still there after the method, **ran** means its log
 line appeared afterwards, and **gone** means it was removed.
 
