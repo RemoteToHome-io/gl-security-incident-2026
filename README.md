@@ -36,7 +36,7 @@ partner supporting our common customers.
 >   enabled.** Below we demonstrated how implants can persist across firmware upgrades and still
 >   run as root afterwards.  We also demonstrate how a factor reset by itself leaves hidden folders 
 >   in place. **A firmware reinstall/upgrade with "keep settings" disabled is the only clean path
->   after an IOC.  Full stop.  See the whole test in [docs/cleanup-test.md](docs/cleanup-test.md).
+>   after an IOC. Full stop.** See the whole test in [docs/cleanup-test.md](docs/cleanup-test.md).
 > - **The fixed firmware closes the hole on the cloud. It has not closed the hole on the router:**
 >   the router still carries out a cloud command without checking who sent it. See
 >   [Fixed firmware](#fixed-firmware).
