@@ -29,25 +29,25 @@ partner supporting our common customers.
 
 > **New, 27 November 2026: a second check of our routers, and what actually cleans one.**
 >
-> - **216 routers checked so far. 175 show the attack of 20 November, the older backdoor, or
->   both.** A root remote shell on 25, the older backdoor on 51, and a command from the attacker
->   on 99 more. On 26 November we went through them again and reached 17 routers for the first
->   time: the older backdoor was running on 2, and on 1 a remote shell from 20 November was still
->   running six days later. See [docs/field-survey.md](docs/field-survey.md).
-> - **Nothing came back** on the routers we had already cleaned.
-> - **Only one clean-up method starts clean: install the firmware again with "Keep Settings"
->   switched off.** We tested the three ways on a router of our own. An upgrade that keeps
->   settings carried start-up changes across. A factory reset left hidden folders in place. The
->   whole test, marker by marker, is in [docs/cleanup-test.md](docs/cleanup-test.md).
-> - **These are two separate events.** The attack of 20 November and the older backdoor have
->   different timelines, tools and servers, and we have found nothing that links them. See
+> - **These are two separate attacks.** The attack of 20 November and the older backdoor have
+>   different timelines, tools and servers, and we have found nothing that links them.  We haveSee
 >   [Two separate events](#two-separate-events).
+> - **The latest firmware cannot guarantee a clean device when installed with "Keep Settings"
+>   enabled** Below we demonstrated how implants can persist across firmware upgrades and still
+>   run as root afterwards.  We also demonstrate how a factor reset by itself leaves hidden folders 
+>   in place. **A firmware reinstall/upgrade with "keep settings" disabled is the only clean path
+>   after an IOC.  Full stop.  See the whole test in [docs/cleanup-test.md](docs/cleanup-test.md).
 > - **The fixed firmware closes the hole that was used. It does not put a lock on the router:**
 >   the router still carries out a cloud command without checking who sent it. See
 >   [Fixed firmware](#fixed-firmware).
 > - **If `/etc/mp_ip_mapping_info` exists on a router that never used AstroWarp, treat the
 >   router as fully compromised.** The attacker ran a command on it with full rights, and on some
 >   routers that command opened a remote shell.
+> - **216 routers checked so far. 175 show the attack of 20 November, the older backdoor, or
+>   both.** A root remote shell on 25, the older backdoor on 51, and a command from the attacker
+>   on 99 more. On 26 November we went through them again and reached 17 routers for the first
+>   time: the older backdoor was running on 2, and on 1 a remote shell from 20 November was still
+>   running six days later. See [docs/field-survey.md](docs/field-survey.md).
 > - **KVM owners:** how to switch the cloud service off, and why a new or reinstalled KVM should
 >   stay off the internet until you have. See
 >   [Reducing exposure](#reducing-exposure-until-fixed-firmware-is-installed).
