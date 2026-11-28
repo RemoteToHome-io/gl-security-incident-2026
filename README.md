@@ -31,7 +31,7 @@ partner supporting our common customers.
 > covers the older backdoor.**
 >
 > - **GL.iNet's co-founder and COO, Alfie Zhao, has posted a message on the incident.** He takes
->   responsibility for "the slow and incomplete communication". GL.iNet is engaging an outside
+>   responsibility for the response communication. GL.iNet is engaging an outside
 >   legal and forensic team, including on "the questions raised about our earlier activity", has
 >   brought in a security firm to audit its firmware, cloud services and source code, and will
 >   publish a report with the full findings once the scope is known. No date is given.
