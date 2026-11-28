@@ -41,9 +41,12 @@ every step; [what only GL.iNet can answer](#what-only-glinet-can-answer) lists w
 
 ## 1. The parts
 
-- **MQTT** is a publish-and-subscribe protocol. A client publishes a message to a named channel, a *topic*;
-  every client subscribed to that topic receives it. A publisher names one exact topic. A subscriber may use
-  wildcards: `+` for one level, `#` for everything below.
+- **MQTT** is a publish-and-subscribe protocol. A client publishes a message to a named channel, a *topic*,
+  and the server forwards it to the clients whose subscriptions match
+  ([MQTT 5.0](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html), section 3.8). A publisher names
+  one exact topic: EMQX refuses a published topic name that contains a wildcard. A subscriber may use
+  wildcards: `+` for one level, `#` for everything below (both read in EMQX's topic code,
+  [`emqx_topic.erl`](https://github.com/emqx/emqx/blob/v5.8.9/apps/emqx/src/emqx_topic.erl)).
 - **EMQX** is the message broker GoodCloud runs on (**GL statement**). The broker decides who may connect, and
   who may publish or subscribe to which topic. Those rules are configuration that GL.iNet writes. **Verified, as
   product documentation only:** EMQX checks publishing and subscribing separately, so a configuration can close
@@ -132,17 +135,17 @@ Read in the same two builds of the cloud client.
 
 ## 5. Could the attacker have guessed? (Verified counts, then Inference)
 
-- **MACs are easy.** All of the devices in the 260-device cross-section of our GoodCloud account that we studied share one
-  manufacturer prefix,
-  `94:83:C4` (GL Technologies (Hong Kong) Limited in the public registry). One prefix leaves 16,777,216
-  addresses, and 148 of the 260 sit within 4,096 addresses of another: factory numbering runs in sequences. A MAC
-  is also on the label and on the air.
+- **MACs fall in a small space.** All of the devices in the 260-device cross-section of our GoodCloud account
+  that we studied share one manufacturer prefix, `94:83:C4` (GL Technologies (Hong Kong) Limited in the public
+  registry, as Wireshark's copy of it reads). One prefix leaves 16,777,216 addresses, and 148 of the 260 sit
+  within 4,096 addresses of another, so many devices lie close together in that range.
 - **The full topic is not.** Our firmware mirror holds 72 stable releases from 4.7.0 on, across 19 router models,
   dated on or before 19 November 2026 (115 counting beta and test builds). These are lower bounds: three versions
   we found on routers are not in it. Trying each of 16,777,216 addresses under each pair comes to 1,207,959,552
   messages (1,929,379,840 with the test builds).
 - **Inference.** The wave lasted 12 hours (section 7): 1.2 billion messages in that time is about 28,000 a second,
-  every second. A broker can carry that, so the number alone does not rule guessing out. What points to a list
+  every second. We cannot tell from our data whether GoodCloud's broker could carry that, so the number alone
+  does not rule guessing out. What points to a list
   is the shape: the groups were started one after another, the versions of one model within about a minute of
   each other (section 7), and
   every hit router was on a version the attacker expected for its model (section 6). A list of real topics,
