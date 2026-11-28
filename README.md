@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-27 08:58 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-28 01:26 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -26,6 +26,31 @@ partner supporting our common customers.
 [what GL.iNet has said](#what-glinet-has-said) ·
 [the short version](#the-short-version) ·
 [all findings](docs/findings.md)
+
+> **New, 28 November 2026: GL.iNet's COO takes responsibility, and GL.iNet's site notice now
+> covers the older backdoor.**
+>
+> - **GL.iNet's co-founder and COO, Alfie Zhao, has posted a message on the incident.** He takes
+>   responsibility for "the slow and incomplete communication". GL.iNet is engaging an outside
+>   legal and forensic team, including on "the questions raised about our earlier activity", has
+>   brought in a security firm to audit its firmware, cloud services and source code, and will
+>   publish a report with the full findings once the scope is known. No date is given.
+>   [His message](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365) ·
+>   [our record of it](docs/gl-statements.md#a-message-from-glinets-coo-27-november-2026)
+> - **GL.iNet's site notice was rewritten, marked 26 November.** It now addresses the older
+>   backdoor: GL.iNet is investigating it and is still checking how it reached devices and whether
+>   it is connected to 20 November. Its firmware table gives the second-round versions, and for
+>   the older malware it says to install the latest stable build. Some passages were dropped,
+>   among them "Do not assume incident malware cleanup resolves every separate persistence
+>   finding"; the notice still calls the clean-up targeted, not a general malware scan, and the
+>   forum copy still has the dropped passages.
+>   [What changed](docs/gl-statements.md#site-notice-26-november-2026)
+> - **GL.iNet's security advisories page names 4.11.3 as the fixed version for the GL-MT3000 and
+>   GL-MT6000,** one step above the notice's 4.11.2. 4.11.3 was released on 27 November; its
+>   release note mentions no security fix, and we have not read the build. The page also gives
+>   four of GL.iNet's vulnerability reports identifiers of the form `vdb-submit-…`; they are not
+>   CVE numbers.
+>   [Details](docs/gl-statements.md#the-security-advisories-page)
 
 > **New, 27 November 2026: a second check of our routers, and what actually cleans one.**
 >
@@ -161,7 +186,9 @@ partner supporting our common customers.
    [If you find something](#if-you-find-something). *Added 25 November:* a second round of
    builds followed on 24 November. In the two of them we have read, the clean-up also removes
    the older backdoor's files; it is still a list of known names, and we have not tested it on a
-   device.
+   device. *Added 28 November:* GL.iNet released 4.11.3 for the GL-MT3000 and GL-MT6000 on
+   27 November and names it as their resolved version on its security advisories page. Its
+   release note mentions no security fix; we have not read it.
 
 ## Two separate events
 
@@ -207,6 +234,22 @@ From the notice on [GL.iNet's site](https://www.gl-inet.com/en-gb/blogs/blog/gli
 still carried the earlier text when we checked at 19:06 UTC; the table below shows how the
 wording has moved. These are GL.iNet's statements, not our findings:
 
+> *Update, 28 November 2026.* The list below summarises the site notice of 23 November and is kept
+> as it was. GL.iNet has rewritten the site notice since; it now reads "Updated November 26, 2026
+> (UTC)" and was in our copy of 27 November at 16:05 UTC, not in that of 09:00 UTC. It adds a
+> section on the older backdoor, citing this repository: GL.iNet is investigating it and is still
+> checking how it reached devices and whether it is connected to the incident. Its firmware table
+> now gives the second-round versions, and for the older malware it says to choose the latest
+> stable build. It no longer says "Do not assume incident malware cleanup resolves every separate
+> persistence finding" (it still calls the clean-up targeted, not a general malware scan), nor
+> that some KVMs have the cloud service enabled before an account is linked; the forum copy still
+> says both. Four of GL.iNet's vulnerability reports, among them the three the notice links, now
+> carry identifiers of the form `vdb-submit-<number>` on its
+> [security advisories page](https://www.gl-inet.com/blogs/security-updates/security-advisories-vulnerabilities-and-cves-nov-24-2026);
+> they are not CVE numbers. And on 27 November GL.iNet's COO posted a
+> [message](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365)
+> on the incident. All of it is in [docs/gl-statements.md](docs/gl-statements.md).
+
 - **The incident.** On 20 November 2026 GL.iNet identified unauthorized access to some routers
   and KVM devices connected to GoodCloud. The attack path was blocked the same day.
 - **How it happened.** A configuration error in GoodCloud's device-messaging service let a client
@@ -246,7 +289,9 @@ wording has moved. These are GL.iNet's statements, not our findings:
   connected to affected KVMs were accessed.
 
 The notice now links to this repository twice: to our KVM firmware page and to the
-[If you find something](#if-you-find-something) section of this page.
+[If you find something](#if-you-find-something) section of this page. *Updated 28 November
+2026:* the site notice of 26 November links to this repository six times, to five places
+([the list](docs/gl-statements.md#site-notice-26-november-2026)).
 
 GL.iNet has not published the time window, how many devices, or what the malicious software
 does. Its router report names one affected firmware version per model; we find the same code
@@ -263,6 +308,7 @@ versions we saved; three earlier edits on 21 November were made before our first
 | 21 November, 16:00 | Rewritten. One indicator, `crond -i /tmp/.log`. If found: KVM beta firmware, or a factory reset. If not found: no reset or cleanup needed. The sentence about corrective measures on affected devices was removed |
 | 23 November, 01:53 | The security firmware is said to remove the malware with settings kept; the factory reset option is gone, also when the indicator is found; the official checks "may not detect every affected device". The forum copy still showed this text at 19:06 UTC |
 | 23 November, after 14:31 (site only) | The current text above. Reinstall without keeping settings is the strongest recovery; keeping settings is a lesser option; replace passwords and keys; the router process check is gone; the cause and vulnerability reports are published |
+| Marked 26 November; in our copies from 27 November, 16:05 (site only) | A section on the older backdoor, which GL.iNet is investigating; second-round firmware versions, and the latest stable build for the older malware; the sentence not to assume the clean-up resolves every separate persistence finding, and the note that some KVMs have the cloud service enabled before an account is linked, are gone |
 
 *Added 26 November 2026:* the forum post now carries the site notice's text as well. The forum's
 data shows its last update on 24 November at 04:04 UTC. The one difference we found between the
@@ -797,6 +843,14 @@ that access at the other end.
 8. Check the computers behind the device. For a KVM, check the computer it was attached to.
 
 ## Fixed firmware
+
+> **Update, 28 November 2026: 4.11.3 for the GL-MT3000 and GL-MT6000.** GL.iNet released 4.11.3
+> for both models on 27 November; our mirror held it by 13:27 UTC that day. Its release note lists
+> two fixes, for Mesh logs that could fill `/tmp` and for opening the AdGuard Home settings page
+> over HTTPS, and nothing about security. GL.iNet's
+> [security advisories page](docs/gl-statements.md#the-security-advisories-page) gives 4.11.3 as
+> the resolved version for both models; its notice still gives 4.11.2. **We have not read 4.11.3.**
+> Everything below about 4.11.2 and its clean-up is about 4.11.2 only.
 
 > **Update, 27 November 2026: the fix closes the hole that was used. It does not put a lock on
 > the router.**

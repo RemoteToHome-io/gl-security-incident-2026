@@ -46,6 +46,17 @@ note telling GL-AXT1800 owners on 4.8.4 to contact support is gone. The two rows
 are unchanged. The site notice was not changed with it: at 04:44 UTC its text was still the one
 of 23 November, with the first-round versions.
 
+**The site notice rewritten again, and a message from GL.iNet's COO.** *Added 28 November 2026.*
+The site notice now reads "Updated November 26, 2026 (UTC)". Our copy of 27 November at 09:00 UTC
+still had the text of 23 November; our next copy, at 16:05 UTC that day, has the new one. It adds
+a section on the older backdoor and gives the second-round firmware versions; see
+[its entry](#site-notice-26-november-2026). The forum post was not changed with it: at 00:00 UTC on
+28 November it was still version 11, without that section. On 27 November at 23:49 UTC GL.iNet's
+co-founder and COO posted a message on the incident in a new forum topic; see
+[its entry](#a-message-from-glinets-coo-27-november-2026). GL.iNet's site also has a security
+advisories page that this record did not yet include; see
+[its entry](#the-security-advisories-page).
+
 ## At a glance
 
 | Subject | 21 Nov, 10:35 UTC | 21 Nov, 14:10 UTC | 21 Nov, 16:00 UTC | 23 Nov, 01:53 UTC | 23 Nov, site notice (read 19:07 UTC) |
@@ -201,6 +212,111 @@ Against the version of 01:53 UTC:
   three situations, the limits of the clean-up, the acknowledgement of the older backdoor, and
   links to community work, among them two pages of this repository.
 
+## Site notice, 26 November 2026
+
+*Added 28 November 2026.* Read at the same address. Its header reads "Issued November 20, 2026 ·
+Updated November 26, 2026 (UTC)", and its list of changes at the end has a new line: "November 26,
+2026 (UTC): Added an older malware finding and updated cleanup guidance." Our copy of 27 November
+at 09:00 UTC still had the text of 23 November; the new text is in our copy of 16:05 UTC that day
+and unchanged in our copy of 23:03 UTC. We hold no copy between 09:00 and 16:05 UTC. The en-gb and
+en-us pages are identical, and the same text is served at the address without a language code,
+which is where the banner at the top of GL.iNet's home page links (read 28 November, 00:32 UTC).
+
+Against the site notice of 23 November:
+
+- **Added: a section on the older backdoor.** Headed "November 26 update: Older malware reports",
+  under who is affected. GL.iNet is investigating older malware found on some routers. It cites
+  RemoteToHome's report of files dated as early as September 2025, and our reading that newer
+  firmware builds include a clean-up for the known files. It is still checking how the malware
+  reached devices and whether it is connected to the incident of 20 November. A later passage,
+  "Technical background on the older malware", says the reports describe changes to the router's
+  `urandom_seed` start-up script, that reported file dates "do not establish the initial infection
+  date or entry point", and that our review covers the known files in the builds examined.
+- **Changed: the router firmware table.** It now gives the second-round versions (4.11.2, 4.10.4,
+  4.10.3, 4.9.4, 4.9.2, 4.8.8, 4.8.5 and 4.7.15, model by model as on the forum post's version 11)
+  and the two rows for older models, at 4.5.24 and 4.3.31, that until now were only in the forum
+  copy. The column is still headed "Minimum security version". A new sentence above the table: the
+  minimum versions relate to the update of 20 November, and for the older malware owners should
+  choose the latest stable firmware for their model. The note for GL-AXT1800 owners on 4.8.4 is
+  gone.
+- **Changed:** a device that never connected to GoodCloud "was not exposed" through this
+  incident's attack path. The text of 23 November said it "was not likely exposed".
+- **Removed:**
+  - that some KVM devices have the cloud service enabled before an account is linked, so not
+    having linked a device is not proof that it never connected, and the advice to contact support
+    when unsure of a device's connection history;
+  - from the passage on the separate router persistence reports: that GL.iNet acknowledged them in
+    the forum, that a process name alone is not proof of infection, and "Do not assume incident
+    malware cleanup resolves every separate persistence finding";
+  - "(identifies pending assessment)" after the vulnerability reports, in the list of changes.
+- **Reworded:** the passage on flash regions that a reset or reinstall may not rewrite, which cites
+  this repository, is now headed "If problems continue after reinstalling" and says this "does not
+  mean those areas were changed during the attack". It was headed "Firmware and boot integrity".
+- **Links to this repository:** six, to five places, where the text of 23 November had two. The
+  text "RemoteToHome reports files dated as early as September 2025" links to
+  [What has been found beyond that](../README.md#what-has-been-found-beyond-that); "Newer firmware
+  builds it reviewed include cleanup for the known files" and "firmware cleanup review" link to
+  [Fixed firmware](../README.md#fixed-firmware); "RemoteToHome's analysis" links to
+  [the older backdoor's loader](older-backdoor-loader.md); the KVM and flash-region passages link,
+  as before, to [the KVM firmware page](kvm-firmware.md) and to
+  [If you find something](../README.md#if-you-find-something).
+
+Points we note:
+
+- The forum post and the site notice differ again. At 00:00 UTC on 28 November the forum post was
+  still at version 11, of 27 November 02:05 UTC, without the section on the older backdoor, and it
+  still carried the sentences the site dropped, among them "Do not assume incident malware cleanup
+  resolves every separate persistence finding" and the one saying some KVMs have the cloud service
+  enabled before an account is linked.
+- The passage removed on KVMs matches our own reading of the GL-RM1 1.10.2 image: a new or
+  reinstalled unit has the cloud service switched on (README, under
+  [Reducing exposure](../README.md#reducing-exposure-until-fixed-firmware-is-installed)).
+
+## A message from GL.iNet's COO, 27 November 2026
+
+*Added 28 November 2026.* A new forum topic,
+[A Message from GL.iNet COO about the secuirty incident](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365)
+(its spelling), opened on 27 November 2026 at 23:49 UTC by the staff account alzhao and edited
+once, at 23:52 UTC. We hold the edited version, read on 28 November at 00:32 UTC. It is signed
+Alfie Zhao, who introduces himself as the co-founder and COO of GL.iNet.
+
+According to the subreddit's moderators, the same message was posted in r/GlInet by the moderator
+u/wickedwarlock84, signed by Alfie Zhao, and the COO's own Reddit account is u/Alfie_GLiNet
+(Reported; we have not read the Reddit post directly). We compared a copy of that post with the
+forum post: the text is the same apart from the sign-off and a closing link to the forum topic.
+
+What it says:
+
+- **Responsibility.** He takes responsibility for "the slow and incomplete communication". The
+  advisory should have been quick, clean and understandable; when the community found more,
+  GL.iNet made it feel that information was being withheld.
+- **Investigation.** GL.iNet is engaging an outside legal and forensic team to investigate the
+  incident, "including the questions raised about our earlier activity".
+- **Audit.** A professional security firm has been brought in to audit GL.iNet's firmware, cloud
+  services and source code, including "the additional OpenWrt code".
+- **A report.** Once the full scope is known, a fact-checked report with the full findings will be
+  published. No date is given.
+- **Where official updates will appear:** first as an ongoing announcement at the top of
+  GL.iNet's home page, second in the forum topic of the notice, and in a new newsletter for
+  security updates. Security reports go to security@gl-inet.com.
+- **The older attack.** GL.iNet will work over the weekend to learn more about "the older
+  attack".
+- **Longer term:** a common firmware base, so that a security fix is built once and reaches every
+  model.
+- **Thanks.** It thanks community members by their Reddit names, among them RemoteToHome, and
+  says that some of the people who have helped are GL.iNet employees.
+
+On 28 November at 00:24 UTC the same account answered a user in that topic: "Definitely will get
+new guys in security team and enhance security."
+
+Points we note:
+
+- The message gives no date for the report and does not state the number of devices, the time
+  window, or how the older backdoor was installed. Those remain open; see
+  [What the notice has not said](#what-the-notice-has-not-said-in-any-version-we-hold).
+- At the top of GL.iNet's home page, when we read it on 28 November at 00:32 UTC, was a link
+  reading "Security Notice: GoodCloud Remote Management Incident" to the site notice.
+
 ## GL.iNet's published vulnerability reports
 
 GL.iNet keeps vulnerability reports in a public repository, [gl-inet/CVE-issues](https://github.com/gl-inet/CVE-issues). We read
@@ -255,6 +371,64 @@ Points we note, from our own data:
 - The WireGuard report concerns the WireGuard client settings. It is not the WireGuard server
   settings file that changed on routers in our data, and we know of no link between the two.
 
+### The security advisories page
+
+*Added 28 November 2026.* GL.iNet's site has a
+[Security Updates](https://www.gl-inet.com/blogs/security-updates) blog. When we read it on
+28 November at 00:33 UTC it listed eight advisories, each with a release date: the newest, dated
+24/11/2026,
+[Security Advisories (Vulnerabilities and CVEs) Nov 24 2026](https://www.gl-inet.com/blogs/security-updates/security-advisories-vulnerabilities-and-cves-nov-24-2026),
+and seven earlier ones, dated from 01/12/2022 to 15/04/2026. The newest page's own data gives
+23 November 2026, 19:00 at UTC−5 (00:00 UTC on 24 November) as both its publication and its
+modification time. Yet it names firmware 4.11.3, which GL.iNet released on 27 November (our mirror
+held it by 13:27 UTC that day): either the page was changed after its stated time, or it named a
+version not yet released. This is our first copy, so we do not know what it said before.
+
+What it states:
+
+- Four reports, each with an identifier of the form `vdb-submit-<number>` and a summary matching
+  the title of one of the reports above: `vdb-submit-1112985`, the EMQX authorization bypass; `vdb-submit-1112986`,
+  the remote-terminal configuration and certificate check; `vdb-submit-1112997`, the AstroWarp
+  command injection through `virtual_ip_info`, credited to Xusheng Li; `vdb-submit-1113491`, the
+  login timestamp enumeration in `gl_nas_sys`. The page gives no CVE number. The site notice says
+  that report titles and internal tracking references are not CVE numbers.
+- Affected and resolved firmware, one table for routers and one for KVMs:
+
+  | Models | Affected | Resolved |
+  |---|---|---|
+  | GL-MT3000, GL-MT6000 | 4.11.0 and earlier | 4.11.3 |
+  | GL-MG1300 | 4.10.1 and earlier | 4.11.2 |
+  | GL-E5800 | 4.10.2 and earlier | 4.10.4 |
+  | GL-BE3600, GL-BE9300 | 4.10.1 and earlier | 4.10.3 |
+  | GL-BE14000 | 4.9.2 and earlier | 4.9.4 |
+  | GL-BE6500, GL-MT3600BE, GL-MT5000 | 4.9.0 and earlier | 4.9.2 |
+  | GL-BE10000 | 4.8.6 and earlier | 4.8.8 |
+  | GL-AX1800, GL-SFT1200, GL-X3000, GL-XE3000, GL-AXT1800 | 4.8.3 and earlier | 4.8.5 |
+  | GL-MT2500 / GL-MT2500A | 4.7.4 and earlier | 4.7.15 |
+  | GL-X2000 | 4.7.13 and earlier | 4.7.15 |
+  | GL-A1300, GL-X300B | 4.5.22 and earlier | 4.5.24 |
+  | GL-AR300M, GL-AR300M16, GL-E750 / GL-E750V2, GL-MT300N-V2, GL-XE300 | 4.3.30 and earlier | 4.3.31 |
+  | GL-AR750, GL-AR750S-EXT, GL-B1300, GL-MT1300, GL-X750 | 4.3.25 and earlier | 4.3.31 |
+  | GL-AP1300 | 4.3.18 and earlier | 4.3.31 |
+  | KVMs RM1, RM1V2, RM10, RM10RC, RM1PE, RM4PE | 1.10.1 and earlier | 1.10.3 |
+  | KVM RMQ1 | 1.8.5 and earlier | 1.8.7 |
+
+- Security bugs are to be reported to security@gl-inet.com, and GL.iNet states "a 90-day policy for
+  vulnerability disclosure".
+
+Points we note:
+
+- **For the GL-MT3000 and GL-MT6000 the resolved version is 4.11.3,** one step above the 4.11.2 that
+  the site notice gives as their minimum security version and the forum notice as their latest
+  stable security version. GL.iNet released 4.11.3 for both models on 27 November. Its release
+  note lists two fixes, for Mesh logs that could fill `/tmp` and for opening the AdGuard Home
+  settings page over HTTPS, and says nothing about security. We have not read the 4.11.3 builds.
+- **For the GL-MT2500 the page gives "4.7.4 and earlier" as affected.** In our field survey,
+  GL-MT2500 routers found on 4.7.13 and on 4.9.0 showed that the attacker's command of 20 November
+  had run on them ([field survey](field-survey.md)). If they were on those versions when it
+  arrived, the AstroWarp flaw was present after 4.7.4. The table does not say which of the four
+  reports each row refers to.
+
 ## GL.iNet staff posts in the forum
 
 This section records, in time order, what GL.iNet staff said about the incident in the public forum
@@ -308,9 +482,35 @@ GL.iNet staff, and is not listed here.
 | 2026-11-23 03:13:58 | will.qiu | On 4.7+ with GoodCloud remote web access on, you can export a backup remotely through LuCI (port 8080); reposts the firmware list. | [73062/2](https://forum.gl-inet.com/t/script-upgrade-firmware-with-backup-locally-or-remotely/73062/2) |
 | 2026-11-23 06:57:22 | will.qiu | The empty LuCI "Status → Processes" page on a GL-BE9300 "is expected with the current QSDK and LuCI combination"; points to the SSH check instead. | [73166/4](https://forum.gl-inet.com/t/be9300-luci-no-info-in-status-processes/73166/4) |
 | 2026-11-23 07:06:26 | will.qiu | On fixes for older devices: "we're working on this, and expect to release it in about 2–3 days." | [73056/168](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/168) |
-| 2026-11-23 08:58:16 | will.qiu | A router "needs to connect to GoodCloud to obtain its DPI license and ... signature database"; you can use DPI "without binding your router to a GoodCloud account". | [73090/7](https://forum.gl-inet.com/t/router-features-going-forward-after-the-remote-exploit/73090/7) |
+| 2026-11-23 08:58:16 | charles2 | A router "needs to connect to GoodCloud to obtain its DPI license and ... signature database"; you can use DPI "without binding your router to a GoodCloud account". *Corrected 28 November 2026: this row named will.qiu; the post is by charles2.* | [73090/7](https://forum.gl-inet.com/t/router-features-going-forward-after-the-remote-exploit/73090/7) |
 | 2026-11-23 09:18:18 | will.qiu | On the GoodCloud risk: VPN failover "is already supported locally on the router, independently of GoodCloud"; the Flint 3 security fix "is available in v4.10.2". | [73065/4](https://forum.gl-inet.com/t/critical-feedback-goodcloud-risk-vpn-auto-failover-ui-regressions-forced-dns-and-pppoe-drops/73065/4) |
 | 2026-11-23 09:27:51 | will.qiu | GL-X3000 v4.8.4 stable has the GoodCloud security fix (without SQM); a v4.11 stable with both is expected soon. | [73089/3](https://forum.gl-inet.com/t/spitz-ax-gl-x3000-goodcloud-security-patch-for-sqm-beta-firmware/73089/3) |
+| 2026-11-23 09:29:33 | bruce | To a thread about other malware found while looking for 20 November evidence: "We have received this issue and are currently verifying it." | [73097/42](https://forum.gl-inet.com/t/found-other-malware-while-looking-for-11-20-evidence/73097/42) |
+| 2026-11-24 07:11:23 | bruce | To a user asking if GoodCloud is safe to use again after a clean flash: the attacks "have ceased" and the vulnerability has been patched; GoodCloud and devices on the latest firmware are secure and operating normally; links the fix page, suggests the community script, and asks for anomalies to go to support (edited 07:16:57). | [73056/197](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/197) |
+| 2026-11-24 07:13:04 | bruce | Devices that never had GoodCloud enabled are unaffected and unrelated to the incident; the current cloud-to-device connection is secure; same fix-page link and support address (edited 07:16:47). | [73056/198](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/198) |
+| 2026-11-24 07:43:14 | will.qiu | To a GL-MT2500A owner whose unit stopped connecting: if it never connected to GoodCloud it "should not be affected"; it looks more like a bricked device; links the debrick guide; contact support if under warranty. | [73056/199](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/199) |
+| 2026-11-24 07:48:48 | will.qiu | To a user quoting the AstroWarp/SD-WAN report: the AstroWarp report means the flaw does not need AstroWarp enabled, but the exploit path "still needs to go through the GoodCloud". | [73056/200](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/200) |
+| 2026-11-24 10:04:48 | bruce | To a user asking how to have an AstroWarp/GoodCloud account erased: delete it from the cloud platform, or send the request to support (edited 10:05:51). | [73056/206](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/206) |
+| 2026-11-24 10:07:07 | bruce | To a user asking whether stopping GoodCloud on the router would stop DPI database updates: DPI updates "will not be affected"; DPI does not require a cloud account to be linked. | [73056/208](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/208) |
+| 2026-11-24 10:40:42 | bruce | To a user doubting the "patched" statement: GL.iNet can confirm the vulnerability related to this incident has been patched; quotes the notice's bullet on separate router persistence reports; says R&D has worked "in 24-hour rotational shifts". | [73056/209](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/209) |
+| 2026-11-24 11:05:07 | bruce | To a user asking about round-the-clock monitoring and malware age: "We are investigating this incident"; no details can be shared publicly now; more information will follow as the investigation progresses. | [73056/212](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/212) |
+| 2026-11-24 14:33:27 | bruce | To a user noting that the clean-up put `urandom_seed` back but left `/bin/ulogd`: the question is under investigation; the issue within the scope of the official announcement is resolved in this firmware update; a CVE in the follow-up will distinguish the incident (edited 14:34:14). | [73056/216](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/216) |
+| 2026-11-25 08:54:55 | snowisland | The user wrote that they run 1.11.3 beta, that GoodCloud is not running, and that the device appears infected. Staff replied that 1.11.0 beta3 was shared a day before the KVM vulnerability was found and addressed, so use 1.10.3 release1 first; the 1.11 release will get the fixes later; for other KVM models, the patched versions are in a table image (not read) (edited 08:57:56). | [73070/134](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/134) |
+| 2026-11-25 09:34:53 | charles2 | To a user who reported GoodCloud still running after unbinding and restarting: GL tested a GL-MT6000 on 4.11.2 and the process stopped after unbinding; asks for model, firmware and where it was unbound; gives the Disable steps per firmware branch and asks for a retest on the latest stable firmware (edited 09:39:03). | [73070/136](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/136) |
+| 2026-11-25 09:37:36 | bruce | To a DPI question: DPI database updates use "a different connection method from GoodCloud"; if GoodCloud was never enabled, the incident does not affect the device. | [73056/237](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/237) |
+| 2026-11-25 10:05:54 | bruce | To a Spitz AX complaint about frequent fixes and no updates for over a year: apologises; says frequent releases reflect efforts on device security; says fixes for vulnerabilities in GL's MTK SDK were applied on OpenWrt 21; asks for samples and verification steps for further issues. | [73056/238](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/238) |
+| 2026-11-25 10:38:46 | bruce | Upgrade quick guide (online and manual): leave "Keep settings" unchecked "if necessary"; after the upgrade, configure the device as new and do not import a previous backup; download the model's own firmware, no cross-flashing (edited 10:43:29). | [73056/239](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/239) |
+| 2026-11-25 10:48:58 | bruce | To an X2000 owner whose laptop dropped off Wi-Fi after the flash: asks whether other devices connect; if so, forget the saved network on the laptop and reconnect. | [73056/240](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/240) |
+| 2026-11-25 11:56:49 | bruce | To a Brume 3 owner who lost access to the router page: asks about the network layout and drop-in gateway mode; suggests giving the Brume 3 a different gateway address. | [73056/241](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/241) |
+| 2026-11-26 01:58:17 | will.qiu | To a request to update the Tailscale version shipped in GL firmware: "Thank you for the reminder. We are working on it." | [73056/254](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/254) |
+| 2026-11-26 03:09:50 | will.qiu | Explains the security updates are built on existing stable firmware because a targeted fix needs less development and testing than moving v4.5 to v4.7-v4.11; says maintenance work (new firmware for MT300N-V2, AR300M, E750) began before the incident, and new team members have been hired. | [73056/255](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/255) |
+| 2026-11-26 03:12:52 | will.qiu | To a Flint 4 owner who got an indicator hit, flashed the first security firmware without settings and the second with settings, and deleted the cloud account: "Yes, you can leave it as it is"; the first firmware without keeping settings should have removed the known malware; keeping settings on the next upgrade is fine. | [73056/256](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/256) |
+| 2026-11-26 03:16:05 | will.qiu | To a Brume 3 owner without web ports 80/443 after an upgrade: asks for the system logs by private message and the output of `nginx -t` and `nginx` over SSH. | [73056/257](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/257) |
+| 2026-11-26 09:15:07 | will.qiu | To a user asking about a `stubby` account and `netifyd` on an MT5000: after an upgrade past v4.9 that keeps settings, the `stubby` account staying in `/etc/passwd` is normal (older firmware used it for DNS over TLS, shell `/bin/false`); `netifyd` is not in the base image under `/rom` and is installed separately when DPI features are enabled. | [73070/147](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/147) |
+| 2026-11-27 16:16:18 | alzhao | To a user who said the remote-terminal component (rtty) was what was affected: "We will get this beast under control." | [73056/278](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/278) |
+| 2026-11-27 16:17:00 | alzhao | To a user who said GL.iNet should not ship closed-source firmware: the source code will be audited by a security audit firm (the post says "security audit firmware"). | [73056/279](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/279) |
+| 2026-11-27 23:49:34 | alzhao | Opens a new topic with a message signed by Alfie Zhao, co-founder and COO: takes responsibility for the communication; outside legal and forensic team; security audit; a report to follow. See [its entry](#a-message-from-glinets-coo-27-november-2026). Edited 23:52 UTC. | [73365/1](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365) |
+| 2026-11-28 00:24:14 | alzhao | To a user who said even a large team struggles to keep such software safe: "Definitely will get new guys in security team and enhance security." | [73365/3](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365/3) |
 
 ### Changes
 
@@ -344,8 +544,22 @@ Where a later staff post changes or contradicts an earlier one:
   GoodCloud was disabled locally
   ([73069/10](https://forum.gl-inet.com/t/quickly-check-if-your-kvm-is-under-attack/73069/10)) — the
   two together show that unbinding an account and disabling the cloud client are not the same thing.
+- **Traffic inspection (DPI) and GoodCloud.** *Added 28 November 2026.* charles2 wrote that a router
+  "needs to connect to GoodCloud" to obtain its DPI licence and signature database
+  ([73090/7](https://forum.gl-inet.com/t/router-features-going-forward-after-the-remote-exploit/73090/7)).
+  bruce later wrote that DPI database updates are not affected when GoodCloud is off
+  ([73056/208](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/208))
+  and that they use "a different connection method from GoodCloud"
+  ([73056/237](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/237)).
+  We have not tested which is right.
 
-*This list was taken from the forum on 23 November 2026 and will be extended.*
+*This list was taken from the forum on 23 November 2026 and will be extended.* *Extended on
+28 November 2026 with every staff post in the forum topics this repository cites from 23 November
+09:29 UTC to our copy of 28 November 00:00 UTC, and in the COO's topic to our copy of 00:32 UTC.
+Some earlier staff posts in those topics are not listed yet, and staff posts in other topics are
+not covered. The rows added on 28 November give each post's creation time, with a later edit
+noted; some earlier rows give the time of the post's last edit instead (for example 73070/55,
+created 21 November 18:47 UTC and edited 22 November 00:24 UTC).*
 
 ## What the notice has not said in any version we hold
 
@@ -362,6 +576,12 @@ Where a later staff post changes or contradicts an earlier one:
 part: the router report names affected versions, though only the latest per model; owners are
 told to replace passwords and keys; and the older backdoor is acknowledged. The time window, the
 number of devices and what the malicious software does are still not stated.
+
+*Added 28 November 2026:* the site notice of 26 November adds that GL.iNet is still checking how
+the older backdoor reached routers and whether it is connected to the incident. The COO's message
+of 27 November promises a report with the full findings once the scope is known, with no date. The
+time window, the number of devices, what the malicious software does and how the older backdoor
+was installed are still not stated in any statement we hold.
 
 ## How this record is kept
 
