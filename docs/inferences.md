@@ -296,6 +296,60 @@ mid-2025 may: when the access that made outside publishing possible first existe
 
 ---
 
+## Inference 5. The attacker worked from a list of real router addresses, and the list left out 4.10 and 4.11
+
+*Added 28 November 2026.* The evidence, section by section, is on
+[How the attack found its targets](goodcloud-message-service.md).
+
+**In one sentence:** the attack of 20 November was sent to routers whose full address the attacker
+already had, and every firmware version it reached existed by 1 September 2026.
+
+### The facts it rests on
+
+- **A router's address has three parts.** It listens only on topics built from its model, its
+  firmware version and its MAC address, with no wildcard (read in the GL-AXT1800 4.8.3 and GL-MT3000
+  4.11.2 cloud clients). A MAC alone reaches nothing.
+- **Routers announce that address.** Every report a router publishes under `/sys/` carries all three
+  parts in its topic, and on each connection it also publishes to `/device/registration/<MAC>`.
+- **GL.iNet's report** says the attack required control of at least one GL device connected to
+  GoodCloud, and that MACs could be "enumerated in bulk" to build the topics. It does not say where the
+  model and version came from.
+- **The wave went group by group:** each model and firmware version in turn, the versions of one model
+  within about a minute of each other, from 20:06 UTC on 20 November to 08:04 UTC on 21 November.
+- **4.7 to 4.9 were hit almost everywhere; 4.10 and 4.11 not at all.** 169 of 185 devices on 4.7 to 4.9
+  in our GoodCloud account answered the attacker; none of the 10 devices on 4.10 and 4.11 did, and none
+  of the 10 such routers in our sweeps showed the attack. GL.iNet lists GL-MT3000 4.11.0 as affected.
+- **Every version that was hit existed by 1 September 2026** in our firmware mirror; 4.11.0 first appears
+  on 5 September.
+
+### What this makes more likely
+
+Not guessing: blind guessing needs at least 1.2 billion messages, and does not by itself explain the
+group-by-group order. A list of real topics, of the kind any client allowed to subscribe broadly could
+have collected, fits every point. Two forms of that list fit every router in our data:
+
+- the routers and their models, sent under each firmware version the attacker knew for that model, from
+  a version list frozen around early September; or
+- every router's current version, with 4.10 and later left out.
+
+### What fits the opposite
+
+- A list taken from somewhere other than the routers' own traffic would leave the same pattern.
+- A first form we considered, a list of routers with their versions made in August or September and gone
+  stale for those that upgraded, does not fit one router: a GL-AXT1800 moved to a 4.8.4 build two days
+  before the attack and was hit at the new version.
+- A few routers on 4.7 to 4.9 were online and not hit; the numbers on 4.10 and 4.11 are small (10 devices
+  in our account, 10 routers in our sweeps).
+
+### What would settle it
+
+GoodCloud's broker records: the publishes to `…/virtual_ip_info/request` from 19 to 21 November, with
+the topics they named. Publishes to many topics no router listens on, one MAC under several versions,
+mean the first form; publishes only to live topics mean the second. Whether the publishing client had
+subscribed beyond its own topics would show how the list was collected.
+
+---
+
 ## How this page is kept
 
 An inference is removed or rewritten when a fact settles it, with a dated note saying which fact.

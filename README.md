@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-28 01:26 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-28 04:34 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -51,6 +51,15 @@ partner supporting our common customers.
 >   four of GL.iNet's vulnerability reports identifiers of the form `vdb-submit-…`; they are not
 >   CVE numbers.
 >   [Details](docs/gl-statements.md#the-security-advisories-page)
+> - **How the attacker found its targets.** To reach a router through GoodCloud, a message must
+>   name the router's model, its firmware version and its MAC address; a MAC alone reaches
+>   nothing. Routers on 4.7 to 4.9 were hit almost everywhere (169 of 185 such devices in our
+>   GoodCloud account answered the attacker); none on 4.10 or 4.11 was, although 4.11.0 carries
+>   the same flaw. Every firmware version that was hit existed by 1 September 2026. We read this
+>   as an attacker working from a list of real router addresses prepared in advance. Two forms of
+>   that list fit our data, and GoodCloud's broker records would show which.
+>   [The evidence](docs/goodcloud-message-service.md) ·
+>   [the reasoning](docs/inferences.md#inference-5-the-attacker-worked-from-a-list-of-real-router-addresses-and-the-list-left-out-410-and-411)
 
 > **New, 27 November 2026: a second check of our routers, and what actually cleans one.**
 >
@@ -1128,10 +1137,15 @@ again by hand):
 - [docs/goodcloud-device-log.md](docs/goodcloud-device-log.md): the attack as GoodCloud's own
   Device Logs record it, the first calls on 19 November, and how an owner can check a device
   there without SSH
+- [docs/goodcloud-message-service.md](docs/goodcloud-message-service.md): how the attack found
+  its targets: how a router is addressed on GoodCloud's message service, what it announces about
+  itself, who was hit by firmware line, the order of the wave, and GL.iNet's reports beside our
+  data
 - [docs/inferences.md](docs/inferences.md): what the data suggests where no fact settles it:
   whether the two operations are linked, what the attacker's most common command was for,
   whether the calls of 19 November were a trial run, and how long the older backdoor was
-  prepared. Reasoning, kept apart from the findings and labelled as such
+  prepared. Reasoning, kept apart from the findings and labelled as such. *Added 28 November:*
+  how the attacker came to have its list of router addresses (inference 5)
 - [docs/field-survey.md](docs/field-survey.md): devices checked so far, by model and firmware
 - [docs/router-reverse-shell.md](docs/router-reverse-shell.md): the remote shell, the cloud command behind it and which routers have that code
 - [docs/attacker-infrastructure.md](docs/attacker-infrastructure.md): what is known about the address the shells
