@@ -278,7 +278,10 @@ Points we note:
 [A Message from GL.iNet COO about the secuirty incident](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365)
 (its spelling), opened on 27 November 2026 at 23:49 UTC by the staff account alzhao and edited
 once, at 23:52 UTC. We hold the edited version, read on 28 November at 00:32 UTC. It is signed
-Alfie Zhao, who introduces himself as the co-founder and COO of GL.iNet.
+Alfie Zhao, who introduces himself as the co-founder and COO of GL.iNet. *Updated 28 November 2026:*
+the post was edited again at 02:09 UTC (version 3), after a user reported at 02:02 UTC that the links
+in it did not work. The change rejoins the two addresses in the paragraph on official updates, which
+had been broken across lines; we compared versions 2 and 3 and the words are otherwise the same.
 
 According to the subreddit's moderators, the same message was posted in r/GlInet by the moderator
 u/wickedwarlock84, signed by Alfie Zhao, and the COO's own Reddit account is u/Alfie_GLiNet
@@ -509,8 +512,9 @@ GL.iNet staff, and is not listed here.
 | 2026-11-26 09:15:07 | will.qiu | To a user asking about a `stubby` account and `netifyd` on an MT5000: after an upgrade past v4.9 that keeps settings, the `stubby` account staying in `/etc/passwd` is normal (older firmware used it for DNS over TLS, shell `/bin/false`); `netifyd` is not in the base image under `/rom` and is installed separately when DPI features are enabled. | [73070/147](https://forum.gl-inet.com/t/quickly-check-if-your-router-is-under-attack/73070/147) |
 | 2026-11-27 16:16:18 | alzhao | To a user who said the remote-terminal component (rtty) was what was affected: "We will get this beast under control." | [73056/278](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/278) |
 | 2026-11-27 16:17:00 | alzhao | To a user who said GL.iNet should not ship closed-source firmware: the source code will be audited by a security audit firm (the post says "security audit firmware"). | [73056/279](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056/279) |
-| 2026-11-27 23:49:34 | alzhao | Opens a new topic with a message signed by Alfie Zhao, co-founder and COO: takes responsibility for the communication; outside legal and forensic team; security audit; a report to follow. See [its entry](#a-message-from-glinets-coo-27-november-2026). Edited 23:52 UTC. | [73365/1](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365) |
+| 2026-11-27 23:49:34 | alzhao | Opens a new topic with a message signed by Alfie Zhao, co-founder and COO: takes responsibility for the communication; outside legal and forensic team; security audit; a report to follow. See [its entry](#a-message-from-glinets-coo-27-november-2026). Edited 23:52 UTC, and on 28 November at 02:09 UTC to repair two links. | [73365/1](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365) |
 | 2026-11-28 00:24:14 | alzhao | To a user who said even a large team struggles to keep such software safe: "Definitely will get new guys in security team and enhance security." | [73365/3](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365/3) |
+| 2026-11-28 04:15:19 | bruce | To a user who reported that the links in the COO's message did not work: "Thank you for the reminder. Corrected it." | [73365/8](https://forum.gl-inet.com/t/a-message-from-gl-inet-coo-about-the-secuirty-incident/73365/8) |
 
 ### Changes
 
@@ -555,7 +559,7 @@ Where a later staff post changes or contradicts an earlier one:
 
 *This list was taken from the forum on 23 November 2026 and will be extended.* *Extended on
 28 November 2026 with every staff post in the forum topics this repository cites from 23 November
-09:29 UTC to our copy of 28 November 00:00 UTC, and in the COO's topic to our copy of 00:32 UTC.
+09:29 UTC to our copy of 28 November 04:32 UTC, the COO's topic included.
 Some earlier staff posts in those topics are not listed yet, and staff posts in other topics are
 not covered. The rows added on 28 November give each post's creation time, with a later edit
 noted; some earlier rows give the time of the post's last edit instead (for example 73070/55,
