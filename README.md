@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-28 04:43 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-28 05:39 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -57,7 +57,11 @@ partner supporting our common customers.
 >   GoodCloud account answered the attacker); none on 4.10 or 4.11 was, although 4.11.0 carries
 >   the same flaw. Every firmware version that was hit existed by 1 September 2026. We read this
 >   as an attacker working from a list of real router addresses prepared in advance. Two forms of
->   that list fit our data, and GoodCloud's broker records would show which.
+>   that list fit our data, and GoodCloud's broker records would show which. *Added later on
+>   28 November:* EMQX, the broker software GoodCloud runs on, ships in its 5.8 and 5.10 releases
+>   with rules that let any connected client publish to any topic and subscribe to `/#`, under
+>   which every GL.iNet topic falls (read in EMQX's source; GoodCloud's own version and
+>   configuration are not known).
 >   [The evidence](docs/goodcloud-message-service.md) ·
 >   [the reasoning](docs/inferences.md#inference-5-the-attacker-worked-from-a-list-of-real-router-addresses-and-the-list-left-out-410-and-411)
 

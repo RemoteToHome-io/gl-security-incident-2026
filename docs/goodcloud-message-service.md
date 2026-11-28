@@ -51,6 +51,40 @@ every step; [what only GL.iNet can answer](#what-only-glinet-can-answer) lists w
   ([EMQX: file-based authorization](https://docs.emqx.com/en/emqx/latest/access-control/authz/file.html), read
   28 November 2026). We have not seen GoodCloud's configuration or its EMQX version.
 
+### What EMQX allows as it ships (Verified, in EMQX's own source code)
+
+*Added 28 November 2026.* EMQX's source is public ([github.com/emqx/emqx](https://github.com/emqx/emqx)).
+We read its authorization defaults at three releases: 5.8.9 (the last under the Apache licence), 5.10.5
+(the latest 5.x) and 6.3.3 (the latest). This is what the product does as shipped, not GoodCloud's
+configuration: we do not know which version GoodCloud runs or what it changed. Read in the code, not
+tested on a broker.
+
+- **In 5.8.9 and 5.10.5,** the broker checks each request against a rule file,
+  [`etc/acl.conf`](https://github.com/emqx/emqx/blob/v5.8.9/apps/emqx_auth/etc/acl.conf), and allows
+  whatever the rules leave undecided: the setting `authorization.no_match` defaults to `allow`
+  ([`emqx_schema.erl`](https://github.com/emqx/emqx/blob/v5.8.9/apps/emqx/src/emqx_schema.erl)).
+- **The shipped rule file has four rules, tried in order:** the dashboard user may subscribe to
+  `$SYS/#`; a client on the broker's own machine (127.0.0.1) may do anything; every client is refused
+  subscriptions to `$SYS/#` and to exactly `#` and `+/#`; and last, `{allow, all}`. The file itself says
+  that for production the last rule should become `{deny, all}` and `no_match` should be set to `deny`.
+  The 5.10.5 file has the same four rules
+  ([5.10.5](https://github.com/emqx/emqx/blob/e5.10.5/apps/emqx_auth/etc/acl.conf)).
+- **So, left as shipped,** any client that can connect may publish to any topic, and may subscribe to
+  any filter but those three. Every GL.iNet topic begins with `/` (section 3). A subscription to `/#`,
+  `/sys/#` or `/device/registration/#` is none of the three: by EMQX's matching code
+  ([`emqx_authz_rule.erl`](https://github.com/emqx/emqx/blob/v5.8.9/apps/emqx_auth/src/emqx_authz/emqx_authz_rule.erl)),
+  an exact-match entry matches only that exact filter, and `/#` begins with an empty level where
+  `$SYS/#` begins with `$SYS`. The refusal rule does not apply, and the last rule allows it.
+- **From 6.3 the shipped default is stricter:** the last rule applies only under a "legacy" profile,
+  "hardened" is the default, and requests no rule decides are refused
+  ([6.3.3](https://github.com/emqx/emqx/blob/6.3.3/apps/emqx_auth/etc/acl.conf)).
+
+**Inference.** GL.iNet's report says a misconfiguration let a client send messages to other devices'
+topics. A 5.8 or 5.10 broker left at these defaults would allow exactly that, and would also let a client
+subscribe to every router's topics (section 4). It is one way, not the only one: a rule written for
+devices that did not cover topics beginning with `/` would have the same effect. GoodCloud's own
+configuration would show which.
+
 ## 2. What GL.iNet has said, beside what we found
 
 | GL.iNet's report | What it says | What our data adds |
@@ -190,7 +224,7 @@ whether it was reached:
 |---|---|---|---|
 | 1 | The attacker had a GL device, or its way onto GoodCloud, connected | GL.iNet's report | GL statement |
 | 2 | It worked from a list of real router topics, not blind guesses | sections 3, 5, 7 | Inference |
-| 3 | It got the addresses by listening on GoodCloud | section 4 | Inference |
+| 3 | It got the addresses by listening on GoodCloud | section 4, and what EMQX allows as it ships (section 1) | Inference |
 | 4 | The firmware versions it addressed were those that existed by about September 2026 | section 6 | Inference |
 | 5 | On 19 November it tested by hand on a few devices | section 7 | Inference (also [inference 3](inferences.md#inference-3-the-attacker-tried-the-flaw-on-a-few-devices-on-19-november-before-the-main-wave)) |
 | 6 | From 20 November it sent the list through automation, group by group | section 7 | Inference |
@@ -235,6 +269,8 @@ router listens on, each router's MAC under several versions; the second means pu
 3. Whether that client subscribed to anything beyond its own topics, when, and with which patterns. That is step 3.
 4. Whether the clients of 19 November and of 20 November are the same.
 5. How far back the broker's records go.
+6. The EMQX version that GoodCloud 3.19.13 ran on, its authorization rules and its `no_match`
+   setting, and what GoodCloud 3.19.14 changed in them.
 
 ## Limits
 
@@ -243,4 +279,5 @@ router listens on, each router's MAC under several versions; the second means pu
   random sample. Our account's log starts on 18 November, so it shows each device's version from then only.
 - One router answered the attacker (21 November, 00:48 UTC) and, after a restart, showed no state file in either
   sweep. So a missing state file does not prove a router was never called.
-- We have not seen GoodCloud's broker, its configuration or its logs.
+- We have not seen GoodCloud's broker, its configuration or its logs. EMQX's defaults are read in its
+  source code, not tested on a running broker.
