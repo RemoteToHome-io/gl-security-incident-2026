@@ -132,7 +132,8 @@ Read in the same two builds of the cloud client.
 
 ## 5. Could the attacker have guessed? (Verified counts, then Inference)
 
-- **MACs are easy.** All of the 260 devices read so far in our GoodCloud account share one manufacturer prefix,
+- **MACs are easy.** All of the devices in the 260-device cross-section of our GoodCloud account that we studied share one
+  manufacturer prefix,
   `94:83:C4` (GL Technologies (Hong Kong) Limited in the public registry). One prefix leaves 16,777,216
   addresses, and 148 of the 260 sit within 4,096 addresses of another: factory numbering runs in sequences. A MAC
   is also on the label and on the air.
@@ -275,7 +276,7 @@ router listens on, each router's MAC under several versions; the second means pu
 ## Limits
 
 - The code is read in two builds of the cloud client, not tested on a router.
-- Counts come from the routers we manage and the 260 devices read so far in our own GoodCloud account: not a
+- Counts come from the routers we manage and the 260-device cross-section of our own GoodCloud account that we studied: not a
   random sample. Our account's log starts on 18 November, so it shows each device's version from then only.
 - One router answered the attacker (21 November, 00:48 UTC) and, after a restart, showed no state file in either
   sweep. So a missing state file does not prove a router was never called.

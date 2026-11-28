@@ -10,7 +10,7 @@
   answer is logged. It carries `"id": 1`, which no ordinary GoodCloud message does.
 - **You can check a device this way without SSH,** and after the device has been reset or
   reinstalled, as long as the log still reaches back to the dates.
-- **In a cross-section of 260 devices read so far, 210 answered the attacker,** and the log shows the first
+- **In the 260-device cross-section we studied, 210 answered the attacker,** and the log shows the first
   call on 19 November 2026, a day and a half before the main wave.
 
 ## Check your own device
@@ -65,13 +65,13 @@ November and not the install dates of the [older backdoor](older-backdoor-loader
 ## What ours shows
 
 As with our checks on the routers themselves, we took a relevant cross-section of what we manage.
-We read the Device Logs in our own GoodCloud account for 18 to 21 November 2026: 42,085 rows from
-260 devices so far. A device appears only if it sent something to GoodCloud in those
+We read the Device Logs in our own GoodCloud account for 18 to 21 November 2026, for a cross-section of
+260 devices: 42,085 rows. A device appears only if it sent something to GoodCloud in those
 four days, so devices that were switched off or not connected are not among them.
 
 | | |
 |---|---|
-| Devices that sent a reply carrying `"id": 1` | **210 of the 260 read so far** |
+| Devices that sent a reply carrying `"id": 1` | **210 of the 260 in the cross-section** |
 | Such replies in all | 455 |
 | The first | **19 November 2026 09:33:36** |
 | The main wave | 20 November 20:06:29 to 21 November 08:04:42 |
@@ -100,7 +100,7 @@ quoted `id`. So the command name alone is not the mark; the `id` and the missing
 ## Model by model
 
 *Added 24 November 2026.* When a device connects, the log records its model and firmware. That
-gives both for 195 of the 260 devices; the other 65 did not reconnect in those four days, so
+gives both for 195 of the 260 in the cross-section; the other 65 did not reconnect in those four days, so
 the log does not say what they are. The table is in the order the attacker reached each group. It
 uses each device's first answer in the attacker's form; the single early answer of 19 November
 is from a device without a registration row and is not in it.
@@ -188,11 +188,11 @@ was sent before 19 November; ours do not reach further back than the 18th in wha
 
 ## Limits
 
-- This is one account: ours, and a cross-section read so far. It is not a sample of all GoodCloud
+- This is one account, ours, and a cross-section we chose. It is not a sample of all GoodCloud
   devices.
 - A reply shows that a command in that form ran and returned. It does not show what the command
   was. For that see [attacker messages](attacker-messages.md), from the routers' memory.
-- 50 of the 260 devices show no such reply. We have not worked out, device by device, whether they
+- 50 of the 260 in the cross-section show no such reply. We have not worked out, device by device, whether they
   were offline, on firmware without the flaw, or missed.
 - We read the rows from the Device Logs page as it displays them and saved them privately. They
   are not published: they hold account names and device addresses.

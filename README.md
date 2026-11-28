@@ -13,7 +13,7 @@ nothing that identifies an owner, a network or a device. Every statement here sa
 from and how it was checked. Corrections and findings from anyone are welcome: see
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Last reviewed: 2026-11-28 05:39 UTC.** GL.iNet's notice changes; read
+**Last reviewed: 2026-11-28 06:20 UTC.** GL.iNet's notice changes; read
 [the current version](https://forum.gl-inet.com/t/2026-11-20-gl-inet-security-notice-goodcloud-kvm-routers/73056)
 as well.
 
@@ -99,7 +99,7 @@ partner supporting our common customers.
 >   the main wave began at 20:06 UTC on 20 November. It reads as a trial run on a handful of
 >   devices. GL.iNet's notice dates the incident to 20 November.
 > - **GoodCloud keeps a log of what each device sent to the cloud, and an owner can read it.**
->   In our own account, in a cross-section of 260 devices read so far, 210 answered the attacker.
+>   In the 260-device cross-section of our own account that we studied, 210 answered the attacker.
 > - **Any owner can check a device there without SSH,** also after it has been reset.
 >
 > See [docs/goodcloud-device-log.md](docs/goodcloud-device-log.md).
@@ -383,7 +383,7 @@ names.
 | **Shell pipe** | `/tmp/f`, a named pipe (the listing line starts with `p`) | No | The remote shell has run since the last boot, even if it has been stopped |
 | **Firewall rule** | `-A SDWAN_IP_MAPPING -d 127.0.0.1/32 -j DNAT --to-destination 127.0.0.1` in the NAT table | No. It is also gone once GoodCloud is switched off on the router, without a restart | The cloud client was sent the attacker's message and ran it as root. The rule itself is harmless; it is the wrapper the attacker's command arrived in |
 | **State file** | `/etc/mp_ip_mapping_info`, empty, dated 20 November 2026 or later, on a router that does not use AstroWarp | Yes | The same handler ran. It is the only trace left after a restart. It does not show what the message carried - and this is not a small gap. The command ran as root, and on some routers it opened a remote shell: from that moment the attacker had full control of the router without going through GoodCloud, and nothing on the router or in GL.iNet's cloud records what was done through it. After a restart you cannot tell whether your router received that command or the folder check. **Treat a router with this file as fully compromised.** The first calls we know of were on 19 November, so a file dated 19 November counts too ([GoodCloud log](docs/goodcloud-device-log.md)) |
-| **Cloud log entry** | In the device log exported from your GoodCloud account: command responses containing `"astrowarp"` with the id `1`, where ordinary commands carry a 32-character id | Yes, it is kept on GL.iNet's side | The `virtual_ip_info` command was sent to that device, with the time. Reported by three owners (finding R-31); we have not exported such a log ourselves, but the reply text matches what we recovered from routers' memory. *Updated 25 November:* on 24 November we read these entries on the Device Logs page of our own GoodCloud account, in a cross-section of 260 devices read so far ([docs/goodcloud-device-log.md](docs/goodcloud-device-log.md)) |
+| **Cloud log entry** | In the device log exported from your GoodCloud account: command responses containing `"astrowarp"` with the id `1`, where ordinary commands carry a 32-character id | Yes, it is kept on GL.iNet's side | The `virtual_ip_info` command was sent to that device, with the time. Reported by three owners (finding R-31); we have not exported such a log ourselves, but the reply text matches what we recovered from routers' memory. *Updated 25 November:* on 24 November we read these entries on the Device Logs page of our own GoodCloud account, in the 260-device cross-section we studied ([docs/goodcloud-device-log.md](docs/goodcloud-device-log.md)) |
 | **Older backdoor** | Extra lines at the top of `/etc/init.d/urandom_seed`, a file `/bin/ulogd`, and an added line in `/lib/upgrade/keep.d/netifd`; when running, processes named `monitord` and `ujaild` | Yes; its keep-list line is there to carry it through upgrades that keep settings | A separate, earlier compromise, with file dates from September 2025 on. It starts at every boot, reports to its own servers and fetches a remote-control program that runs from memory. See [The older backdoor, step by step](#the-older-backdoor-step-by-step) |
 | **GL.iNet's indicator** | GL.iNet's check for a router is `ps \| grep tmp` over SSH (or search for `tmp/.log` in LuCI under Status → Processes); a hit is a line containing `crond -i /tmp/.log`. On a KVM it is `ps -aux \| grep tmp` (`ps -a \| grep tmp` on the RMQ1). All four are in [GL.iNet's own checks](#glinets-own-checks) | Not known to us | The one sign GL.iNet's notice tells owners to look for. It is reported to be a false name that the KVM implant's helper writes over its own process ([docs/gl-helper-implant.md](docs/gl-helper-implant.md)). We have not found it on any router |
 
